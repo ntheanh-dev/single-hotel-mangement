@@ -16,4 +16,4 @@ class Role(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(Enum(UserRole))
 
-    user_role = relationship('User', backref='role', lazy=True)
+    user_role = relationship('Account', backref='role', lazy=True)
