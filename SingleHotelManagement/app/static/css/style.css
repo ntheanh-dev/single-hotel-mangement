@@ -1,3 +1,6 @@
+a {
+  outline-color: transparent;
+}
   .header {
     background-color: #333;
     color: #fff;
@@ -140,3 +143,4 @@
     top:0;
   }
 }
+/* ----------------booking site--------------- */
