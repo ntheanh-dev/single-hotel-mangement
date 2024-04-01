@@ -9,3 +9,7 @@ def home():
 @app.route('/nhan-vien/dat-phong/')
 def booking():
     return render_template('/receptionist/booking.html')
+
+@app.route('/nhan-vien/dat-phong/them-khach/')
+def room_detail():
+    return render_template('/receptionist/room_detail.html')
