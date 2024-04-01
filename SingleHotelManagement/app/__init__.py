@@ -25,6 +25,8 @@ from app.models import role
 from app.models import tier
 from app.models import user
 
+from controllers.receptionist.home_controller import *
+
 
 def init_tables():
     with app.app_context():
@@ -34,4 +36,3 @@ def init_tables():
         except Exception as e:
             print("An error occurred:", str(e))
             db.session.rollback()
-
