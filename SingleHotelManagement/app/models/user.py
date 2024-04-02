@@ -22,7 +22,7 @@ class User(db.Model, UserMixin):
     accounts = relationship('Account', backref="account", lazy=True)
 
     guests = relationship('Guest', backref="guests", lazy=True)
-    receptionists = relationship('Receptionists', backref="receptionists", lazy=True)
+    receptionists = relationship('Receptionist', backref="receptionist", lazy=True)
     admins = relationship('Admin', backref="admins", lazy=True)
 
     notifications = relationship("Notification", backref="notifications", lazy=True)

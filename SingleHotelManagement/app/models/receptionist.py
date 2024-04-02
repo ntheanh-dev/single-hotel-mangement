@@ -7,5 +7,5 @@ from app import db
 class Receptionist(db.Model):
     user_id = Column(Integer, ForeignKey('user.id'), primary_key=True, nullable=False)
 
-    bookings = relationship('Booking',backref='booking',lazy=True)
+    bookings = relationship('Booking',backref='receptionist',lazy=True)
 

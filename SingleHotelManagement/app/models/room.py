@@ -24,4 +24,4 @@ class Room(db.Model):
     images = relationship("Image", backref="image", lazy=False)
 
     # many to many with intermediate table
-    bookings = relationship("Booking", backref="booking", lazy=True)
+    booking_details = relationship("BookingDetail", backref="room", lazy=True)

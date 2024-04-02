@@ -14,4 +14,4 @@ class Tier(db.Model):
     extra_guest_surcharge = Column(Float, default=0.25)
     foreign_guest_surcharge = Column(Float, default=1.5)
     # one to many
-    rooms = relationship("Room", backref="room", lazy=True)
+    rooms = relationship("Room", backref="tier", lazy=True)

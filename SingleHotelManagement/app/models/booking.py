@@ -28,7 +28,7 @@ class Booking(db.Model):
     booker_id = Column(Integer, ForeignKey('guest.user_id'), primary_key=True, nullable=False)
 
     # many to many with intermediate table
-    rooms = relationship("Room", backref="room", lazy=False)
+    booking_details = relationship("BookingDetail", backref="booking", lazy=True)
 
     # one-to-one relationship
     invoice = relationship("Invoice", backref="booking",lazy=False)
