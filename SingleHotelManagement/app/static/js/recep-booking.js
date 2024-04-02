@@ -1,5 +1,4 @@
-$(document).ready(function () {
-
+$(document).ready(function() {
     //----------------Neu dang co tham so tim phong thi khi submit xong hien lai form tim kiem -----------------
     var urlParams = new URLSearchParams(window.location.search);
     var max_guest = urlParams.has('max_guest')
@@ -12,7 +11,7 @@ $(document).ready(function () {
         $('#max_guest_option option[value="' + urlParams.get('max_guest') + '"]').prop('selected', true);
     }
 
-    $(".choose-guest-btn, .search-guest, .add-guest-btn").click(function () {
+    $(".choose-guest-btn, .search-guest, .add-guest-btn").click(function() {
         Toastify({
             text: "Hãy chọn phòng trước",
             duration: 3000,
@@ -26,26 +25,26 @@ $(document).ready(function () {
             },
         }).showToast();
     });
-    $(".choose-this-room").click(function () {
+    $(".choose-this-room").click(function() {
         window.location.href = "/nhan-vien/dat-phong/?ma=3/";
     });
 
     // ----------------- Show modal search form -----------------
-    $(".btn-search-room").click(function () {
+    $(".btn-search-room").click(function() {
         $(".overlay-search-room").fadeIn();
         $(".search-room-form").fadeIn();
     });
 
-    $(".close-search-room-form").click(function () {
+    $(".close-search-room-form").click(function() {
         $(".overlay-search-room").fadeOut();
         $(".search-room-form").fadeOut();
     });
     // --------------------Search tier---------------
-    $('.search-tier-btn').click(function (event) {
+    $('.search-tier-btn').click(function(event) {
         this.submit();
     });
     //------------Clear fillter----------
-     $('.clear-filter-btn').click(function (event) {
+    $('.clear-filter-btn').click(function(event) {
         $('#flor-option option[value="' + urlParams.get('floor') + '"]').prop('selected', false);
         $('#max_guest_option option[value="' + urlParams.get('max_guest') + '"]').prop('selected', false);
 
