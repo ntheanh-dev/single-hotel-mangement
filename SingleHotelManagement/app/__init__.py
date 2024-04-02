@@ -22,7 +22,6 @@ from app.models import image
 from app.models import invoice
 from app.models import notification
 from app.models import receptionist
-from app.models import role
 from app.models import tier
 
 from controllers.receptionist.home_controller import *

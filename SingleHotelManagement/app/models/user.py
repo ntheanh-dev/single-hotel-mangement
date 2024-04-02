@@ -1,8 +1,14 @@
+import enum
 from flask_login import UserMixin
-from sqlalchemy import Column, String, Boolean, Text, Integer, ForeignKey
+from sqlalchemy import Column, String, Boolean, Text, Integer, ForeignKey, Enum
 from sqlalchemy.orm import relationship
-
 from app import db
+
+
+class UserRole(enum.Enum):
+    GUEST = "khach"
+    RECEPTIONIST = "le tan"
+    ADMIN = "quản trị"
 
 
 class User(db.Model, UserMixin):
@@ -17,7 +23,7 @@ class User(db.Model, UserMixin):
     birthdate = Column(String(10))
     foreigner = Column(Boolean, default=False)
 
-    role_id = Column(Integer, ForeignKey('role.id'), nullable=False)
+    role = Column(Enum(UserRole))
 
     accounts = relationship('Account', backref="account", lazy=True)
 
