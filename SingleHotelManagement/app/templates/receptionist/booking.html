@@ -3,9 +3,18 @@
 {% endblock %} {% block body %} {{super()}}
 
 <div class="flex justify-between bg-gray-400 space-x-4 p-2 h-screen">
-  {% include 'receptionist/includes/search_guest.html' %} {% include
-  'receptionist/includes/available_room_list.html' %} {% include
-  'receptionist/includes/add_new_guest_form.html' %}
+  {% include 'receptionist/includes/search_guest.html' %}
+
+  <div class="w-2/3 bg-white rounded-lg p-3 relative">
+    {% include 'receptionist/includes/search_room_form.html' %}
+
+    <button
+      class="btn btn-outline-success absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 btn-search-room"
+    >
+      <i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>
+      Thêm phòng
+    </button>
+  </div>
 </div>
 
 <script src="{{url_for('static', filename='js/recep-booking.js')}}"></script>

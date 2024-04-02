@@ -1,10 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div
+  class="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex justify-center items-center hidden overlay-search-room z-50"
+>
+  <div
+    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white py-6 px-3 rounded-lg shadow-md hidden w-10/12 overflow-auto search-room-form"
+  >
+    <div class="flex justify-between">
+      <h2 class="text-xl font-bold text-center w-full mb-2">Tìm kiếm phong</h2>
+      <button
+        type="button"
+        class="btn-close close-search-room-form"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="container">
+      <div class="flex flex-col mb-3">
+        <div class="rounded-xl border border-gray-200 bg-white p-3 shadow-lg">
+          <form class="" method="get" action="/nhan-vien/dat-phong/">
+            <div class="grid grid-cols-1 gap-6 grid-cols-3">
+              <div class="flex flex-col">
+                <label
+                  for="max_guest_option"
+                  class="text-sm font-medium text-stone-600"
+                  >Tối đa khách một phòng</label
+                >
+
+                <select
+                  id="max_guest_option"
+                  class="mt-2 block w-full rounded-md border border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  name="max_guest"
+                >
+                  <option value="all">Tất cả</option>
+                  {% for mg in max_guests %}
+                  <option value="{{mg.max_guest}}">{{mg.max_guest}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="flex flex-col">
+                <label
+                  for="flor-option"
+                  class="text-sm font-medium text-stone-600"
+                  >Tầng</label
+                >
+
+                <select
+                  id="flor-option"
+                  class="mt-2 block w-full cursor-pointer rounded-md border border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  name="floor"
+                >
+                  <option value="all">Tất cả</option>
+                  {% for f in floors %}
+                  <option value="{{f.id}}">{{f.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="flex items-end space-x-3 w-full">
+                <button
+                  class="rounded-lg bg-gray-200 px-8 py-2 font-medium text-gray-700 outline-none hover:opacity-80 focus:ring clear-filter-btn"
+                >
+                  Xoá bộ lọc
+                </button>
+                <button
+                  class="rounded-lg bg-blue-600 px-8 py-2 font-medium text-white outline-none hover:opacity-80 focus:ring search-tier-btn"
+                  type="submit"
+                >
+                  Tìm kiếm
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="flex flex-wrap">
+        {% for t in tiers %}
+        <!-- Column -->
+        <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/4">
+          <!-- Article -->
+          <article class="overflow-hidden rounded-lg shadow-lg">
+            <a href="#">
+              <img
+                alt="Placeholder"
+                class="block h-auto w-full"
+                src="https://res.cloudinary.com/dqpo9h5s2/image/upload/v1711860957/rooms/room_2-1_c4yatw.png"
+              />
+            </a>
+            <header
+              class="flex items-center justify-between leading-tight p-2 md:p-4"
+            >
+              <h1 class="text-lg">{{t.name}}</h1>
+              <p class="text-grey-darker text-sm">Còn ({{t.available}})</p>
+            </header>
+            <footer
+              class="flex-row items-center justify-between leading-none p-2 md:p-4"
+            >
+              <p class="text-sm text-gray-600">Tối đa: {{t.max_guest}}</p>
+              <p class="text-sm text-gray-600">
+                Giá: {{t.base_price}} ({{t.normal_guest_count}}/{{t.max_guest}}
+                khách)
+              </p>
+              <p class="text-sm text-gray-600">
+                Giá: {{t.surcharge }} (>{{t.normal_guest_count}} khách)
+              </p>
+              <p class="text-sm text-gray-600">
+                Nếu có khách nước ngoài : giá * {{t.foreign_guest_surcharge}}
+              </p>
+            </footer>
+            <button class="btn btn-success m-2 choose-this-room">
+              Chọn ngay
+            </button>
+          </article>
+          <!-- END Article -->
+        </div>
+        <!-- END Column -->
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

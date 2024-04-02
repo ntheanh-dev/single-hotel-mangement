@@ -10,6 +10,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.secret_key = '234jl23k4j234jlk@34987452ijodjdf'
 db = SQLAlchemy(app=app)
 
+from app.models import user
 from app.models import account
 from app.models import admin
 from app.models import booking
@@ -23,7 +24,6 @@ from app.models import notification
 from app.models import receptionist
 from app.models import role
 from app.models import tier
-from app.models import user
 
 from controllers.receptionist.home_controller import *
 
