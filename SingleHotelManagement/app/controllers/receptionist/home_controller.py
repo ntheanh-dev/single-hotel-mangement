@@ -1,5 +1,8 @@
-from flask import render_template, request
+import json
+from distutils.util import strtobool
+from flask import render_template, request, jsonify
 from app import app
+from app.services.guest_service import check_phone_number, register_guest
 from app.services.tier_service import get_tiers, get_max_guests
 from app.services.floor_service import get_floors
 
@@ -58,3 +61,29 @@ def booking():
         else:
             return render_template('/receptionist/room_detail.html', rooms=bookings,
                                    current_room=bookings[0]['booking_id'])
+
+
+@app.route('/api/reception/add-guest/',methods=['post'])
+def add_guest():
+    data = json.loads(request.data)
+    listData = {
+        'last_name': data.get('last_name'),
+        'first_name': data.get('first_name'),
+        'birthdate': data.get('birthdate'),
+        'phone_number': data.get('phone_number'),
+        'city': data.get('city'),
+        'district': data.get('district'),
+        'address': data.get('address'),
+        'foreigner':strtobool(data.get('foreigner').lower())
+    }
+    if check_phone_number(listData['phone_number']):  # user đã tồn tại
+        return jsonify('0')
+
+    try:
+        register_guest(data=listData)
+    except Exception as e:
+        print(e)
+        return jsonify('-1')
+
+    return jsonify("1")
+
