@@ -51,7 +51,6 @@ $(document).ready(function () {
                     'Context-Type': 'application/json',
                 }
             }).then(res => res.json()).then(data => {
-                console.log(data)
                 let row = ''
                 data.forEach(ele => {
                     row += `<li>
@@ -74,17 +73,19 @@ $(document).ready(function () {
                         <p class="text-sm font-medium text-gray-500">
                           SĐT: <span class="text-green-600">${ele.phone_number}</span>
                         </p>
-                        <a
-                          href="#"
-                          class="font-medium text-indigo-600 hover:text-indigo-500 choose-guest-btn"
-                          >Thêm</a
+                        <span
+                            value="${ele.id}"
+                            name="${ele.last_name} ${ele.first_name}"
+                          class="font-medium text-indigo-600 hover:text-indigo-500 choose-guest-btn cursor-pointer"
+                          onClick="setBooker('${ele.last_name} ${ele.first_name}','${ele.id}')"
+
+                          >Thêm</
                         >
                       </div>
                     </div>
                   </li>`
                 });
                 document.querySelector(".list-guest").innerHTML = row
-
             })
         }
     });
@@ -322,50 +323,36 @@ $(document).ready(function () {
             $('#time').val(''); // Nếu ngày không hợp lệ, gán giá trị rỗng
         }
     });
-    //------------------Tạo đơn đặt phòng mới-------------------
-    $(".choose-this-room").click(function () {
-        // window.location.href = "/nhan-vien/dat-phong/?ma=3/";
-        alert($(this).val())
-
-        fetch("/api/reception/add-guest/", {
-            method: 'post',
-            body: JSON.stringify({
-                'last_name': $("#last_name").val(),
-                'first_name': $("#first_name").val(),
-                'birthdate': $("#birthdate").val(),
-                'phone_number': $("#phone_number").val(),
-                'city': $("#city").val(),
-                'district': $("#district").val(),
-                'address': $("#address").val(),
-                'foreigner': $("#foreigner").val(),
-            }),
-            headers: {
-                'Accept': 'application/json',
-                'Context-Type': 'application/json',
-            }
-        }).then(res => res.json()).then(data => {
-            if (data == '-1') {
-                Swal.fire({
-                    title: 'Thông tin bạn nhập không hợp lệ !!!',
-                    text: 'Xin vui lòng thử lại',
-                    icon: 'warning',
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Ok',
-                })
-            } else if (data == '0') {
-                Swal.fire({
-                    title: 'Số điện thoại đã tồn tại !!!',
-                    text: '',
-                    icon: 'warning',
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Ok',
-                })
-            } else {
-                Swal.fire(
-                    'Thêm khách mới thành công',
-                    'success'
-                )
-            }
-        })
-    })
 });
+
+function setBooker(name, id) {
+    $(".booker").fadeIn();
+    $(".booker").html(
+        `<div
+            class="rounded-lg border border-success py-2 px-2 flex justify-center items-center space-x-2 color-green-600 booker-info"
+            guest_id="${id}"
+          >
+            <i class="fa-solid fa-user"></i>
+            <span class="ml-2 pr-3 font-bold text-success">${name}</span>
+            <button
+              type="button"
+              class="btn-close close-search-room-form"
+              aria-label="Close"
+              onClick="removeBooker()"
+            ></button>
+          </div>`
+    )
+}
+removeBooker = () => {
+    $(".booker").html('');
+}
+chooseRoom = (room_id) => {
+    // window.location.href = "/nhan-vien/dat-phong/?ma=3/";
+    var currentHTML = $('.booker').html();
+    if (currentHTML.trim() === '') {
+        alert(0)
+    } else {
+        booker_id = $('.booker-info').attr('guest_id')
+        alert(booker_id)
+    }
+}
