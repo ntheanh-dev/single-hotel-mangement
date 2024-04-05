@@ -103,7 +103,7 @@ $(document).ready(function () {
             $(".search-guest-btn").removeClass("btn-secondary");
         }
     })
-    // ----------------- Show modal search form -----------------
+    // ----------------- Show modal search room form -----------------
     $(".btn-search-room").click(function () {
         $(".overlay-search-room").fadeIn();
         $(".search-room-form").fadeIn();

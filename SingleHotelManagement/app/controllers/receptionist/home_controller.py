@@ -5,7 +5,7 @@ from app import app
 from app.repositories.tier_repository import get_tier_by_room_id
 from app.services.booking_detail_service import get_booking_details_by_booking_id
 from app.services.guest_service import check_phone_number, register_guest, search_guest as sg
-from app.services.tier_service import get_tiers, get_max_guests
+from app.services.tier_service import get_tiers, get_max_guests, tier_with_available_room_to_dict
 from app.services.floor_service import get_floors
 from app.services.booking_service import create_booking, get_booking_by_id
 
@@ -27,6 +27,11 @@ def booking():
         tiers = get_tiers(max_guest=max_guest, floor=floor)
         return render_template('/receptionist/booking.html', tiers=tiers, floors=floors, max_guests=max_guests)
     else:
+
+        max_guest = request.args.get('max_guest')
+        floor = request.args.get('floor')
+        tiers = get_tiers(max_guest=max_guest, floor=floor)
+
         room_id = request.args.get('phong')
         booking = get_booking_by_id(int(booking_id))
         booking_details = get_booking_details_by_booking_id(int(booking_id))
@@ -36,14 +41,26 @@ def booking():
                 current_booking_detail = bd
                 break
         current_tier = get_tier_by_room_id(int(room_id))
-        current_price = current_tier.get_price(current_booking_detail['num_normal_guest'], current_booking_detail['num_foreigner_guest'])
+        current_price = current_tier.get_price(current_booking_detail['num_normal_guest'],
+                                               current_booking_detail['num_foreigner_guest'])
         return render_template('/receptionist/booking_detail.html',
                                current_tier=current_tier,
                                booking_details=booking_details,
                                booking=booking,
                                current_booking_detail=current_booking_detail,
-                               current_price= "{:,.0f}".format(current_price)
+                               current_price="{:,.0f}".format(current_price),
+                               tiers=tiers, floors=floors, max_guests=max_guests
                                )
+
+
+@app.route('/api/reception/search-tier/', methods=['post'])
+def search_tier():
+    data = json.loads(request.data)
+    floors = data.get('floors')
+    max_guests = data.get('max_guests')
+    tiers = get_tiers(max_guest=max_guests, floor=floors)
+    results = tier_with_available_room_to_dict(tiers)
+    return jsonify(results)
 
 
 @app.route('/api/reception/add-guest/', methods=['post'])
