@@ -6,7 +6,7 @@ from app import db
 
 class RoomStatus(enum.Enum):
     AVAILABLE = 1
-    REVERED = 2
+    RESERVED = 2
     OCCUPIED = 3
 
 
@@ -25,3 +25,13 @@ class Room(db.Model):
 
     # many to many with intermediate table
     booking_details = relationship("BookingDetail", backref="room", lazy=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'floor_id': self.floor_id,
+            'status': self.status.name,
+            'image': self.image,
+            'tier_id': self.tier_id,
+        }

@@ -2,10 +2,12 @@ import json
 from distutils.util import strtobool
 from flask import render_template, request, jsonify
 from app import app
-from app.services.guest_service import check_phone_number, register_guest,search_guest as sg
+from app.repositories.tier_repository import get_tier_by_room_id
+from app.services.booking_detail_service import get_booking_details_by_booking_id
+from app.services.guest_service import check_phone_number, register_guest, search_guest as sg
 from app.services.tier_service import get_tiers, get_max_guests
 from app.services.floor_service import get_floors
-from app.services.booking_service import create_booking
+from app.services.booking_service import create_booking, get_booking_by_id
 
 
 @app.route('/nhan-vien/lich-dat-phong/')
@@ -23,27 +25,25 @@ def booking():
         max_guest = request.args.get('max_guest')
         floor = request.args.get('floor')
         tiers = get_tiers(max_guest=max_guest, floor=floor)
-
         return render_template('/receptionist/booking.html', tiers=tiers, floors=floors, max_guests=max_guests)
     else:
-        # fetch booking detail by booking id
-        bookings = [
-            {
-                "booking_id": "1",
-                "customer_name": "John Doe",
-                "check_in_date": "2024-04-10",
-                "check_out_date": "2024-04-15",
-                "room_type": "Deluxe Double Room",
-                "num_of_guests": 2,
-                "total_price": 600
-            },
-        ]
         room_id = request.args.get('phong')
-        if any(b['booking_id'] == room_id for b in bookings):
-            return render_template('/receptionist/room_detail.html', rooms=bookings, current_room=room_id)
-        else:
-            return render_template('/receptionist/room_detail.html', rooms=bookings,
-                                   current_room=bookings[0]['booking_id'])
+        booking = get_booking_by_id(int(booking_id))
+        booking_details = get_booking_details_by_booking_id(int(booking_id))
+        current_booking_detail = {}
+        for bd in booking_details:
+            if bd['room_id'] == int(room_id):
+                current_booking_detail = bd
+                break
+        current_tier = get_tier_by_room_id(int(room_id))
+        current_price = current_tier.get_price(current_booking_detail['num_normal_guest'], current_booking_detail['num_foreigner_guest'])
+        return render_template('/receptionist/booking_detail.html',
+                               current_tier=current_tier,
+                               booking_details=booking_details,
+                               booking=booking,
+                               current_booking_detail=current_booking_detail,
+                               current_price= "{:,.0f}".format(current_price)
+                               )
 
 
 @app.route('/api/reception/add-guest/', methods=['post'])
@@ -76,18 +76,20 @@ def make_booking():
     data = json.loads(request.data)
     listData = {
         'receptionist_id': 2,
-        'start_date': data.get('last_name'),
-        'end_date': data.get('first_name'),
-        'checkin': data.get('birthdate'),
-        'checkout': data.get('phone_number'),
+        'booker_id': data.get('booker_id'),
+        'start_date': data.get('start_date'),
+        'end_date': data.get('end_date'),
+        'checkin': data.get('start_date'),
+        'checkout': data.get('end_date'),
+        'tier_id': data.get('tier_id'),
+        'foreigner': data.get('foreigner')
     }
     try:
-        create_booking(data=listData)
+        result = create_booking(data=listData)
     except Exception as e:
         print(e)
-        return jsonify('1')
-
-    return jsonify("0")
+        return jsonify('error')
+    return jsonify(result)
 
 
 @app.route('/api/reception/search/', methods=['post'])

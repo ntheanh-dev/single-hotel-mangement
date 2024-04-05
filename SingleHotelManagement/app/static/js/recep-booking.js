@@ -77,7 +77,7 @@ $(document).ready(function () {
                             value="${ele.id}"
                             name="${ele.last_name} ${ele.first_name}"
                           class="font-medium text-indigo-600 hover:text-indigo-500 choose-guest-btn cursor-pointer"
-                          onClick="setBooker('${ele.last_name} ${ele.first_name}','${ele.id}')"
+                          onClick="setBooker('${ele.last_name} ${ele.first_name}','${ele.id}','${ele.foreigner}')"
 
                           >Thêm</
                         >
@@ -107,6 +107,15 @@ $(document).ready(function () {
     $(".btn-search-room").click(function () {
         $(".overlay-search-room").fadeIn();
         $(".search-room-form").fadeIn();
+        // Lấy thời gian hiện tại bằng Moment.js
+        var currentTime = moment().format('YYYY-MM-DDTHH:mm');
+        var currentTimePlusOneDay = moment().add(1, 'days').format('YYYY-MM-DDTHH:mm');
+
+
+        // Thiết lập giá trị của input thành thời gian hiện tại
+        $('#startdate').val(currentTime);
+        $('#enddate').val(currentTimePlusOneDay);
+        $('#time').val('1 ngày');
     });
 
     $(".close-search-room-form").click(function () {
@@ -325,12 +334,13 @@ $(document).ready(function () {
     });
 });
 
-function setBooker(name, id) {
+function setBooker(name, id, foreigner) {
     $(".booker").fadeIn();
     $(".booker").html(
         `<div
             class="rounded-lg border border-success py-2 px-2 flex justify-center items-center space-x-2 color-green-600 booker-info"
             guest_id="${id}"
+            foreigner="${foreigner}"
           >
             <i class="fa-solid fa-user"></i>
             <span class="ml-2 pr-3 font-bold text-success">${name}</span>
@@ -350,9 +360,46 @@ chooseRoom = (room_id) => {
     // window.location.href = "/nhan-vien/dat-phong/?ma=3/";
     var currentHTML = $('.booker').html();
     if (currentHTML.trim() === '') {
-        alert(0)
+        Swal.fire({
+            title: 'Hãy chọn khách trước !!!',
+            text: '',
+            icon: 'warning',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Ok',
+        })
     } else {
-        booker_id = $('.booker-info').attr('guest_id')
-        alert(booker_id)
+        var booker_id = $('.booker-info').attr('guest_id')
+        var foreigner = $('.booker-info').attr('foreigner')
+        fetch("/api/reception/make-booking/", {
+            method: 'post',
+            body: JSON.stringify({
+                'start_date': $("#startdate").val(),
+                'end_date': $("#enddate").val(),
+                'checkin': $("#startdate").val(),
+                'checkout': $("#enddate").val(),
+                'receptionist_id': 2,
+                'booker_id': Number(booker_id),
+                'tier_id': room_id,
+                'foreigner': foreigner,
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Context-Type': 'application/json',
+            }
+        }).then(res => res.json()).then(data => {
+            if (data == 'error') {
+                Swal.fire({
+                    title: 'Lỗi đặt phòng !!!',
+                    text: 'Xin vui lòng thử lại hoặc chọn phòng khác',
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Ok',
+                })
+            } else {
+                booking = data.booking
+                room = data.room
+                window.location.href = `/nhan-vien/dat-phong/?ma=${booking.id}&phong=${room.id}`;
+            }
+        })
     }
 }

@@ -32,3 +32,16 @@ class Booking(db.Model):
 
     # one-to-one relationship
     invoice = relationship("Invoice", backref="booking",lazy=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'start_date': self.start_date,
+            'end_date': self.end_date,
+            'checkin': self.checkin,
+            'checkout': self.checkout,
+            'status': self.status.name,
+            'note': self.note,
+            'receptionist_id': self.receptionist_id,
+            'booker_id': self.booker_id,
+        }

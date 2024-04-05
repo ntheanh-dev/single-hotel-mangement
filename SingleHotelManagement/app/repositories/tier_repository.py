@@ -28,3 +28,8 @@ def get_distinct_max_guest():
 def get_num_available_room_by_id(id):
     return db.session.query(func.count(Room.id).label('available')).join(Tier, Room.tier_id == Tier.id).filter(
         Room.status.__eq__(RoomStatus.AVAILABLE)).filter(Tier.id.__eq__(id)).first()
+
+
+def get_tier_by_room_id(room_id):
+    return db.session.query(Tier).join(Room).filter(Room.id == room_id).first()
+
