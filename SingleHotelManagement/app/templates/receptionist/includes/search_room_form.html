@@ -5,13 +5,69 @@
     class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white py-6 px-3 rounded-lg shadow-md hidden w-10/12 overflow-auto search-room-form"
   >
     <div class="flex justify-between">
-      <h2 class="text-xl font-bold text-center w-full mb-2">Tìm kiếm phong</h2>
+      <h2 class="text-xl font-bold text-center w-full mb-2">Chọn Phòng</h2>
       <button
         type="button"
         class="btn-close close-search-room-form"
         aria-label="Close"
       ></button>
     </div>
+
+    <div class="container">
+      <div class="flex flex-col mb-3">
+        <div
+          date-rangepicker
+          class="flex items-center rounded-xl border border-gray-200 bg-white p-3 shadow-lg"
+        >
+          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label
+              class="text-sm font-medium text-stone-600 mb-2"
+              for="startdate"
+            >
+              Ngày nhận phòng
+            </label>
+            <input
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              id="startdate"
+              type="datetime-local"
+              placeholder=""
+              name="startdate"
+            />
+            <!-- <p class="text-red-500 text-xs italic">Please fill out this field.</p> -->
+          </div>
+          <span class="mx-4 text-gray-500">tới</span>
+          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label
+              class="text-sm font-medium text-stone-600 mb-2"
+              for="enddate"
+            >
+              Ngày trả phòng
+            </label>
+            <input
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              id="enddate"
+              type="datetime-local"
+              placeholder=""
+              name="enddate"
+            />
+          </div>
+          <div class="w-2/6 px-3 mb-6 md:mb-0">
+            <label class="text-sm font-medium text-stone-600 mb-2" for="time">
+              Tổng thời gian
+            </label>
+            <input
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              id="time"
+              type="text"
+              placeholder=""
+              disabled
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container">
       <div class="flex flex-col mb-3">
         <div class="rounded-xl border border-gray-200 bg-white p-3 shadow-lg">
@@ -106,7 +162,10 @@
                 Nếu có khách nước ngoài : giá * {{t.foreign_guest_surcharge}}
               </p>
             </footer>
-            <button class="btn btn-success m-2 choose-this-room">
+            <button
+              class="btn btn-success m-2 choose-this-room"
+              value="{{t.id}}"
+            >
               Chọn ngay
             </button>
           </article>

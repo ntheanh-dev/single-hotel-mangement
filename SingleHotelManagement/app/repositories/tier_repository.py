@@ -6,7 +6,7 @@ from app.models.tier import Tier
 
 
 def get_tier_has_available_room(floor=None, max_guest=None):
-    query = db.session.query(Tier.name, Tier.max_guest, Tier.base_price, Tier.normal_guest_count,
+    query = db.session.query(Tier.id, Tier.name, Tier.max_guest, Tier.base_price, Tier.normal_guest_count,
                              Tier.extra_guest_surcharge, Tier.foreign_guest_surcharge,
                              func.count(Room.id).label('available'),
                              cast(Tier.base_price + Tier.base_price * Tier.extra_guest_surcharge, DECIMAL).label(
@@ -23,3 +23,8 @@ def get_tier_has_available_room(floor=None, max_guest=None):
 
 def get_distinct_max_guest():
     return db.session.query(Tier.max_guest).distinct().order_by(Tier.max_guest).all()
+
+
+def get_num_available_room_by_id(id):
+    return db.session.query(func.count(Room.id).label('available')).join(Tier, Room.tier_id == Tier.id).filter(
+        Room.status.__eq__(RoomStatus.AVAILABLE)).filter(Tier.id.__eq__(id)).first()

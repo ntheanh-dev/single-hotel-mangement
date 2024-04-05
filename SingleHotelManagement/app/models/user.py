@@ -32,3 +32,17 @@ class User(db.Model, UserMixin):
     admins = relationship('Admin', backref="admins", lazy=True)
 
     notifications = relationship("Notification", backref="notifications", lazy=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'phone_number': self.phone_number,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'address': self.address,
+            'city': self.city,
+            'district': self.district,
+            'birthdate': self.birthdate,
+            'foreigner': self.foreigner,
+            'role': self.role.value
+        }

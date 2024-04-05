@@ -35,10 +35,73 @@ $(document).ready(function () {
     //         },
     //     }).showToast();
     // });
-    $(".choose-this-room").click(function () {
-        window.location.href = "/nhan-vien/dat-phong/?ma=3/";
-    });
 
+    // -----------------Tìm kiếm khách mới---------------------
+    $(".search-guest-btn").click(function () {
+        if ($("#search_guest").val() !== "") {
+            fetch("/api/reception/search/", {
+                method: 'post',
+                body: JSON.stringify({
+                    'search_type': $("#search_type").val(),
+                    'search_guest': $("#search_guest").val(),
+                    'foreigner': $("input[name='nationality']:checked").val(),
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Context-Type': 'application/json',
+                }
+            }).then(res => res.json()).then(data => {
+                console.log(data)
+                let row = ''
+                data.forEach(ele => {
+                    row += `<li>
+                    <div class="py-3">
+                      <div class="flex items-center justify-between">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                          ${ele.last_name} ${ele.first_name}
+                        </h3>
+                        <p class="mt-1 max-w-2xl text-sm text-gray-500">${ele.foreigner ? "Ngoại quốc" : "Trong nước"}</p>
+                      </div>
+                      <div class="mt-2 flex items-center justify-between">
+                        <p class="text-sm font-medium text-gray-500">
+                          Địa chỉ:
+                          <span class="text-green-600"
+                            >${ele.address !== null ? ele.address : ''} ${ele.district !== null ? ele.district : ''} ${ele.city !== null ? ele.city : ''} </span
+                          >
+                        </p>
+                      </div>
+                      <div class="mt-2 flex items-center justify-between">
+                        <p class="text-sm font-medium text-gray-500">
+                          SĐT: <span class="text-green-600">${ele.phone_number}</span>
+                        </p>
+                        <a
+                          href="#"
+                          class="font-medium text-indigo-600 hover:text-indigo-500 choose-guest-btn"
+                          >Thêm</a
+                        >
+                      </div>
+                    </div>
+                  </li>`
+                });
+                document.querySelector(".list-guest").innerHTML = row
+
+            })
+        }
+    });
+    //-------------------Kiểm tra có từ khoá thì đổi màu nút tìm kiếm---------------
+    $("#search_guest").on('keyup', function () {
+        if ($("#search_guest").val() == "") {
+            if (!$(".search-guest-btn").hasClass("newClass")) {
+                $(".search-guest-btn").addClass("btn-secondary");
+            }
+            $(".search-guest-btn").removeClass("btn-success");
+        } else {
+            if (!$(".search-guest-btn").hasClass("btn-success")) {
+                $(".search-guest-btn").addClass("btn-success");
+            }
+            $(".search-guest-btn").removeClass("btn-secondary");
+        }
+    })
     // ----------------- Show modal search form -----------------
     $(".btn-search-room").click(function () {
         $(".overlay-search-room").fadeIn();
@@ -66,7 +129,6 @@ $(document).ready(function () {
     // ------------------Them mot khach hang moi---------------------
 
     $(".save_new_guest_btn").click(function () {
-        //        event.preventDefault()
         fetch("/api/reception/add-guest/", {
             method: 'post',
             body: JSON.stringify({
@@ -101,10 +163,12 @@ $(document).ready(function () {
                     confirmButtonText: 'Ok',
                 })
             } else {
-                Swal.fire(
-                    'Thêm khách mới thành công',
-                    'success'
-                )
+                Swal.fire({
+                    title: 'Thêm khách mới thành công',
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Ok',
+                })
             }
         })
     })
@@ -232,4 +296,76 @@ $(document).ready(function () {
         callApiDistrict(host + "district/" + $("#city").find(':selected').data('id'));
     });
 
+    // ----------------Tính khoảng thời gian thuê phòng----------------
+    $('#startdate, #enddate').change(function () {
+        var startdate = moment($('#startdate').val().f);
+        var enddate = moment($('#enddate').val());
+        if (startdate.isValid() && enddate.isValid()) {
+            var duration = moment.duration(enddate.diff(startdate));
+            var days = duration.days();
+            var hours = duration.hours();
+
+            var total_time = '';
+
+            if (days > 0) {
+                total_time += days + ' ngày ';
+            }
+            if (hours > 0) {
+                total_time += hours + ' giờ';
+            }
+            if (days === 0 && hours === 0) {
+                total_time = '0 giờ';
+            }
+
+            $('#time').val(total_time); // Gán kết quả vào input total_time
+        } else {
+            $('#time').val(''); // Nếu ngày không hợp lệ, gán giá trị rỗng
+        }
+    });
+    //------------------Tạo đơn đặt phòng mới-------------------
+    $(".choose-this-room").click(function () {
+        // window.location.href = "/nhan-vien/dat-phong/?ma=3/";
+        alert($(this).val())
+
+        fetch("/api/reception/add-guest/", {
+            method: 'post',
+            body: JSON.stringify({
+                'last_name': $("#last_name").val(),
+                'first_name': $("#first_name").val(),
+                'birthdate': $("#birthdate").val(),
+                'phone_number': $("#phone_number").val(),
+                'city': $("#city").val(),
+                'district': $("#district").val(),
+                'address': $("#address").val(),
+                'foreigner': $("#foreigner").val(),
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Context-Type': 'application/json',
+            }
+        }).then(res => res.json()).then(data => {
+            if (data == '-1') {
+                Swal.fire({
+                    title: 'Thông tin bạn nhập không hợp lệ !!!',
+                    text: 'Xin vui lòng thử lại',
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Ok',
+                })
+            } else if (data == '0') {
+                Swal.fire({
+                    title: 'Số điện thoại đã tồn tại !!!',
+                    text: '',
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Ok',
+                })
+            } else {
+                Swal.fire(
+                    'Thêm khách mới thành công',
+                    'success'
+                )
+            }
+        })
+    })
 });

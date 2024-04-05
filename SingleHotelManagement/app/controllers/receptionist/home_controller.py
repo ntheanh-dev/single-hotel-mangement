@@ -2,9 +2,10 @@ import json
 from distutils.util import strtobool
 from flask import render_template, request, jsonify
 from app import app
-from app.services.guest_service import check_phone_number, register_guest
+from app.services.guest_service import check_phone_number, register_guest,search_guest as sg
 from app.services.tier_service import get_tiers, get_max_guests
 from app.services.floor_service import get_floors
+from app.services.booking_service import create_booking
 
 
 @app.route('/nhan-vien/lich-dat-phong/')
@@ -36,24 +37,6 @@ def booking():
                 "num_of_guests": 2,
                 "total_price": 600
             },
-            {
-                "booking_id": "2",
-                "customer_name": "Jane Smith",
-                "check_in_date": "2024-05-01",
-                "check_out_date": "2024-05-07",
-                "room_type": "Standard Single Room",
-                "num_of_guests": 1,
-                "total_price": 350
-            },
-            {
-                "booking_id": "3",
-                "customer_name": "Alice Johnson",
-                "check_in_date": "2024-06-20",
-                "check_out_date": "2024-06-25",
-                "room_type": "Superior Suite",
-                "num_of_guests": 3,
-                "total_price": 900
-            }
         ]
         room_id = request.args.get('phong')
         if any(b['booking_id'] == room_id for b in bookings):
@@ -63,7 +46,7 @@ def booking():
                                    current_room=bookings[0]['booking_id'])
 
 
-@app.route('/api/reception/add-guest/',methods=['post'])
+@app.route('/api/reception/add-guest/', methods=['post'])
 def add_guest():
     data = json.loads(request.data)
     listData = {
@@ -74,7 +57,7 @@ def add_guest():
         'city': data.get('city'),
         'district': data.get('district'),
         'address': data.get('address'),
-        'foreigner':strtobool(data.get('foreigner').lower())
+        'foreigner': strtobool(data.get('foreigner').lower())
     }
     if check_phone_number(listData['phone_number']):  # user đã tồn tại
         return jsonify('0')
@@ -87,3 +70,28 @@ def add_guest():
 
     return jsonify("1")
 
+
+@app.route('/api/reception/make-booking/', methods=['post'])
+def make_booking():
+    data = json.loads(request.data)
+    listData = {
+        'receptionist_id': 2,
+        'start_date': data.get('last_name'),
+        'end_date': data.get('first_name'),
+        'checkin': data.get('birthdate'),
+        'checkout': data.get('phone_number'),
+    }
+    try:
+        create_booking(data=listData)
+    except Exception as e:
+        print(e)
+        return jsonify('1')
+
+    return jsonify("0")
+
+
+@app.route('/api/reception/search/', methods=['post'])
+def search_guest():
+    data = json.loads(request.data)
+
+    return sg(data)

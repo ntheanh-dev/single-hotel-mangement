@@ -1,5 +1,5 @@
 from app import db
-
+from sqlalchemy import or_, and_
 from app.models.guest import Guest
 from app.models.user import User, UserRole
 
@@ -28,3 +28,29 @@ def register_guest(data=None, **kwargs):
     guest = Guest(user_id=user.id)
     db.session.add(guest)
     db.session.commit()
+
+
+def search_guest_by_phone_number(phone_number=None, foreigner=None, **kwargs):
+    if foreigner:
+        return db.session.query(User).filter(User.phone_number.__eq__(phone_number), User.foreigner.__eq__(foreigner)).all()
+    else:
+        return db.session.query(User).filter(User.phone_number.__eq__(phone_number)).all()
+
+
+def search_guest_by_name(name=None, foreigner=None, **kwargs):
+    if foreigner:
+        return db.session.query(User).filter(or_(and_(User.first_name.contains(name), User.foreigner.__eq__(foreigner)),
+                                             and_(User.last_name.contains(name),
+                                                  User.foreigner.__eq__(foreigner))), ).all()
+    else:
+        return db.session.query(User).filter(or_(User.first_name.contains(name), User.last_name.contains(name))).all()
+
+
+def search_guest_by_address(address=None, foreigner=None, **kwargs):
+    if foreigner:
+        return db.session.query(User).filter(
+            or_(User.address.contains(address), User.district.contains(address), User.city.contains(address)),
+            User.foreigner.__eq__(foreigner)).all()
+    else:
+        return db.session.query(User).filter(
+        or_(User.address.contains(address), User.district.contains(address), User.city.contains(address))).all()
