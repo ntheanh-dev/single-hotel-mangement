@@ -24,11 +24,10 @@ def change_num_guest(booking_id, num_foreigner_guest, num_normal_guest, room_id)
                                                             BookingDetail.booking_id == int(booking_id)).first()
     booking_detail.num_foreigner_guest = int(num_foreigner_guest)
     booking_detail.num_normal_guest = int(num_normal_guest)
-    db.session.commit(booking_detail)
+    db.session.commit()
     return True
 
 
-def check_max_guest(room_id):
-    booking_detail = db.session.query(BookingDetail).filter(BookingDetail.room_id == room_id).first()
+def check_max_guest(room_id,num_foreigner_guest, num_normal_guest):
     tier = get_tier_by_room_id(room_id)
-    return (booking_detail.num_normal_guest + booking_detail.num_foreigner_guest) < tier.max_guest
+    return (int(num_foreigner_guest) + int(num_normal_guest)) >= tier.max_guest

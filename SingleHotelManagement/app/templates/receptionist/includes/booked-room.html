@@ -33,12 +33,12 @@
                         <div class="border-r-2 pr-2">
                             <label class="ml-3" for="vietnamese">Khách trong nước</label>
                             <input class=" my-1 w-10 pl-3 text-lg border-bottom border-black-900 " type="number"
-                                   value="{{current_booking_detail.num_normal_guest}}" id="vietnamese" name="points" step="1" min="0" max="9">
+                                   value="{{current_booking_detail.num_normal_guest}}" id="vietnamese_num" name="points" step="1" min="0" max="9">
                         </div>
-                        <div action="/" >
+                        <div>
                             <label class="ml-3" for="foreigner">Khách nước ngoài</label>
                             <input class=" my-1 w-10 pl-3 text-lg border-bottom border-black-900 " type="number"
-                                   value="{{current_booking_detail.num_foreigner_guest}}"  name="foreigner" step="1" id="foreigner"  min="0" max="9">
+                                   value="{{current_booking_detail.num_foreigner_guest}}"  name="foreigner" step="1" id="foreigner_num"  min="0" max="9">
                             <button class="mr-2 change_num_guest-btn" >Áp dụng</button>
                         </div>
                     </div>

@@ -55,11 +55,10 @@ $(document).ready(function () {
     });
 //    ------------------Thay doi so luong khach trong booking detail hien tai---------------------
     $('.change_num_guest-btn').click(function () {
-        var num_normal_guest = $('#vietnamese').val()
-        var num_foreigner_guest = $('#foreigner').val()
+        var num_normal_guest = $('#vietnamese_num').val();
+        var num_foreigner_guest = $('#foreigner_num').val();
 
         var urlParams = new URLSearchParams(window.location.search);
-
         fetch("/api/reception/change-num-guest/", {
             method: 'post',
             body: JSON.stringify({
@@ -72,7 +71,17 @@ $(document).ready(function () {
                 'Context-Type': 'application/json',
             }
         }).then(res => res.json()).then(data => {
-            console.info(data)
+            if(!data) {
+                Swal.fire({
+                    title: 'Số khách vượt quá tối đa cho phép của phòng này',
+                    text: '',
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Ok',
+                })
+            } else {
+                window.location.reload();
+            }
         })
     })
 })

@@ -27,8 +27,8 @@ def add_guest_to_booking_detail(booking_id, foreigner, room_id):
 
 
 def change_num_guest(booking_id, num_foreigner_guest, num_normal_guest, room_id):
-    max_guest = check_max_guest(room_id)
-    if max_guest:
-        return jsonify("False")
+    is_max_guest = check_max_guest(room_id,num_foreigner_guest, num_normal_guest)
+    if is_max_guest:
+        return jsonify(False)
     else:
         return jsonify(cng(booking_id, num_foreigner_guest, num_normal_guest, room_id))
