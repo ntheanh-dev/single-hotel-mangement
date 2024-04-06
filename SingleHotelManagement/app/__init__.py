@@ -24,7 +24,7 @@ from app.models import notification
 from app.models import receptionist
 from app.models import tier
 
-from controllers.receptionist.home_controller import *
+from app.controllers.receptionist.home_controller import *
 
 
 def init_tables():

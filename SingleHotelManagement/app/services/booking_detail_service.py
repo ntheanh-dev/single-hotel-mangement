@@ -1,6 +1,8 @@
-from app.repositories.booking_detail import get_booking_details_by_booking_id as gbd
+from app.repositories.booking_detail_repository import get_booking_details_by_booking_id as gbd, \
+    add_guest_to_booking_detail as ag, check_max_guest,change_num_guest as cng
 from app.repositories.booking_repository import get_booking_by_id
 from app.repositories.room_repository import get_room_by_id
+from flask import jsonify
 
 
 def get_booking_details_by_booking_id(booking_id):
@@ -15,3 +17,18 @@ def get_booking_details_by_booking_id(booking_id):
 
     return result
 
+
+def add_guest_to_booking_detail(booking_id, foreigner, room_id):
+    max_guest = check_max_guest(room_id)
+    if max_guest:
+        return jsonify("False")
+    else:
+        return jsonify(ag(booking_id, room_id, foreigner))
+
+
+def change_num_guest(booking_id, num_foreigner_guest, num_normal_guest, room_id):
+    max_guest = check_max_guest(room_id)
+    if max_guest:
+        return jsonify("False")
+    else:
+        return jsonify(cng(booking_id, num_foreigner_guest, num_normal_guest, room_id))

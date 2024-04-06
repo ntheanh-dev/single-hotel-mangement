@@ -1,77 +1,94 @@
 <div class="w-2/3">
-  <div class="bg-white rounded-lg h-full py-2">
-    <nav class="px-4 flex justify-between">
-      <ul
-        class="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400"
-      >
-        {% set room_id = request.args.get('phong') %} {% set room_id = room_id |
-        int %} {% for i in booking_details %}
-        <li class="me-2">
-          {% if room_id == i.room_id %}
-          <a
-            href="?ma={{ request.args.get('ma') }}&phong={{i.room_id}}"
-            class="inline-block px-3 py-2 text-white bg-blue-600 rounded-lg active"
-            >{{i.room_info.name}}</a
-          >
-          {% else %}
-          <a
-            href="?ma={{ request.args.get('ma') }}&phong={{i.room_id}}"
-            class="inline-block px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
-            >{{i.room_info.name}}</a
-          >
-          {% endif %}
-        </li>
-        {% endfor %}
-        <li>
-          <button class="btn btn-outline-success btn-search-room rounded-lg">
-            <i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>
-            Thêm phòng
-          </button>
-        </li>
-      </ul>
-      <button class="btn btn-outline-warning rounded-lg">
-        <i class="fa fa-trash mr-2" aria-hidden="true"></i>Huỷ
-      </button>
-    </nav>
-    <div class="w-full h-full flex justify-center">
-      <div class="border-t border-gray-200 mt-20">
-        <div class="card text-center">
-          <div class="card-header">{{current_tier.name}}</div>
-          <div class="card-body flex flex-col items-start space-y-2">
-            <div class="flex flex-row items-center space-x-1">
-              <h4 class="text-sm text-gray-600">Người đặt:</h4>
-              <span class="text-black-700 font-medium">Thế Anh</span>
+    <div class="bg-white rounded-lg h-full py-2">
+        <nav class="px-4 flex justify-between">
+            <ul
+                    class="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400"
+            >
+                {% set room_id = request.args.get('phong') %} {% set room_id = room_id |
+                int %} {% for i in booking_details %}
+                <li class="me-2">
+                    {% if room_id == i.room_id %}
+                    <a
+                            href="?ma={{ request.args.get('ma') }}&phong={{i.room_id}}"
+                            class="inline-block px-3 py-2 text-white bg-blue-600 rounded-lg active"
+                    >{{i.room_info.name}}</a
+                    >
+                    {% else %}
+                    <a
+                            href="?ma={{ request.args.get('ma') }}&phong={{i.room_id}}"
+                            class="inline-block px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white"
+                    >{{i.room_info.name}}</a
+                    >
+                    {% endif %}
+                </li>
+                {% endfor %}
+                <li>
+                    <button class="btn btn-outline-success btn-search-room rounded-lg">
+                        <i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>
+                        Thêm phòng
+                    </button>
+                </li>
+                <li>
+                    <div class="rounded-lg border border-gray-600 border-2 ml-2 flex">
+                        <div class="border-r-2 pr-2">
+                            <label class="ml-3" for="vietnamese">Khách trong nước</label>
+                            <input class=" my-1 w-10 pl-3 text-lg border-bottom border-black-900 " type="number"
+                                   value="{{current_booking_detail.num_normal_guest}}" id="vietnamese" name="points" step="1" min="0" max="9">
+                        </div>
+                        <div action="/" >
+                            <label class="ml-3" for="foreigner">Khách nước ngoài</label>
+                            <input class=" my-1 w-10 pl-3 text-lg border-bottom border-black-900 " type="number"
+                                   value="{{current_booking_detail.num_foreigner_guest}}"  name="foreigner" step="1" id="foreigner"  min="0" max="9">
+                            <button class="mr-2 change_num_guest-btn" >Áp dụng</button>
+                        </div>
+                    </div>
+
+                </li>
+            </ul>
+            <button class="btn btn-outline-warning rounded-lg">
+                <i class="fa fa-trash mr-2" aria-hidden="true"></i>Huỷ
+            </button>
+
+        </nav>
+        <div class="w-full h-full flex justify-center">
+            <div class="border-t border-gray-200 mt-20">
+                <div class="card text-center">
+                    <div class="card-header">{{current_tier.name}}</div>
+                    <div class="card-body flex flex-col items-start space-y-2">
+                        <div class="flex flex-row items-center space-x-1">
+                            <h4 class="text-sm text-gray-600">Người đặt:</h4>
+                            <span class="text-black-700 font-medium">Thế Anh</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-600">Mã phòng: </span>
+                            <span class="rounded-lg border border-green-600 px-2 text-black"
+                            >{{current_booking_detail.room_info.name}}</span
+                            >
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-600">Dự kiến: </span>
+                            <span class="rounded-lg border border-green-600 px-2 text-black"
+                            >{{booking.start_date}}</span
+                            >
+                            <span class="mx-2 text-black">đến</span>
+                            <span class="rounded-lg border border-green-600 px-2 text-black"
+                            >{{booking.end_date}}</span
+                            >
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-600">Số người trong nước: </span>
+                            <span class="rounded-lg border border-green-600 px-2 text-black"
+                            >{{current_booking_detail.num_normal_guest}}</span
+                            >
+                            <span class="mx-2 text-black">Số người ngoại quốc</span>
+                            <span class="rounded-lg border border-green-600 px-2 text-black"
+                            >{{current_booking_detail.num_foreigner_guest}}</span
+                            >
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">{{current_price}}</div>
+                </div>
             </div>
-            <div class="flex items-center space-x-2">
-              <span class="text-sm text-gray-600">Mã phòng: </span>
-              <span class="rounded-lg border border-green-600 px-2 text-black"
-                >{{current_booking_detail.room_info.name}}</span
-              >
-            </div>
-            <div class="flex items-center space-x-2">
-              <span class="text-sm text-gray-600">Dự kiến: </span>
-              <span class="rounded-lg border border-green-600 px-2 text-black"
-                >{{booking.start_date}}</span
-              >
-              <span class="mx-2 text-black">đến</span>
-              <span class="rounded-lg border border-green-600 px-2 text-black"
-                >{{booking.end_date}}</span
-              >
-            </div>
-            <div class="flex items-center space-x-2">
-              <span class="text-sm text-gray-600">Số người trong nước: </span>
-              <span class="rounded-lg border border-green-600 px-2 text-black"
-                >{{current_booking_detail.num_normal_guest}}</span
-              >
-              <span class="mx-2 text-black">Số người ngoại quốc</span>
-              <span class="rounded-lg border border-green-600 px-2 text-black"
-                >{{current_booking_detail.num_foreigner_guest}}</span
-              >
-            </div>
-          </div>
-          <div class="card-footer text-muted">{{current_price}}</div>
         </div>
-      </div>
     </div>
-  </div>
 </div>

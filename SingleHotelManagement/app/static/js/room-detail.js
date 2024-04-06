@@ -53,6 +53,28 @@ $(document).ready(function () {
             $('.available_room_list').html(row)
         })
     });
+//    ------------------Thay doi so luong khach trong booking detail hien tai---------------------
+    $('.change_num_guest-btn').click(function () {
+        var num_normal_guest = $('#vietnamese').val()
+        var num_foreigner_guest = $('#foreigner').val()
+
+        var urlParams = new URLSearchParams(window.location.search);
+
+        fetch("/api/reception/change-num-guest/", {
+            method: 'post',
+            body: JSON.stringify({
+                'booking_id': urlParams.get('ma'),
+                'room_id': urlParams.get('phong'),
+                'num_normal_guest':num_normal_guest,
+                'num_foreigner_guest':num_foreigner_guest
+            }),
+            headers: {
+                'Context-Type': 'application/json',
+            }
+        }).then(res => res.json()).then(data => {
+            console.info(data)
+        })
+    })
 })
 
 function render_tier(t) {
