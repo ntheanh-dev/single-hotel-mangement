@@ -28,11 +28,13 @@ def register_guest(data=None, **kwargs):
     guest = Guest(user_id=user.id)
     db.session.add(guest)
     db.session.commit()
+    return user
 
 
 def search_guest_by_phone_number(phone_number=None, foreigner=None, **kwargs):
     if foreigner:
-        return db.session.query(User).filter(User.phone_number.__eq__(phone_number), User.foreigner.__eq__(foreigner)).all()
+        return db.session.query(User).filter(User.phone_number.__eq__(phone_number),
+                                             User.foreigner.__eq__(foreigner)).all()
     else:
         return db.session.query(User).filter(User.phone_number.__eq__(phone_number)).all()
 
@@ -40,8 +42,8 @@ def search_guest_by_phone_number(phone_number=None, foreigner=None, **kwargs):
 def search_guest_by_name(name=None, foreigner=None, **kwargs):
     if foreigner:
         return db.session.query(User).filter(or_(and_(User.first_name.contains(name), User.foreigner.__eq__(foreigner)),
-                                             and_(User.last_name.contains(name),
-                                                  User.foreigner.__eq__(foreigner))), ).all()
+                                                 and_(User.last_name.contains(name),
+                                                      User.foreigner.__eq__(foreigner))), ).all()
     else:
         return db.session.query(User).filter(or_(User.first_name.contains(name), User.last_name.contains(name))).all()
 
@@ -53,4 +55,4 @@ def search_guest_by_address(address=None, foreigner=None, **kwargs):
             User.foreigner.__eq__(foreigner)).all()
     else:
         return db.session.query(User).filter(
-        or_(User.address.contains(address), User.district.contains(address), User.city.contains(address))).all()
+            or_(User.address.contains(address), User.district.contains(address), User.city.contains(address))).all()

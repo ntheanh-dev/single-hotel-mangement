@@ -11,7 +11,7 @@ def create_booking(data):
         end_date=data.get('end_date'),
         checkin=data.get('checkin'),
         checkout=data.get('checkout'),
-        status=BookingStatus.REQUESTED,
+        status=BookingStatus.CONFIRMED,
         receptionist_id=data.get('receptionist_id'),
         booker_id=data.get('booker_id')
     )
@@ -41,8 +41,24 @@ def create_booking(data):
     db.session.commit()
     return {
         'booking': booking.to_dict(),
-        'room': room.to_dict()}
+        'room': room.to_dict()
+    }
 
 
 def get_booking_by_id(booking_id):
     return db.session.query(Booking).filter(Booking.id == booking_id).first()
+
+
+def cancel_booking(booking_id):
+    booking = get_booking_by_id(booking_id)
+    booking.status = BookingStatus.CANCELED
+
+    booking_details = db.session.query(Room).join(BookingDetail, Room.id == BookingDetail.room_id).filter(
+        BookingDetail.booking_id == booking_id).all()
+
+    # Cập nhật trạng thái của các phòng
+    for room in booking_details:
+        room.status = RoomStatus.AVAILABLE
+
+    # Lưu các thay đổi vào cơ sở dữ liệu
+    db.session.commit()

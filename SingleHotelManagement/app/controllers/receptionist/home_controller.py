@@ -3,11 +3,12 @@ from distutils.util import strtobool
 from flask import render_template, request, jsonify
 from app import app
 from app.repositories.tier_repository import get_tier_by_room_id
-from app.services.booking_detail_service import get_booking_details_by_booking_id, add_guest_to_booking_detail as ad, change_num_guest as cng
+from app.services.booking_detail_service import get_booking_details_by_booking_id, add_guest_to_booking_detail as ad, \
+    change_num_guest as cng
 from app.services.guest_service import check_phone_number, register_guest, search_guest as sg
 from app.services.tier_service import get_tiers, get_max_guests, tier_with_available_room_to_dict
 from app.services.floor_service import get_floors
-from app.services.booking_service import create_booking, get_booking_by_id
+from app.services.booking_service import create_booking, get_booking_by_id,cancel_booking as cb
 
 
 @app.route('/nhan-vien/lich-dat-phong/')
@@ -80,12 +81,11 @@ def add_guest():
         return jsonify('0')
 
     try:
-        register_guest(data=listData)
+        result = register_guest(data=listData)
+        return jsonify(result.to_dict())
     except Exception as e:
         print(e)
         return jsonify('-1')
-
-    return jsonify("1")
 
 
 @app.route('/api/reception/make-booking/', methods=['post'])
@@ -132,4 +132,18 @@ def change_num_guest_in_booking_detail():
     num_foreigner_guest = data.get('num_foreigner_guest')
     num_normal_guest = data.get("num_normal_guest")
     room_id = data.get('room_id')
-    return cng(booking_id=booking_id, num_foreigner_guest=num_foreigner_guest,num_normal_guest=num_normal_guest, room_id=room_id)
+    return cng(booking_id=booking_id, num_foreigner_guest=num_foreigner_guest, num_normal_guest=num_normal_guest,
+               room_id=room_id)
+
+
+@app.route('/api/receptionist/cancel/', methods=['post'])
+def cancel_booking():
+    data = json.loads(request.data)
+
+    booking_id = data.get('booking_id')
+    try:
+        cb(booking_id=int(booking_id))
+    except Exception as e:
+        print(e)
+        return jsonify(False)
+    return jsonify(True)

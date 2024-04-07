@@ -3,10 +3,8 @@
 {% endblock %} {% block body %} {{super()}}
 
 <div class="flex justify-between bg-gray-400 space-x-4 p-2 h-screen">
-  {% include 'receptionist/includes/search_guest.html' %} {% include
-  'receptionist/includes/add_new_guest_form.html' %} {% include
-  'receptionist/includes/booked-room.html' %} {% include
-  'receptionist/includes/search_room_to_add.html' %}
+ {% include 'receptionist/includes/booked-room.html' %}
+  {% include 'receptionist/includes/search_room_to_add.html' %}
 </div>
 <script src="{{url_for('static', filename='js/recep-booking.js')}}"></script>
 <script src="{{url_for('static', filename='js/room-detail.js')}}"></script>

@@ -51,41 +51,46 @@ $(document).ready(function () {
                     'Context-Type': 'application/json',
                 }
             }).then(res => res.json()).then(data => {
-                let row = ''
-                data.forEach(ele => {
-                    row += `<li>
-                    <div class="py-3">
-                      <div class="flex items-center justify-between">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">
-                          ${ele.last_name} ${ele.first_name}
-                        </h3>
-                        <p class="mt-1 max-w-2xl text-sm text-gray-500">${ele.foreigner ? "Ngoại quốc" : "Trong nước"}</p>
-                      </div>
-                      <div class="mt-2 flex items-center justify-between">
-                        <p class="text-sm font-medium text-gray-500">
-                          Địa chỉ:
-                          <span class="text-green-600"
-                            >${ele.address !== null ? ele.address : ''} ${ele.district !== null ? ele.district : ''} ${ele.city !== null ? ele.city : ''} </span
-                          >
-                        </p>
-                      </div>
-                      <div class="mt-2 flex items-center justify-between">
-                        <p class="text-sm font-medium text-gray-500">
-                          SĐT: <span class="text-green-600">${ele.phone_number}</span>
-                        </p>
-                        <span
-                            value="${ele.id}"
-                            name="${ele.last_name} ${ele.first_name}"
-                          class="font-medium text-indigo-600 hover:text-indigo-500 choose-guest-btn cursor-pointer"
-                          onClick="setBooker('${ele.last_name} ${ele.first_name}','${ele.id}','${ele.foreigner}')"
+                let result = ''
+                if (data.length > 0) {
+                    data.forEach(ele => {
+                        result += `<li>
+                        <div class="py-3">
+                          <div class="flex items-center justify-between">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                              ${ele.last_name} ${ele.first_name}
+                            </h3>
+                            <p class="mt-1 max-w-2xl text-sm text-gray-500">${ele.foreigner ? "Ngoại quốc" : "Trong nước"}</p>
+                          </div>
+                          <div class="mt-2 flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-500">
+                              Địa chỉ:
+                              <span class="text-green-600"
+                                >${ele.address !== null ? ele.address : ''} ${ele.district !== null ? ele.district : ''} ${ele.city !== null ? ele.city : ''} </span
+                              >
+                            </p>
+                          </div>
+                          <div class="mt-2 flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-500">
+                              SĐT: <span class="text-green-600">${ele.phone_number}</span>
+                            </p>
+                            <span
+                                value="${ele.id}"
+                                name="${ele.last_name} ${ele.first_name}"
+                              class="font-medium text-indigo-600 hover:text-indigo-500 choose-guest-btn cursor-pointer"
+                              onClick="setBooker('${ele.last_name} ${ele.first_name}','${ele.id}','${ele.foreigner}')"
 
-                          >Thêm</
-                        >
-                      </div>
-                    </div>
-                  </li>`
-                });
-                document.querySelector(".list-guest").innerHTML = row
+                              >Thêm</
+                            >
+                          </div>
+                        </div>
+                      </li>`
+                    });
+                } else {
+                    result += '<p class="text-center text-lg font-medium mt-12">Không tìm thấy khách tương ứng</p>'
+                }
+
+                document.querySelector(".list-guest").innerHTML = result
             })
         }
     });
@@ -179,6 +184,9 @@ $(document).ready(function () {
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Ok',
                 })
+                setBooker(`${data.last_name} ${data.first_name}`, data.id, data.foreigner)
+                 $(".overlay-add-guest").fadeOut();
+                 $(".add-guest-form").fadeOut();
             }
         })
     })
@@ -239,36 +247,6 @@ $(document).ready(function () {
             confirmButtonText: 'Xác nhận',
             cancelButtonText: 'Huỷ bỏ'
         }).then((result) => {
-            if (result.isConfirmed) {
-                // fetch('/gio-hang/api/delete-to-cart', {
-                //     method: 'post',
-                //     body: JSON.stringify({
-                //         'book_id': bookId,
-                //     }),
-                //     headers: {
-                //         'Content-Type': 'application/json'
-                //     }
-                // }).then(res => res.json()).then(result => {
-                //     if (result['result']) {
-                //         Swal.fire(
-                //             'Xóa thành công',
-                //             'Giỏ hàng của bạn đã được cập nhật.',
-                //             'success'
-                //         ).then(function () {
-                //             getBookInCart()
-                //             getCartDetailAmount()
-                //         })
-
-                //     } else
-                //         Swal.fire({
-                //             title: 'Xóa thất bại',
-                //             text: 'Xin vui lòng kiểm tra lại',
-                //             icon: 'warning',
-                //             confirmButtonColor: '#3085d6',
-                //             confirmButtonText: 'Ok',
-                //         })
-                // })
-            }
         })
     });
 
@@ -353,9 +331,11 @@ function setBooker(name, id, foreigner) {
           </div>`
     )
 }
+
 removeBooker = () => {
     $(".booker").html('');
 }
+//-----------Đăt phòng online-------------
 chooseRoom = (room_id) => {
     // window.location.href = "/nhan-vien/dat-phong/?ma=3/";
     var currentHTML = $('.booker').html();

@@ -35,5 +35,4 @@ class User(db.Model):
             'district': self.district,
             'birthdate': self.birthdate,
             'foreigner': self.foreigner,
-            'role': self.role.value
         }
