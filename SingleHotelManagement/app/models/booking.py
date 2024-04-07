@@ -24,8 +24,8 @@ class Booking(db.Model):
     status = Column(Enum(BookingStatus))
     note = Column(Text)
     # one to many
-    receptionist_id = Column(Integer, ForeignKey('receptionist.user_id'), primary_key=True, nullable=False)
-    booker_id = Column(Integer, ForeignKey('guest.user_id'), primary_key=True, nullable=True)
+    receptionist_id = Column(Integer, ForeignKey('receptionist.user_id'), nullable=True)
+    booker_id = Column(Integer, ForeignKey('guest.user_id'), nullable=True)
 
     # many to many with intermediate table
     booking_details = relationship("BookingDetail", backref="booking", lazy=True)

@@ -1,7 +1,7 @@
 from app import db
 from sqlalchemy import or_, and_
 from app.models.guest import Guest
-from app.models.user import User, UserRole
+from app.models.user import User
 
 
 def is_phone_number_exist(phone_number=None):
@@ -20,7 +20,7 @@ def register_guest(data=None, **kwargs):
                 address=data['address'],
                 birthdate=data['birthdate'],
                 foreigner=data['foreigner'],
-                role=UserRole.GUEST)
+                )
 
     db.session.add(user)
     db.session.commit()
