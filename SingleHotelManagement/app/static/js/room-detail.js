@@ -134,6 +134,15 @@ $(document).ready(function () {
             }
         })
     })
+    // ----------------- Đóng/mở nav thanh toán -----------------
+    $(".payment-btn").click(function () {
+        $(".overlay-payment").fadeIn();
+        $(".payment-form").fadeIn();
+    });
+    $(".close-search-room-form").click(function () {
+        $(".overlay-payment").fadeOut();
+        $(".payment-form").fadeOut();
+    });
 })
 render_tier = (t) => {
     return `

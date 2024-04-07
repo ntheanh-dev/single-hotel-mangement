@@ -3,7 +3,7 @@
 <div class="{{ width }} ">
   <div
     class="bg-white relative rounded-lg py-2"
-     style="height: calc(100vh - 4rem - 16px);"
+    style="height: calc(100vh - 4rem - 16px)"
   >
     <nav class="px-4 flex justify-between">
       <ul
@@ -33,37 +33,6 @@
             Thêm phòng
           </button>
         </li>
-        <li>
-          <div class="rounded-lg border border-gray-600 border-2 ml-2 flex">
-            <div class="border-r-2 pr-2">
-              <label class="ml-3" for="vietnamese">Khách trong nước</label>
-              <input
-                class="my-1 w-10 pl-3 text-lg border-bottom border-black-900"
-                type="number"
-                value="{{current_booking_detail.num_normal_guest}}"
-                id="vietnamese_num"
-                name="points"
-                step="1"
-                min="0"
-                max="9"
-              />
-            </div>
-            <div>
-              <label class="ml-3" for="foreigner">Khách nước ngoài</label>
-              <input
-                class="my-1 w-10 pl-3 text-lg border-bottom border-black-900"
-                type="number"
-                value="{{current_booking_detail.num_foreigner_guest}}"
-                name="foreigner"
-                step="1"
-                id="foreigner_num"
-                min="0"
-                max="9"
-              />
-              <button class="mr-2 change_num_guest-btn">Áp dụng</button>
-            </div>
-          </div>
-        </li>
       </ul>
     </nav>
     <div class="w-full h-full flex justify-center">
@@ -91,15 +60,34 @@
                 >{{booking.end_date}}</span
               >
             </div>
-            <div class="flex items-center space-x-2">
-              <span class="text-sm text-gray-600">Số người trong nước: </span>
-              <span class="rounded-lg border border-green-600 px-2 text-black"
-                >{{current_booking_detail.num_normal_guest}}</span
-              >
-              <span class="mx-2 text-black">Số người ngoại quốc</span>
-              <span class="rounded-lg border border-green-600 px-2 text-black"
-                >{{current_booking_detail.num_foreigner_guest}}</span
-              >
+            <div class="rounded-lg border border-gray-600 border-2 flex">
+              <div class="border-r-2 pr-2">
+                <label class="ml-3" for="vietnamese">Khách trong nước</label>
+                <input
+                  class="my-1 w-10 pl-3 text-lg border-bottom border-black-900"
+                  type="number"
+                  value="{{current_booking_detail.num_normal_guest}}"
+                  id="vietnamese_num"
+                  name="points"
+                  step="1"
+                  min="0"
+                  max="9"
+                />
+              </div>
+              <div>
+                <label class="ml-3" for="foreigner">Khách nước ngoài</label>
+                <input
+                  class="my-1 w-10 pl-3 text-lg border-bottom border-black-900"
+                  type="number"
+                  value="{{current_booking_detail.num_foreigner_guest}}"
+                  name="foreigner"
+                  step="1"
+                  id="foreigner_num"
+                  min="0"
+                  max="9"
+                />
+              </div>
+              <button class="mr-2 change_num_guest-btn">Áp dụng</button>
             </div>
           </div>
           <div class="card-footer text-muted">{{current_price}}</div>
@@ -117,7 +105,15 @@
         </button>
       </div>
       <div>
-        <button class="btn btn-success rounded-lg payment-btn">Thanh toán 1,200,000</button>
+        <button class="btn btn-success rounded-lg payment-btn">
+          Nhận phòng
+        </button>
+        <button class="btn btn-warning rounded-lg payment-btn">
+          Đặt Trước
+        </button>
+        <button class="btn btn-success rounded-lg payment-btn">
+          Thanh toán 1,200,000
+        </button>
       </div>
     </div>
   </div>

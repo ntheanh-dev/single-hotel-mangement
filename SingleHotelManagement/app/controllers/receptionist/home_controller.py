@@ -96,8 +96,6 @@ def make_booking():
         'booker_id': data.get('booker_id'),
         'start_date': data.get('start_date'),
         'end_date': data.get('end_date'),
-        'checkin': data.get('start_date'),
-        'checkout': data.get('end_date'),
         'tier_id': data.get('tier_id'),
         'foreigner': data.get('foreigner')
     }

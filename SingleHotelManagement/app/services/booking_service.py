@@ -1,8 +1,8 @@
-from app.repositories.booking_repository import create_booking as cb, get_booking_by_id as gb, cancel_booking as cb
+from app.repositories.booking_repository import create_booking as crb, get_booking_by_id as gb, cancel_booking as cb
 
 
 def create_booking(data):
-    return cb(data)
+    return crb(data)
 
 
 def cancel_booking(booking_id):

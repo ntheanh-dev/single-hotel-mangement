@@ -1,0 +1,96 @@
+<div
+  class="fixed top-0 left-0 right-0 bottom-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center hidden overlay-payment z-50"
+>
+  <div
+    class="fixed top-0 bottom-0 right-0 bg-white rounded-l-lg shadow-md hidden w-4/6 payment-form overflow-hidden"
+  >
+    <div class="flex justify-between items-center py-3 px-3">
+      <h1 class="text-lg font-bold">ĐẶT/NHẬN PHÒNG</h1>
+      <div class="flex space-x-2">
+        <span
+          class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+          >7/4/2024 21:00</span
+        >
+        <span
+          class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+          >7/4/2024 22:00</span
+        >
+      </div>
+      <button
+        type="button"
+        class="btn-close close-search-room-form"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="overflow-x-auto px-3">
+      <table class="min-w-full bg-white shadow-md rounded-t-lg">
+        <thead>
+          <tr class="bg-blue-gray-600 text-gray-700">
+            <th class="py-2 px-2 font-medium text-left">Thông tin phòng</th>
+            <th class="py-2 px-2 text-left">Thời gian</th>
+            <th class="py-2 px-2 text-left">Khách trong nước</th>
+            <th class="py-2 px-2 text-left">Khách nước ngoài</th>
+            <th class="py-2 px-2 text-left">Giá</th>
+          </tr>
+        </thead>
+        <tbody class="text-blue-gray-900">
+          <tr class="border-b border-blue-gray-200">
+            <td class="py-2 px-2">
+              Phòng 01 giường đôi cho 2 người
+              <span
+                class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+                >P201</span
+              >
+            </td>
+            <td class="py-2 px-2">1 Ngày 6 giờ</td>
+            <td class="py-2 px-2">2</td>
+            <td class="py-2 px-2">3</td>
+            <td class="py-2 px-2 font-medium text-black-600">700,000</td>
+          </tr>
+          <!-- Add more rows as needed -->
+          <tr class="border-b border-blue-gray-200">
+            <td class="py-2 px-2 font-medium">Tổng cộng</td>
+            <td class="py-2 px-2"></td>
+            <td class="py-2 px-2"></td>
+            <td class="py-2 px-2 font-medium">700,000</td>
+            <td class="py-2 px-2"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="absolute left-0 right-0 bottom-0 h-20 flex justify-end items-center px-4 pb-2 border-t-2"
+    >
+      <div class="flex flex-col items-start space-y-2 px-4">
+        <span>Lựa chọn phương thức thanh toán</span>
+        <div class="flex flex-row justify-start space-x-3">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="nationality"
+              checked
+              id="nationality-all"
+              value="All"
+            />
+            <label class="form-check-label" for="nationality-all">
+              Tiền mặt
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="nationality"
+              id="vietnamese"
+              value="False"
+            />
+            <label class="form-check-label" for="vietnamese"> Vnpay </label>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-success confirm-payment-btn">Tiếp</button>
+    </div>
+  </div>
+</div>

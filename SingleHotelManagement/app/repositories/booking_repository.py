@@ -9,8 +9,6 @@ def create_booking(data):
     booking = Booking(
         start_date=data.get('start_date'),
         end_date=data.get('end_date'),
-        checkin=data.get('checkin'),
-        checkout=data.get('checkout'),
         status=BookingStatus.CONFIRMED,
         receptionist_id=data.get('receptionist_id'),
         booker_id=data.get('booker_id')

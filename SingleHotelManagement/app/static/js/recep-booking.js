@@ -355,10 +355,8 @@ chooseRoom = (room_id) => {
             body: JSON.stringify({
                 'start_date': $("#startdate").val(),
                 'end_date': $("#enddate").val(),
-                'checkin': $("#startdate").val(),
-                'checkout': $("#enddate").val(),
                 'receptionist_id': 2,
-                'booker_id': Number(booker_id),
+                'booker_id': booker_id,
                 'tier_id': room_id,
                 'foreigner': foreigner,
             }),
