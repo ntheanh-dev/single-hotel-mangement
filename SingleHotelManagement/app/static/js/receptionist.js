@@ -8,9 +8,7 @@ $(document).ready(function () {
         $(".overlay-confirm-booking").fadeOut();
         $(".modal-confirm-booking").fadeOut();
     });
-});
 
-$(document).ready(function () {
     // ----------------- Show modal booking form -----------------
     $(".confirm-booking-online-btn").click(function () {
         $(".overlay-booking-form").fadeIn();
@@ -66,5 +64,51 @@ $(document).ready(function () {
 
     });
 
+    //------------------Filter tất cả booking hiện tại--------------
+    $('.list-booking-checkbox').change(() => {
+        const checkedValues = $('input[type="checkbox"]:checked').map(function () {
+            return this.value;
+        }).get();
+        let newUrl = ''
+        if ($('input[type="checkbox"]:checked').length > 0) {
+            // Tạo URL mới dựa trên các giá trị được chọn
+            const params = 'trang-thai=' + checkedValues.join(',');
+            newUrl = window.location.pathname + '?' + params;
+        } else {
+            newUrl = window.location.pathname
+        }
+        window.location.href = newUrl;
+    })
+    //--------------Xoa bo loc-----------------
+    $('.clear-check-input-btn').click(() => {
+        const newUrl = window.location.pathname;
+        window.location.href = newUrl;
+    })
 
 });
+
+$(window).on('load', function () {
+    //--------------------Nếu tải lại trang mà đang có param thì checked vào checkbox tương ứng-------------
+    var urlParams = new URLSearchParams(window.location.search);
+    const statusParam = urlParams.get('trang-thai').split(',');
+    statusParam.forEach(status => {
+        var value = Number(status)
+        $(`input[type="checkbox"][value="${value}"]`).prop('checked', true);
+    })
+});
+
+change_booking_status = (booking_id, status) => {
+    fetch("/api/receptionist/change-booking-status/", {
+        method: 'post',
+        body: JSON.stringify({
+            'booking_id': booking_id,
+            'status': status
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Context-Type': 'application/json',
+        }
+    }).then(res => res.json()).then(data => {
+        window.location.reload();
+    })
+}

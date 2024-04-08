@@ -1,5 +1,5 @@
-from app.repositories.booking_repository import create_booking as crb, get_booking_by_id as gb, cancel_booking as cb, \
-    list_booking as lb
+from app.repositories.booking_repository import create_booking as crb, get_booking_by_id as gb, \
+    list_booking as lb,reserve ,check_in,check_out, cancel_booking as cb
 
 
 def create_booking(data):
@@ -16,3 +16,16 @@ def get_booking_by_id(id):
 
 def list_booking(status_values):
     return lb(status_values)
+
+
+def change_booking_status(booking_id, status):
+    booking_id = int(booking_id)
+    status = int(status)
+    if status == 1:
+        reserve(booking_id)
+    elif status == 2:
+        check_in(booking_id)
+    elif status == 3:
+        check_out(booking_id)
+    elif status == 4:
+        cb(booking_id)

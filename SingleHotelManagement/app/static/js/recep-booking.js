@@ -185,8 +185,8 @@ $(document).ready(function () {
                     confirmButtonText: 'Ok',
                 })
                 setBooker(`${data.last_name} ${data.first_name}`, data.id, data.foreigner)
-                 $(".overlay-add-guest").fadeOut();
-                 $(".add-guest-form").fadeOut();
+                $(".overlay-add-guest").fadeOut();
+                $(".add-guest-form").fadeOut();
             }
         })
     })
@@ -246,8 +246,7 @@ $(document).ready(function () {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Xác nhận',
             cancelButtonText: 'Huỷ bỏ'
-        }).then((result) => {
-        })
+        }).then((result) => { })
     });
 
     //-----------Lay danh sach tinh thanh-------------
@@ -310,37 +309,10 @@ $(document).ready(function () {
             $('#time').val(''); // Nếu ngày không hợp lệ, gán giá trị rỗng
         }
     });
-    //------------------Filter tất cả booking hiện tại--------------
-    $('.list-booking-checkbox').change(() => {
-        const checkedValues = $('input[type="checkbox"]:checked').map(function () {
-            return this.value;
-        }).get();
-        let newUrl = ''
-        if($('input[type="checkbox"]:checked').length > 0) {
-            // Tạo URL mới dựa trên các giá trị được chọn
-            const params = 'trang-thai=' + checkedValues.join(',');
-            newUrl = window.location.pathname + '?' + params;
-        } else {
-            newUrl = window.location.pathname
-        }
-        window.location.href = newUrl;
-    })
-    //--------------Xoa bo loc-----------------
-    $('.clear-check-input-btn').click(()=> {
-        const newUrl = window.location.pathname;
-        window.location.href = newUrl;
-    })
+
 });
 
-$(window).on('load', function() {
-     //--------------------Nếu tải lại trang mà đang có param thì checked vào checkbox tương ứng-------------
-    var urlParams = new URLSearchParams(window.location.search);
-     const statusParam = urlParams.get('trang-thai').split(',');
-     statusParam.forEach(status => {
-         var value = Number(status)
-         $(`input[type="checkbox"][value="${value}"]`).prop('checked', true);
-     })
-});
+
 
 function setBooker(name, id, foreigner) {
     $(".booker").fadeIn();

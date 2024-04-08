@@ -56,15 +56,39 @@ def get_booking_by_id(booking_id):
 def cancel_booking(booking_id):
     booking = get_booking_by_id(booking_id)
     booking.status = BookingStatus.CANCELED
+    db.session.commit()
+    set_status_room_by_booking_id(booking_id, RoomStatus.AVAILABLE)
 
+
+def check_out(booking_id):
+    booking = get_booking_by_id(booking_id)
+    booking.status = BookingStatus.CHECKED_OUT
+    db.session.commit()
+    set_status_room_by_booking_id(booking_id, RoomStatus.AVAILABLE)
+
+
+def check_in(booking_id):
+    booking = get_booking_by_id(booking_id)
+    booking.status = BookingStatus.CHECKED_IN
+    db.session.commit()
+    set_status_room_by_booking_id(booking_id, RoomStatus.OCCUPIED)
+
+
+def reserve(booking_id):
+    booking = get_booking_by_id(booking_id)
+    booking.status = BookingStatus.CONFIRMED
+    db.session.commit()
+    set_status_room_by_booking_id(booking_id, RoomStatus.RESERVED)
+
+
+def set_status_room_by_booking_id(booking_id, status_room):
     booking_details = db.session.query(Room).join(BookingDetail, Room.id == BookingDetail.room_id).filter(
         BookingDetail.booking_id == booking_id).all()
 
     # Cập nhật trạng thái của các phòng
     for room in booking_details:
-        room.status = RoomStatus.AVAILABLE
+        room.status = status_room
 
-    # Lưu các thay đổi vào cơ sở dữ liệu
     db.session.commit()
 
 
@@ -148,3 +172,4 @@ def get_total_price_by_booking_id(id):
     return db.session.query(Tier).join(Room, Room.tier_id == Tier.id).join(BookingDetail,
                                                                            BookingDetail.room_id == Room.id).join(
         Booking, Booking.id == BookingDetail.booking_id).group_by(BookingDetail.room_id).all()
+
