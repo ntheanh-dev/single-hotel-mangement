@@ -2,18 +2,21 @@ import json
 from distutils.util import strtobool
 from flask import render_template, request, jsonify
 from app import app
+from app.models.booking import BookingStatus
 from app.repositories.tier_repository import get_tier_by_room_id
 from app.services.booking_detail_service import get_booking_details_by_booking_id, add_guest_to_booking_detail as ad, \
     change_num_guest as cng
 from app.services.guest_service import check_phone_number, register_guest, search_guest as sg
 from app.services.tier_service import get_tiers, get_max_guests, tier_with_available_room_to_dict
 from app.services.floor_service import get_floors
-from app.services.booking_service import create_booking, get_booking_by_id,cancel_booking as cb
+from app.services.booking_service import create_booking, get_booking_by_id, cancel_booking as cb, list_booking
 
 
 @app.route('/nhan-vien/lich-dat-phong/')
 def home():
-    return render_template('/receptionist/index.html')
+    status_values = request.args.getlist('trang-thai')
+    bookings = list_booking(status_values)
+    return render_template('/receptionist/index.html',bookings=bookings,booking_status=BookingStatus)
 
 
 @app.route('/nhan-vien/dat-phong/')

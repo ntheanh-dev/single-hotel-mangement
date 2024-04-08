@@ -13,6 +13,7 @@ class BookingStatus(enum.Enum):
     CHECKED_IN = 3
     CHECKED_OUT = 4
     CANCELED = 5
+    UNPAID = 6
 
 
 class Booking(db.Model):

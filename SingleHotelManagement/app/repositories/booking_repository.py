@@ -1,8 +1,14 @@
+from sqlalchemy import cast, DECIMAL, and_, case, literal
+from sqlalchemy.sql.functions import concat, func, coalesce
+
 from app import db
 from app.models.booking import Booking, BookingStatus
 from app.models.booking_detail import BookingDetail
 from app.models.room import Room, RoomStatus
 from distutils.util import strtobool
+
+from app.models.tier import Tier
+from app.models.user import User
 
 
 def create_booking(data):
@@ -60,3 +66,85 @@ def cancel_booking(booking_id):
 
     # Lưu các thay đổi vào cơ sở dữ liệu
     db.session.commit()
+
+
+def list_booking(status_values):
+    formatted_grouped_values = func.group_concat(
+        concat(
+            Tier.id, '-',
+            BookingDetail.num_normal_guest, '-',
+            BookingDetail.num_foreigner_guest
+        )
+    )
+    query = db.session.query(Booking, formatted_grouped_values,
+                             concat(func.group_concat(Room.name)).label('room_names'),
+                             coalesce(concat(User.first_name, User.last_name), 'Khách lẻ').label(
+                                 'guest'), concat(func.group_concat(Room.id)).label('room_id')).select_from(
+        Booking).join(
+        BookingDetail, BookingDetail.booking_id == Booking.id,
+        isouter=True).join(User,
+                           Booking.booker_id == User.id,
+                           isouter=True).join(Room,
+                                              BookingDetail.room_id == Room.id,
+                                              isouter=True).join(Tier, Tier.id == Room.tier_id).group_by(
+        Booking)
+    if len(status_values) == 0:
+        query = query.all()
+    else:
+        # status_values ['3,99,5']
+        status_enum_values = [BookingStatus(int(value)) for value in status_values[0].split(',')]
+        query = query.filter(Booking.status.in_(status_enum_values)).all()
+
+    booking_dict = []
+    # Convert to dict
+    for booking in query:
+        # Lấy ra chuỗi '6-2-1,7-1-2'
+        room_details_str = booking[1]
+
+        # Tách chuỗi thành các phần tử riêng biệt dựa trên dấu ','
+        room_details_list = room_details_str.split(',')
+
+        # Tạo biến lưu tổng giá cho mỗi đối tượng booking_detail
+        booking_detail_total_price = 0
+
+        # Lặp qua từng phần tử trong chuỗi '6-2-1,7-1-2'
+        for room_detail in room_details_list:
+            # Tách mỗi phần tử thành các số riêng biệt dựa trên dấu '-'
+            detail_parts = room_detail.split('-')
+
+            # Lấy ra id của Tier từ phần tử đầu tiên
+            tier_id = int(detail_parts[0])
+
+            # Truy vấn CSDL để lấy đối tượng Tier
+            tier = db.session.query(Tier).filter_by(id=tier_id).first()
+
+            # Nếu tìm thấy đối tượng Tier
+            if tier:
+                # Lấy số lượng khách từ phần tử thứ hai và thứ ba
+                num_normal_guest = int(detail_parts[1])
+                num_foreign_guest = int(detail_parts[2])
+
+                # Tính toán giá từ đối tượng Tier
+                price = tier.get_price(num_normal_guest, num_foreign_guest)
+
+                # Cập nhật tổng giá cho mỗi đối tượng booking
+                booking_detail_total_price += price
+            else:
+                print("Tier with ID", tier_id, "not found")
+
+        temp = {
+            'booking': booking[0].to_dict(),
+            'price': booking_detail_total_price,
+            'rooms': booking[2],
+            'booker': booking[3],
+            'rooms_id': booking[4]
+        }
+        booking_dict.append(temp)
+
+    return booking_dict
+
+
+def get_total_price_by_booking_id(id):
+    return db.session.query(Tier).join(Room, Room.tier_id == Tier.id).join(BookingDetail,
+                                                                           BookingDetail.room_id == Room.id).join(
+        Booking, Booking.id == BookingDetail.booking_id).group_by(BookingDetail.room_id).all()

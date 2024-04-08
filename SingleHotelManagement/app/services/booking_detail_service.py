@@ -32,3 +32,4 @@ def change_num_guest(booking_id, num_foreigner_guest, num_normal_guest, room_id)
         return jsonify(False)
     else:
         return jsonify(cng(booking_id, num_foreigner_guest, num_normal_guest, room_id))
+
