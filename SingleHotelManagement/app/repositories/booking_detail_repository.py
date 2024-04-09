@@ -1,11 +1,17 @@
 from app import db
 from app.models.booking_detail import BookingDetail
+from app.models.room import Room
+from app.models.tier import Tier
 from app.repositories.tier_repository import get_tier_by_room_id
 from distutils.util import strtobool
 
 
 def get_booking_details_by_booking_id(booking_id):
     return db.session.query(BookingDetail).filter(BookingDetail.booking_id == booking_id).all()
+
+
+def get_booking_detail_with_tier_by_booking_id(booking_id):
+    return db.session.query(BookingDetail,Tier.id,Tier.name,Room.name).join(Room,Room.id == BookingDetail.room_id).join(Tier,Tier.id == Room.tier_id).filter(BookingDetail.booking_id == booking_id).all()
 
 
 def add_guest_to_booking_detail(booking_id, room_id, foreigner):

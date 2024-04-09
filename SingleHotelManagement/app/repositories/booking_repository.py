@@ -1,9 +1,10 @@
-from sqlalchemy import cast, DECIMAL, and_, case, literal
+from sqlalchemy import exists
 from sqlalchemy.sql.functions import concat, func, coalesce
 
 from app import db
 from app.models.booking import Booking, BookingStatus
 from app.models.booking_detail import BookingDetail
+from app.models.invoice import Invoice
 from app.models.room import Room, RoomStatus
 from distutils.util import strtobool
 
@@ -97,7 +98,7 @@ def list_booking(status_values):
         concat(
             Tier.id, '-',
             BookingDetail.num_normal_guest, '-',
-            BookingDetail.num_foreigner_guest
+            BookingDetail.num_foreigner_guest,'-',
         )
     )
     query = db.session.query(Booking, formatted_grouped_values,
@@ -168,8 +169,14 @@ def list_booking(status_values):
     return booking_dict
 
 
+def is_paid(booking_id):
+    booking = get_booking_by_id(booking_id)
+    query = db.session.query(Invoice).join(Booking, Booking.id == Invoice.booking_id).filter(
+        Invoice.paid == True).first()
+    return query is not None
+
+
 def get_total_price_by_booking_id(id):
     return db.session.query(Tier).join(Room, Room.tier_id == Tier.id).join(BookingDetail,
                                                                            BookingDetail.room_id == Room.id).join(
         Booking, Booking.id == BookingDetail.booking_id).group_by(BookingDetail.room_id).all()
-

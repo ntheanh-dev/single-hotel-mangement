@@ -131,7 +131,7 @@
           {% elif b.booking.status == 'CHECKED_IN' %}
           <button
             class="btn btn-success"
-            onclick="change_booking_status({{b.booking.id}},3)"
+            onclick="check_payment({{b.booking.id}})"
           >
             Trả phòng
           </button>
@@ -279,6 +279,8 @@
     </div>
   </div>
 </div>
+
+{% include 'receptionist/includes/payment_form.html' %}
 
 <script src="{{url_for('static', filename='js/recep-booking.js')}}"></script>
 <script src="{{url_for('static', filename='js/receptionist.js')}}"></script>

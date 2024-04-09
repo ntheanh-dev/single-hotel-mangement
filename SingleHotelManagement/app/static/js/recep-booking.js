@@ -203,34 +203,6 @@ $(document).ready(function () {
             cancelButtonText: 'Huỷ bỏ'
         }).then((result) => {
             if (result.isConfirmed) {
-                // fetch('/gio-hang/api/delete-to-cart', {
-                //     method: 'post',
-                //     body: JSON.stringify({
-                //         'book_id': bookId,
-                //     }),
-                //     headers: {
-                //         'Content-Type': 'application/json'
-                //     }
-                // }).then(res => res.json()).then(result => {
-                //     if (result['result']) {
-                //         Swal.fire(
-                //             'Xóa thành công',
-                //             'Giỏ hàng của bạn đã được cập nhật.',
-                //             'success'
-                //         ).then(function () {
-                //             getBookInCart()
-                //             getCartDetailAmount()
-                //         })
-
-                //     } else
-                //         Swal.fire({
-                //             title: 'Xóa thất bại',
-                //             text: 'Xin vui lòng kiểm tra lại',
-                //             icon: 'warning',
-                //             confirmButtonColor: '#3085d6',
-                //             confirmButtonText: 'Ok',
-                //         })
-                // })
             }
         })
     });
@@ -276,7 +248,11 @@ $(document).ready(function () {
                 row += `<option data-id="${element.district_id}" value="${element.district_name}">${element.district_name}</option>`
             });
         }
-        document.querySelector("#" + select).innerHTML = row
+        var a = document.querySelector("#" + select)
+        if(a) {
+            a.innerHTML = row
+        }
+
     }
 
     $("#city").change(() => {

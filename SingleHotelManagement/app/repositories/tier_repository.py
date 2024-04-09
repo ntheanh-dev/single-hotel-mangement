@@ -33,3 +33,6 @@ def get_num_available_room_by_id(id):
 def get_tier_by_room_id(room_id):
     return db.session.query(Tier).join(Room).filter(Room.id == room_id).first()
 
+
+def get_tier_by_id(tier_id):
+    return db.session.query(Tier).filter(Tier.id == tier_id).first()

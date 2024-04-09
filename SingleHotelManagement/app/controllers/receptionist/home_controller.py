@@ -9,7 +9,8 @@ from app.services.booking_detail_service import get_booking_details_by_booking_i
 from app.services.guest_service import check_phone_number, register_guest, search_guest as sg
 from app.services.tier_service import get_tiers, get_max_guests, tier_with_available_room_to_dict
 from app.services.floor_service import get_floors
-from app.services.booking_service import create_booking, get_booking_by_id, cancel_booking as cb, list_booking,change_booking_status as cbs
+from app.services.booking_service import create_booking, get_booking_by_id, cancel_booking as cb, list_booking, \
+    change_booking_status as cbs, is_paid as ip, get_info_booking
 
 
 @app.route('/nhan-vien/lich-dat-phong/')
@@ -155,6 +156,21 @@ def change_booking_status():
     data = json.loads(request.data)
     booking_id = data.get('booking_id')
     status = data.get('status')
-    cbs(booking_id,status)
+    cbs(booking_id, status)
     return jsonify(1)
 
+
+@app.route('/api/receptionist/check_payment/', methods=['post'])
+def check_out():
+    data = json.loads(request.data)
+    booking_id = data.get('booking_id')
+    result = ip(booking_id)
+    return jsonify(result)
+
+
+@app.route('/api/receptionist/get-booking-info/', methods=['post'])
+def get_booking():
+    data = json.loads(request.data)
+    booking_id = data.get('booking_id')
+    result = get_info_booking(booking_id)
+    return jsonify(result)

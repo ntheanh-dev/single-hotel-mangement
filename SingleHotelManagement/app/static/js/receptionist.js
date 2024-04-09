@@ -84,17 +84,23 @@ $(document).ready(function () {
         const newUrl = window.location.pathname;
         window.location.href = newUrl;
     })
-
+    //--------------Dong form thanh toan--------------
+    $(".close-search-room-form").click(function () {
+        $(".overlay-payment").fadeOut();
+        $(".payment-form").fadeOut();
+    });
 });
 
 $(window).on('load', function () {
     //--------------------Nếu tải lại trang mà đang có param thì checked vào checkbox tương ứng-------------
     var urlParams = new URLSearchParams(window.location.search);
-    const statusParam = urlParams.get('trang-thai').split(',');
-    statusParam.forEach(status => {
-        var value = Number(status)
-        $(`input[type="checkbox"][value="${value}"]`).prop('checked', true);
-    })
+    let statusParam = urlParams.get('trang-thai');
+    if (statusParam) {
+        statusParam.split(',').forEach(status => {
+            var value = Number(status)
+            $(`input[type="checkbox"][value="${value}"]`).prop('checked', true);
+        })
+    }
 });
 
 change_booking_status = (booking_id, status) => {
@@ -111,4 +117,103 @@ change_booking_status = (booking_id, status) => {
     }).then(res => res.json()).then(data => {
         window.location.reload();
     })
+}
+
+check_payment = (booking_id) => {
+    fetch("/api/receptionist/check_payment/", {
+        method: 'post',
+        body: JSON.stringify({
+            'booking_id': booking_id,
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Context-Type': 'application/json',
+        }
+    }).then(res => res.json()).then(data => {
+        if (data) {
+            window.location.reload();
+        } else {
+            Swal.fire({
+                title: 'Trả phòng và thanh toán?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Huỷ bỏ'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("/api/receptionist/get-booking-info/", {
+                        method: 'post',
+                        body: JSON.stringify({
+                            'booking_id': booking_id,
+                        }),
+                        headers: {
+                            'Accept': 'application/json',
+                            'Context-Type': 'application/json',
+                        }
+                    }).then(resp => resp.json()).then(result => {
+                        var booking = result.booking
+                        var booking_details = result.booking_details
+                        $('.payment-form-title').text("THANH TOÁN")
+                        $('.checkin-time-payment-form').text(moment(booking.start_date).format('LLL'))
+                        $('.checkout-time-payment-form').text(moment(booking.end_date).format('LLL'))
+                        let row = ''
+                        total = 0
+                        duration = calculate_booking_time(booking.start_date, booking.end_date)
+                        booking_details.map(ele => {
+                            total += ele.price
+                            row +=
+                                `<tr class="border-b border-blue-gray-200">
+                                <td class="py-2 px-2">
+                                  ${ele.tier_name}
+                                  <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">${ele.room_name}</span>
+                                </td>
+                                <td class="py-2 px-2">${duration}</td>
+                                <td class="py-2 px-2">${ele.booking_detail.num_normal_guest}</td>
+                                <td class="py-2 px-2">${ele.booking_detail.num_foreigner_guest}</td>
+                                <td class="py-2 px-2 font-medium text-black-600">${ele.price}</td>
+                              </tr>`
+                        })
+                        row += `
+                            <tr class="border-b border-blue-gray-200">
+                                <td class="py-2 px-2 font-medium">Tổng cộng</td>
+                                <td class="py-2 px-2"></td>
+                                <td class="py-2 px-2"></td>
+                                <td class="py-2 px-2 font-medium">${total}</td>
+                                <td class="py-2 px-2"></td>
+                            </tr>
+                        `
+                        $('.payment-form-table-body').html(row)
+                        $(".overlay-payment").fadeIn();
+                        $(".payment-form").fadeIn();
+                    })
+                }
+            })
+        }
+    })
+}
+
+function calculate_booking_time(start_date, end_date) {
+    var startdate = moment(start_date);
+    var enddate = moment(end_date);
+    if (startdate.isValid() && enddate.isValid()) {
+        var duration = moment.duration(enddate.diff(startdate));
+        var days = duration.days();
+        var hours = duration.hours();
+
+        var total_time = '';
+
+        if (days > 0) {
+            total_time += days + ' ngày ';
+        }
+        if (hours > 0) {
+            total_time += hours + ' giờ';
+        }
+        if (days === 0 && hours === 0) {
+            total_time = '0 giờ';
+        }
+        return total_time
+    }
+    return ''
 }
