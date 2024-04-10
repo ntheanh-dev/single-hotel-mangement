@@ -1,20 +1,37 @@
-a {
-  outline-color: transparent;
+:root {
+    scroll-behavior: smooth;
 }
-  .header {
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-    width: 100%;
-  }
-  .logo {
-      font-size: 24px;
-  }
-    .header .btn {
-      margin-right: 10px;
-    }
 
-  .overlay-confirm-booking {
+body {
+    font-family: "Open Sans", sans-serif;
+    background: #f6f9ff;
+    color: #444444;
+}
+
+a {
+    color: #4154f1;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #717ff5;
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Nunito", sans-serif;
+}
+
+a {
+    outline-color: transparent;
+}
+
+.overlay-confirm-booking {
     position: fixed;
     top: 0;
     left: 0;
@@ -41,7 +58,8 @@ a {
     height: 60%;
     max-height: 400px;
     overflow: auto;
-    z-index: 9999; /* Đảm bảo modal nằm trên cùng */
+    z-index: 9999;
+    /* Đảm bảo modal nằm trên cùng */
 }
 
 .modal-confirm-booking h2 {
@@ -49,13 +67,16 @@ a {
 }
 
 .close-confirm-booking-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
 }
+
+
 /* ---------------booking form moda-------------- */
-  .overlay-booking-form {
+
+.overlay-booking-form {
     position: fixed;
     top: 0;
     left: 0;
@@ -82,14 +103,18 @@ a {
     height: 60%;
     max-height: 400px;
     overflow: auto;
-    z-index: 9999; /* Đảm bảo modal nằm trên cùng */
+    z-index: 9999;
+    /* Đảm bảo modal nằm trên cùng */
 }
 
 .modal-booking-form h2 {
     margin-bottom: 20px;
 }
+
+
 /* ---------------leasing form moda-------------- */
-  .overlay-leasing-form {
+
+.overlay-leasing-form {
     position: fixed;
     top: 0;
     left: 0;
@@ -116,31 +141,127 @@ a {
     height: 60%;
     max-height: 400px;
     overflow: auto;
-    z-index: 9999; /* Đảm bảo modal nằm trên cùng */
+    z-index: 9999;
+    /* Đảm bảo modal nằm trên cùng */
 }
 
 .modal-leasing-form h2 {
     margin-bottom: 20px;
 }
 
+
 /* ---------print----------- */
+
 @media screen {
-  #printSection {
-      display: none;
-  }
+    #printSection {
+        display: none;
+    }
 }
 
 @media print {
-  body * {
-    visibility:hidden;
-  }
-  #printSection, #printSection * {
-    visibility:visible;
-  }
-  #printSection {
-    position:absolute;
-    left:0;
-    top:0;
-  }
+    body * {
+        visibility: hidden;
+    }
+    #printSection,
+    #printSection * {
+        visibility: visible;
+    }
+    #printSection {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
 }
-/* ----------------booking site--------------- */
+
+
+/*--------------------------------------------------------------
+  # Header
+  --------------------------------------------------------------*/
+
+.header {
+    transition: all 0.5s;
+    z-index: 997;
+    height: 60px;
+    box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
+    background-color: #fff;
+    padding-left: 20px;
+    /* Toggle Sidebar Button */
+    /* Search Bar */
+}
+
+.header .toggle-sidebar-btn {
+    font-size: 32px;
+    padding-left: 10px;
+    cursor: pointer;
+    color: #012970;
+}
+
+.header-nav ul {
+    list-style: none;
+}
+
+.header-nav>ul {
+    margin: 0;
+    padding: 0;
+}
+
+.header-nav .nav-icon {
+    font-size: 22px;
+    color: #012970;
+    margin-right: 25px;
+    position: relative;
+}
+
+.header-nav .nav-profile {
+    color: #012970;
+}
+
+.header-nav .nav-profile img {
+    max-height: 36px;
+}
+
+.header-nav .nav-profile span {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.header-nav .badge-number {
+    position: absolute;
+    inset: -2px -5px auto auto;
+    font-weight: normal;
+    font-size: 12px;
+    padding: 3px 6px;
+}
+
+.header-nav .profile {
+    min-width: 240px;
+    padding-bottom: 0;
+    top: 8px !important;
+}
+
+.header-nav .profile .dropdown-header h6 {
+    font-size: 18px;
+    margin-bottom: 0;
+    font-weight: 600;
+    color: #444444;
+}
+
+.header-nav .profile .dropdown-header span {
+    font-size: 14px;
+}
+
+.header-nav .profile .dropdown-item {
+    font-size: 14px;
+    padding: 10px 15px;
+    transition: 0.3s;
+}
+
+.header-nav .profile .dropdown-item i {
+    margin-right: 10px;
+    font-size: 18px;
+    line-height: 0;
+}
+
+.header-nav .profile .dropdown-item:hover {
+    background-color: #f6f9ff;
+}

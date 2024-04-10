@@ -1,160 +1,165 @@
 {% extends 'receptionist/layout.html'%} {% block title %}
 <title>Quan Ly Khach San</title>
 {% endblock %} {% block body %} {{super()}}
-<p class="mt-4 ml-6 text-2xl font-bold">Lịch đặt phòng hiện tại</p>
-<div class="d-flex justify-content-center align-items-center my-3">
-  <div class="form-check mx-4">
-    <input
-      class="list-booking-checkbox"
-      type="checkbox"
-      value="1"
-      id="flexCheckChecked1"
-    />
-    <label class="form-check-label" for="flexCheckChecked1">
-      Chờ xác nhận
-    </label>
-  </div>
-  <div class="form-check mx-4">
-    <input
-      class="list-booking-checkbox"
-      type="checkbox"
-      value="2"
-      id="flexCheckChecked2"
-    />
-    <label class="form-check-label" for="flexCheckChecked2"> Đặt trước </label>
-  </div>
-  <div class="form-check mx-4">
-    <input
-      class="list-booking-checkbox"
-      type="checkbox"
-      value="3"
-      id="flexCheckChecked3"
-    />
-    <label class="form-check-label" for="flexCheckChecked3">
-      Đang sử dụng
-    </label>
-  </div>
-  <div class="form-check mx-4">
-    <input
-      class="list-booking-checkbox"
-      type="checkbox"
-      value="4"
-      id="flexCheckChecked4"
-    />
-    <label class="form-check-label" for="flexCheckChecked4">
-      Đã trả phòng
-    </label>
-  </div>
-  <div class="form-check mx-4">
-    <input
-      class="list-booking-checkbox"
-      type="checkbox"
-      value="6"
-      id="flexCheckChecked5"
-    />
-    <label class="form-check-label" for="flexCheckChecked5">
-      Chờ tạo hoá đơn
-    </label>
-  </div>
-  <div class="form-check mx-4">
-    <input
-      class="list-booking-checkbox"
-      type="checkbox"
-      value="5"
-      id="flexCheckChecked6"
-    />
-    <label class="form-check-label" for="flexCheckChecked6"> Đã huỷ </label>
-  </div>
-  <button class="btn btn-outline-warning mr-3 clear-check-input-btn">
-    Xoá bộ lọc
-  </button>
-</div>
-<div class="mx-4">
-  <table class="table">
-    <thead>
-      <tr style="background-color: aliceblue">
-        <th scope="col" style="width: 10%">Mã đặt phòng</th>
-        <th scope="col" style="width: 15%">Phòng</th>
-        <th scope="col" style="width: 15%">Khách đặt</th>
-        <th scope="col" style="width: 15%">Giờ nhận</th>
-        <th scope="col" style="width: 15%">Giờ trả</th>
-        <th scope="col" style="width: 5%">Giá</th>
-        <th scope="col" style="width: 25%"></th>
-      </tr>
-    </thead>
 
-    <tbody>
-      {% for b in bookings %}
-      <tr>
-        <td>
-          <p style="color: cadetblue; font-weight: 600">{{b.booking.id}}</p>
-        </td>
-        <td>
-          <span
-            class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
-            >{{b.rooms}}</span
-          >
-        </td>
-        <td>
-          <p style="color: cadetblue; font-weight: 600">{{b.booker}}</p>
-        </td>
-        <td>{{b.booking.start_date}}</td>
-        <td>{{b.booking.end_date}}</td>
-        <td>{{b.price}}</td>
-        <td class="flex justify-end">
-          {% if b.booking.status == 'REQUESTED' %}
-          <button
-            class="btn btn-warning mx-2"
-            onclick="change_booking_status({{b.booking.id}},1)"
-          >
-            Đặt trước
-          </button>
-          <button
-            class="btn btn-success mx-2"
-            onclick="change_booking_status({{b.booking.id}},2)"
-          >
-            Nhận phòng
-          </button>
-          <button
-            class="btn btn-danger"
-            onclick="change_booking_status({{b.booking.id}},4)"
-          >
-            Huỷ
-          </button>
-          {% elif b.booking.status == 'CONFIRMED' %}
-          <button
-            class="btn btn-success"
-            onclick="change_booking_status({{b.booking.id}},2)"
-          >
-            Nhận phòng
-          </button>
-          {% elif b.booking.status == 'CHECKED_IN' %}
-          <button
-            class="btn btn-success"
-            onclick="check_payment({{b.booking.id}})"
-          >
-            Trả phòng
-          </button>
-          {% elif b.booking.status == 'UNPAID' %}
-          <button
-            class="btn btn-warning"
-            onclick="change_booking_status({{b.booking.id}},)4"
-          >
-            Thanh toán
-          </button>
-          {% elif b.booking.status == 'CANCELED' %}
-          <span
-            class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-1 rounded dark:bg-red-900 dark:text-red-300"
-            >Đã Huỷ</span
-          >
-          {% elif b.booking.status == 'CHECKED_OUT' %}
-          <h1 class="text-gray-700 font-medium text-md">Đã hoàn thành</h1>
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="card mt-16">
+  <div class="card-body">
+    <h5 class="card-title text-2xl font-bold">Lịch đặt phòng hiện tại</h5>
+  <div class="d-flex justify-content-center align-items-center my-3">
+    <div class="form-check mx-4">
+      <input
+        class="list-booking-checkbox"
+        type="checkbox"
+        value="1"
+        id="flexCheckChecked1"
+      />
+      <label class="form-check-label" for="flexCheckChecked1">
+        Chờ xác nhận
+      </label>
+    </div>
+    <div class="form-check mx-4">
+      <input
+        class="list-booking-checkbox"
+        type="checkbox"
+        value="2"
+        id="flexCheckChecked2"
+      />
+      <label class="form-check-label" for="flexCheckChecked2"> Đặt trước </label>
+    </div>
+    <div class="form-check mx-4">
+      <input
+        class="list-booking-checkbox"
+        type="checkbox"
+        value="3"
+        id="flexCheckChecked3"
+      />
+      <label class="form-check-label" for="flexCheckChecked3">
+        Đang sử dụng
+      </label>
+    </div>
+    <div class="form-check mx-4">
+      <input
+        class="list-booking-checkbox"
+        type="checkbox"
+        value="4"
+        id="flexCheckChecked4"
+      />
+      <label class="form-check-label" for="flexCheckChecked4">
+        Đã trả phòng
+      </label>
+    </div>
+    <div class="form-check mx-4">
+      <input
+        class="list-booking-checkbox"
+        type="checkbox"
+        value="6"
+        id="flexCheckChecked5"
+      />
+      <label class="form-check-label" for="flexCheckChecked5">
+        Chờ tạo hoá đơn
+      </label>
+    </div>
+    <div class="form-check mx-4">
+      <input
+        class="list-booking-checkbox"
+        type="checkbox"
+        value="5"
+        id="flexCheckChecked6"
+      />
+      <label class="form-check-label" for="flexCheckChecked6"> Đã huỷ </label>
+    </div>
+    <button class="btn btn-outline-warning mr-3 clear-check-input-btn">
+      Xoá bộ lọc
+    </button>
+  </div>
+    <table class="table ">
+        <thead>
+          <tr style="background-color: aliceblue">
+            <th scope="col" style="width: 10%">Mã đặt phòng</th>
+            <th scope="col" style="width: 15%">Phòng</th>
+            <th scope="col" style="width: 15%">Khách đặt</th>
+            <th scope="col" style="width: 15%">Giờ nhận</th>
+            <th scope="col" style="width: 15%">Giờ trả</th>
+            <th scope="col" style="width: 5%">Giá</th>
+            <th scope="col" style="width: 25%"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for b in bookings %}
+          <tr>
+            <td>
+              <p style="color: cadetblue; font-weight: 600">{{b.booking.id}}</p>
+            </td>
+            <td>
+              <span
+                class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                >{{b.rooms}}</span
+              >
+            </td>
+            <td>
+              <p style="color: cadetblue; font-weight: 600">{{b.booker}}</p>
+            </td>
+            <td>{{b.booking.start_date}}</td>
+            <td>{{b.booking.end_date}}</td>
+            <td>{{b.price}}</td>
+            <td class="flex justify-end">
+              {% if b.booking.status == 'REQUESTED' %}
+              <button
+                class="btn btn-warning mx-2"
+                onclick="change_booking_status({{b.booking.id}},1)"
+              >
+                Đặt trước
+              </button>
+              <button
+                class="btn btn-success mx-2"
+                onclick="change_booking_status({{b.booking.id}},2)"
+              >
+                Nhận phòng
+              </button>
+              <button
+                class="btn btn-danger"
+                onclick="change_booking_status({{b.booking.id}},4)"
+              >
+                Huỷ
+              </button>
+              {% elif b.booking.status == 'CONFIRMED' %}
+              <button
+                class="btn btn-success"
+                onclick="change_booking_status({{b.booking.id}},2)"
+              >
+                Nhận phòng
+              </button>
+              {% elif b.booking.status == 'CHECKED_IN' %}
+              <button
+                class="btn btn-success"
+                onclick="check_payment({{b.booking.id}})"
+              >
+                Trả phòng
+              </button>
+              {% elif b.booking.status == 'UNPAID' %}
+              <button
+                class="btn btn-warning"
+                onclick="change_booking_status({{b.booking.id}},)4"
+              >
+                Thanh toán
+              </button>
+              {% elif b.booking.status == 'CANCELED' %}
+              <span
+                class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-1 rounded dark:bg-red-900 dark:text-red-300"
+                >Đã Huỷ</span
+              >
+              {% elif b.booking.status == 'CHECKED_OUT' %}
+              <h1 class="text-gray-700 font-medium text-md">Đã hoàn thành</h1>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+
+  
 
   <!-- Phiếu đặt phòng phòng    -->
   <div class="overlay-booking-form">

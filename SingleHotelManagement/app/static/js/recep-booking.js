@@ -202,8 +202,7 @@ $(document).ready(function () {
             confirmButtonText: 'Xác nhận',
             cancelButtonText: 'Huỷ bỏ'
         }).then((result) => {
-            if (result.isConfirmed) {
-            }
+            if (result.isConfirmed) { }
         })
     });
 
@@ -224,17 +223,20 @@ $(document).ready(function () {
     //-----------Lay danh sach tinh thanh-------------
     const host = 'https://vapi.vnappmob.com/api/province/'
     var callAPI = (api) => {
-        return axios.get(api)
-            .then((response) => {
-                renderData(response.data.results, "city", "city");
-            });
+        return fetch(api, {
+            method: 'get',
+        }).then(res => res.json()).then(data => {
+            renderData(data.results, "city", "city");
+        })
     }
     callAPI(host);
     var callApiDistrict = (api) => {
-        return axios.get(api)
-            .then((response) => {
-                renderData(response.data.results, "district", "district");
-            });
+        return fetch(api, {
+            method: 'get',
+        }).then(res => res.json()).then(data => {
+            renderData(data.results, "district", "district");
+        })
+
     }
 
     var renderData = (array, select, type) => {
@@ -249,7 +251,7 @@ $(document).ready(function () {
             });
         }
         var a = document.querySelector("#" + select)
-        if(a) {
+        if (a) {
             a.innerHTML = row
         }
 
