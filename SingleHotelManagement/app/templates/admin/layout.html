@@ -20,9 +20,8 @@
     <link href="{{url_for('static',filename='plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet"/>
     <link href="{{url_for('static',filename='plugins/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet"/>
 
-    <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{{url_for('static', filename='css/admin-style.css')}}" />
+    <script src="https://cdn.tailwindcss.com"></script>
 
 </head>
 
@@ -30,9 +29,6 @@
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo d-flex align-items-center">
-            <span class="d-none d-lg-block">Logo</span>
-        </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
     <!-- End Logo -->
@@ -150,6 +146,9 @@
 <!-- End #main -->
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 <!-- Plubgin JS Files -->
 <script src="{{url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>

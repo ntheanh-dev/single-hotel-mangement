@@ -181,3 +181,6 @@ def get_total_price_by_booking_id(id):
                                                                            BookingDetail.room_id == Room.id).join(
         Booking, Booking.id == BookingDetail.booking_id).group_by(BookingDetail.room_id).all()
 
+
+def count_booking():
+    return db.session.query(Booking).count();

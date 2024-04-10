@@ -31,6 +31,10 @@ def register_guest(data=None, **kwargs):
     return user
 
 
+def count_guest():
+    return db.session.query(Guest).count()
+
+
 def search_guest_by_phone_number(phone_number=None, foreigner=None, **kwargs):
     if foreigner:
         return db.session.query(User).filter(User.phone_number.__eq__(phone_number),

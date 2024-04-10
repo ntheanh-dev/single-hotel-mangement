@@ -23,7 +23,7 @@
                                         <i class="bi bi-cart"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>145</h6>
+                                        <h6>{{total_guest}}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                                         <i class="bi bi-cart"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>145</h6>
+                                        <h6>{{total_booking}}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                                         <i class="bi bi-cart"></i>
                                     </div>
                                     <div class="ps-3">
-                                            <span>100,000,000 VNĐ</sp>
+                                            <span>{{revenue}} VNĐ</span>
                                     </div>
                                 </div>
                             </div>
@@ -79,75 +79,10 @@
                                 </ul>
                             </div>
 
-                            <div class="card-body">
+                            <div class="card-body h-96 pb-20">
                                 <h5 class="card-title">Reports <span>/Today</span></h5>
 
-                                <!-- Line Chart -->
-                                <div id="reportsChart"></div>
-
-                                <script>
-                                    document.addEventListener("DOMContentLoaded", () => {
-                                        new ApexCharts(
-                                            document.querySelector("#reportsChart"), {
-                                                series: [{
-                                                    name: "Sales",
-                                                    data: [31, 40, 28, 51, 42, 82, 56],
-                                                }, {
-                                                    name: "Revenue",
-                                                    data: [11, 32, 45, 32, 34, 52, 41],
-                                                }, {
-                                                    name: "Customers",
-                                                    data: [15, 11, 32, 18, 9, 24, 11],
-                                                }, ],
-                                                chart: {
-                                                    height: 350,
-                                                    type: "area",
-                                                    toolbar: {
-                                                        show: false,
-                                                    },
-                                                },
-                                                markers: {
-                                                    size: 4,
-                                                },
-                                                colors: ["#4154f1", "#2eca6a", "#ff771d"],
-                                                fill: {
-                                                    type: "gradient",
-                                                    gradient: {
-                                                        shadeIntensity: 1,
-                                                        opacityFrom: 0.3,
-                                                        opacityTo: 0.4,
-                                                        stops: [0, 90, 100],
-                                                    },
-                                                },
-                                                dataLabels: {
-                                                    enabled: false,
-                                                },
-                                                stroke: {
-                                                    curve: "smooth",
-                                                    width: 2,
-                                                },
-                                                xaxis: {
-                                                    type: "datetime",
-                                                    categories: [
-                                                        "2018-09-19T00:00:00.000Z",
-                                                        "2018-09-19T01:30:00.000Z",
-                                                        "2018-09-19T02:30:00.000Z",
-                                                        "2018-09-19T03:30:00.000Z",
-                                                        "2018-09-19T04:30:00.000Z",
-                                                        "2018-09-19T05:30:00.000Z",
-                                                        "2018-09-19T06:30:00.000Z",
-                                                    ],
-                                                },
-                                                tooltip: {
-                                                    x: {
-                                                        format: "dd/MM/yy HH:mm",
-                                                    },
-                                                },
-                                            }
-                                        ).render();
-                                    });
-                                </script>
-                                <!-- End Line Chart -->
+                                <canvas id="line-chart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -174,58 +109,32 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <th scope="row"><a href="#">#1</a></th>
-                                        <td>Thế Em</td>
+                                    {% for b in bookings %}
+                                      <tr>
+                                          <th scope="row"><a href="#">#{{b.booking.id}}</a></th>
+                                        <td>{{b.booker}}</td>
                                         <td>
-                                            <a href="#" class="text-primary">Phòng Cho Hai Người</a>
+                                            <span
+                                            class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                                            >{{b.rooms}}</span>
+
                                         </td>
-                                        <td>$64</td>
+                                        <td>{{b.price}}</td>
                                         <td>
-                                            <span class="badge bg-success">Approved</span>
+                                            {% if b.booking.status == 'REQUESTED' %}
+                                            <span class="badge bg-warning">Yêu Cầu</span>
+                                          {% elif b.booking.status == 'CONFIRMED' %}
+                                          <span class="badge bg-success">Đặt Trước</span>
+                                            {% elif b.booking.status == 'CHECKED_IN' %}
+                                           <span class="badge bg-success">{{b.booking.status}}</span>
+                                          {% elif b.booking.status == 'CHECK_OUT' %}
+                                            <span class="badge bg-success">{{b.booking.status}}</span>
+                                          {% elif b.booking.status == 'CANCELED' %}
+                                             <span class="badge bg-danger">{{b.booking.status}}</span>
+                                          {% endif %}
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row"><a href="#">#2147</a></th>
-                                        <td>Bridie Kessler</td>
-                                        <td>
-                                            <a href="#" class="text-primary">Blanditiis dolor omnis
-                                                similique</a>
-                                        </td>
-                                        <td>$47</td>
-                                        <td><span class="badge bg-warning">Pending</span></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row"><a href="#">#2049</a></th>
-                                        <td>Ashleigh Langosh</td>
-                                        <td>
-                                            <a href="#" class="text-primary">At recusandae consectetur</a>
-                                        </td>
-                                        <td>$147</td>
-                                        <td>
-                                            <span class="badge bg-success">Approved</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row"><a href="#">#2644</a></th>
-                                        <td>Angus Grady</td>
-                                        <td>
-                                            <a href="#" class="text-primar">Ut voluptatem id earum et</a>
-                                        </td>
-                                        <td>$67</td>
-                                        <td><span class="badge bg-danger">Rejected</span></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row"><a href="#">#2644</a></th>
-                                        <td>Raheem Lehner</td>
-                                        <td>
-                                            <a href="#" class="text-primary">Sunt similique distinctio</a>
-                                        </td>
-                                        <td>$165</td>
-                                        <td>
-                                            <span class="badge bg-success">Approved</span>
-                                        </td>
-                                    </tr>
+                                      </tr>
+                                      {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -318,79 +227,7 @@
                 </div>
                 <!-- End Recent Activity -->
 
-                <!-- Budget Report -->
-                <div class="card">
-                    <div class="filter">
-                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li class="dropdown-header text-start">
-                                <h6>Filter</h6>
-                            </li>
-
-                            <li><a class="dropdown-item" href="#">Today</a></li>
-                            <li><a class="dropdown-item" href="#">This Month</a></li>
-                            <li><a class="dropdown-item" href="#">This Year</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="card-body pb-0">
-                        <h5 class="card-title">
-                            Budget Report <span>| This Month</span>
-                        </h5>
-
-                        <div id="budgetChart" style="min-height: 400px" class="echart"></div>
-
-                        <script>
-                            document.addEventListener("DOMContentLoaded", () => {
-                                var budgetChart = echarts
-                                    .init(document.querySelector("#budgetChart"))
-                                    .setOption({
-                                        legend: {
-                                            data: ["Allocated Budget", "Actual Spending"],
-                                        },
-                                        radar: {
-                                            // shape: 'circle',
-                                            indicator: [{
-                                                name: "Sales",
-                                                max: 6500,
-                                            }, {
-                                                name: "Administration",
-                                                max: 16000,
-                                            }, {
-                                                name: "Information Technology",
-                                                max: 30000,
-                                            }, {
-                                                name: "Customer Support",
-                                                max: 38000,
-                                            }, {
-                                                name: "Development",
-                                                max: 52000,
-                                            }, {
-                                                name: "Marketing",
-                                                max: 25000,
-                                            }, ],
-                                        },
-                                        series: [{
-                                            name: "Budget vs spending",
-                                            type: "radar",
-                                            data: [{
-                                                value: [4200, 3000, 20000, 35000, 50000, 18000],
-                                                name: "Allocated Budget",
-                                            }, {
-                                                value: [
-                                                    5000, 14000, 28000, 26000, 42000, 21000,
-                                                ],
-                                                name: "Actual Spending",
-                                            }, ],
-                                        }, ],
-                                    });
-                            });
-                        </script>
-                    </div>
-                </div>
-                <!-- End Budget Report -->
-
-                <!-- Website Traffic -->
+                <!--  -->
                 <div class="card">
                     <div class="filter">
                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -408,59 +245,8 @@
                     <div class="card-body pb-0">
                         <h5 class="card-title">Website Traffic <span>| Today</span></h5>
 
-                        <div id="trafficChart" style="min-height: 400px" class="echart"></div>
+                        <canvas id="pie-chart" width="600" height="400"></canvas>
 
-                        <script>
-                            document.addEventListener("DOMContentLoaded", () => {
-                                echarts
-                                    .init(document.querySelector("#trafficChart"))
-                                    .setOption({
-                                        tooltip: {
-                                            trigger: "item",
-                                        },
-                                        legend: {
-                                            top: "5%",
-                                            left: "center",
-                                        },
-                                        series: [{
-                                            name: "Access From",
-                                            type: "pie",
-                                            radius: ["40%", "70%"],
-                                            avoidLabelOverlap: false,
-                                            label: {
-                                                show: false,
-                                                position: "center",
-                                            },
-                                            emphasis: {
-                                                label: {
-                                                    show: true,
-                                                    fontSize: "18",
-                                                    fontWeight: "bold",
-                                                },
-                                            },
-                                            labelLine: {
-                                                show: false,
-                                            },
-                                            data: [{
-                                                value: 1048,
-                                                name: "Search Engine",
-                                            }, {
-                                                value: 735,
-                                                name: "Direct",
-                                            }, {
-                                                value: 580,
-                                                name: "Email",
-                                            }, {
-                                                value: 484,
-                                                name: "Union Ads",
-                                            }, {
-                                                value: 300,
-                                                name: "Video Ads",
-                                            }, ],
-                                        }, ],
-                                    });
-                            });
-                        </script>
                     </div>
                 </div>
                 <!-- End Website Traffic -->

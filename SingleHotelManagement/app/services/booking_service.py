@@ -1,5 +1,5 @@
 from app.repositories.booking_repository import create_booking as crb, get_booking_by_id as gb, \
-    list_booking as lb, reserve, check_in, check_out, cancel_booking as cb, is_paid as ip
+    list_booking as lb, reserve, check_in, check_out, cancel_booking as cb, is_paid as ip,count_booking as count_b
 from app.services.booking_detail_service import get_booking_detail_with_price
 
 
@@ -44,3 +44,7 @@ def change_booking_status(booking_id, status):
         check_out(booking_id)
     elif status == 4:
         cb(booking_id)
+
+
+def count_booking():
+    return count_b()

@@ -1,5 +1,5 @@
 from app.repositories.guest_repository import is_phone_number_exist, register_guest as rg, search_guest_by_phone_number, \
-    search_guest_by_address, search_guest_by_name
+    search_guest_by_address, search_guest_by_name,count_guest as count_g
 from flask import jsonify
 from distutils.util import strtobool
 
@@ -26,3 +26,6 @@ def search_guest(data):
         results = search_guest_by_address(address=data['search_guest'], foreigner=data['foreigner'])
     user_info_list = [result.to_dict() for result in results]
     return jsonify(user_info_list)
+
+def count_guest():
+    return count_g()
