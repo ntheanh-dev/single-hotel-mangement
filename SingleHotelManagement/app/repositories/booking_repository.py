@@ -98,7 +98,7 @@ def list_booking(status_values):
         concat(
             Tier.id, '-',
             BookingDetail.num_normal_guest, '-',
-            BookingDetail.num_foreigner_guest,'-',
+            BookingDetail.num_foreigner_guest, '-',
         )
     )
     query = db.session.query(Booking, formatted_grouped_values,
@@ -180,3 +180,4 @@ def get_total_price_by_booking_id(id):
     return db.session.query(Tier).join(Room, Room.tier_id == Tier.id).join(BookingDetail,
                                                                            BookingDetail.room_id == Room.id).join(
         Booking, Booking.id == BookingDetail.booking_id).group_by(BookingDetail.room_id).all()
+

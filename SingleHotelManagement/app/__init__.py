@@ -25,7 +25,7 @@ from app.models import receptionist
 from app.models import tier
 
 from app.controllers.receptionist.home_controller import *
-
+from app.controllers.admin.index import *
 
 def init_tables():
     with app.app_context():
