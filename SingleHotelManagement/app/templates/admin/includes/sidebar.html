@@ -1,7 +1,54 @@
-<div class="w3-sidebar w3-bar-block" style="width: 25%">
-  <a href="#" class="w3-bar-item w3-button">Link 1</a>
-  <a href="#" class="w3-bar-item w3-button">Link 2</a>
-  <a href="#" class="w3-bar-item w3-button">Link 3</a>
-</div>
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+            <li class="nav-item ">
+                <a class="nav-link" href="/admin/user">
+                    <i class="bi bi-person-fill"></i>
+                    <span>Khách Hàng</span>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link collapsed" href="index.html">
+                    <i class="bi bi-calendar-event"></i>
+                    <span>Booking</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-building"></i><span>Khách Sạn</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="forms-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="forms-elements.html">
+                            <i class="bi bi-circle"></i><span>Hạng Phòng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="forms-layouts.html">
+                            <i class="bi bi-circle"></i><span>Phòng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="forms-editors.html">
+                            <i class="bi bi-circle"></i><span>Tầng</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-<div style="margin-left: 25%">... page content ...</div>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="users-profile.html">
+                    <i class="bi bi-clipboard2-check-fill"></i>
+                    <span>Báo Cáo</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="pages-faq.html">
+                    <i class="bi bi-file-earmark-bar-graph"></i>
+                    <span>Thống Kê</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+    <!-- End Sidebar-->

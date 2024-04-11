@@ -1,4 +1,67 @@
 $(document).ready(function () {
+    //-------------count guest--------------
+    fetch('/api/admin/count-guest/', {method: 'get'})
+        .then(res => res.json()).then(data => {
+            $('#totalGuest').text(data)
+        })
+    //-------------count booking --------------
+    fetch('/api/admin/count-booking/', {method: 'get'})
+        .then(res => res.json()).then(data => {
+            $('#totalBooking').text(data)
+        })
+    //-------------get revenue--------------
+    fetch('/api/admin/revenue/', {method: 'get'})
+        .then(res => res.json()).then(data => {
+            var revenue = data === null ? 0 : data
+            $('#revenue').text(revenue + ' VND')
+        })
+
+    //-------------get booking--------------
+    fetch('/api/admin/booking/', {method: 'get'})
+        .then(res => res.json()).then(data => {
+            let row = ''
+            data.map(ele => {
+                const booking = ele.booking
+                let rooms = ''
+                ele.rooms.split(',').map(r => {
+                    rooms+= ` <span class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                            >${r}</span> `
+                })
+                var status = ''
+                switch (ele.booking.status) {
+                    case 'REQUESTED':
+                        status = '<span class="badge bg-warning">Yêu Cầu</span>';
+                        break;
+                    case 'CONFIRMED':
+                        status = '<span class="badge bg-success">Đặt Trước</span>'
+                        break;
+                    case 'CHECKED_IN':
+                        status = '<span class="badge bg-success">Checked In</span>'
+                        break;
+                    case 'CHECK_OUT':
+                        status = '<span class="badge bg-success">Checked Out</span>'
+                        break;
+                    case 'CANCELED':
+                        status = '<span class="badge bg-danger">Đã Huỷ</span>'
+                        break;
+                }
+                row += `
+                      <tr>
+                        <td>#${booking.id}</td>
+                        <td>${ele.booker}</td>
+                        <td>
+                            ${rooms}
+                        </td>
+                        <td>${ele.price}</td>
+                        <td>
+                            ${status}
+                        </td>
+                      </tr>
+                `
+            })
+            $('#list-booking-admin-home').html(row)
+        })
+
   var pieChart = new Chart($('#pie-chart'), {
     type: 'pie',
     data: {

@@ -93,7 +93,7 @@ def set_status_room_by_booking_id(booking_id, status_room):
     db.session.commit()
 
 
-def list_booking(status_values):
+def list_booking(status_values=None):
     formatted_grouped_values = func.group_concat(
         concat(
             Tier.id, '-',
@@ -113,7 +113,7 @@ def list_booking(status_values):
                                               BookingDetail.room_id == Room.id,
                                               isouter=True).join(Tier, Tier.id == Room.tier_id).group_by(
         Booking)
-    if len(status_values) == 0:
+    if status_values is None or len(status_values) == 0:
         query = query.all()
     else:
         # status_values ['3,99,5']

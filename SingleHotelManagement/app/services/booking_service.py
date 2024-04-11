@@ -19,7 +19,7 @@ def get_booking_by_id(id):
     return gb(id).to_dict()
 
 
-def list_booking(status_values):
+def list_booking(status_values=None):
     return lb(status_values)
 
 

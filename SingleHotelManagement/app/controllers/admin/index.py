@@ -5,16 +5,32 @@ from app.services.guest_service import count_guest
 from app.services.invoice_service import total_revenue
 
 
-@app.route('/quan-tri/')
-def admin():
-    total_booking = count_booking()
-    total_guest = count_guest()
-    revenue = total_revenue()
-    status_values = request.args.getlist('trang-thai')
-    bookings = list_booking(status_values)
-    return render_template('/admin/index.html', total_booking=total_booking, total_guest=total_guest,
-                           revenue=revenue,bookings=bookings)
+# @app.route('/admin/')
+# def admin_home():
+#     total_booking = count_booking()
+#     total_guest = count_guest()
+#     revenue = total_revenue()
+#     status_values = request.args.getlist('trang-thai')
+#     bookings = list_booking(status_values)
+#     return render_template('/my_admin/index.html', total_booking=total_booking, total_guest=total_guest,
+#                            revenue=revenue, bookings=bookings)
 
-@app.route('/quan-tri/dang-nhap')
-def admin_login():
-    return render_template('/admin/login.html')
+
+@app.route('/api/admin/count-guest/', methods=['get'])
+def admin_home_get_total_guest():
+    return jsonify(count_guest())
+
+
+@app.route('/api/admin/count-booking/', methods=['get'])
+def admin_home_get_total_booking():
+    return jsonify(count_booking())
+
+
+@app.route('/api/admin/revenue/', methods=['get'])
+def admin_home_get_revenue():
+    return jsonify(total_revenue())
+
+
+@app.route('/api/admin/booking/', methods=['get'])
+def admin_home_get_booking():
+    return list_booking()
