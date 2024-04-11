@@ -7,7 +7,7 @@ from app import db
 class User(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
 
-    phone_number = Column(String(11), nullable=False,unique=True)
+    phone_number = Column(String(11), nullable=False, unique=True)
     first_name = Column(String(20), default='', nullable=False)
     last_name = Column(String(40), default='', nullable=False)
     address = Column(Text)
@@ -36,3 +36,6 @@ class User(db.Model):
             'birthdate': self.birthdate,
             'foreigner': self.foreigner,
         }
+
+    def __str__(self):
+        return "{0} {1}".format(self.first_name, self.last_name)

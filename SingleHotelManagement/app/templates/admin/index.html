@@ -19,7 +19,7 @@
                                         <i class="bi bi-cart"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6 id="totalGuest"></h6>
+                                        <h6>{{total_guest}}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -35,7 +35,7 @@
                                         <i class="bi bi-cart"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6 id="totalBooking"></h6>
+                                        <h6>{{total_booking}}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                                         <i class="bi bi-cart"></i>
                                     </div>
                                     <div class="ps-3">
-                                            <span id="revenue"></span>
+                                            <span>{{revenue}} VNĐ</span>
                                     </div>
                                 </div>
                             </div>
@@ -99,12 +99,38 @@
                                     <tr>
                                         <th scope="col">Mã</th>
                                         <th scope="col">Khách</th>
-                                        <th scope="col">Phòng</th>
+                                        <th scope="col">Hạng</th>
                                         <th scope="col">Tổng</th>
                                         <th scope="col">Trạng Thái</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="list-booking-admin-home">
+                                    <tbody>
+                                    {% for b in bookings %}
+                                      <tr>
+                                          <th scope="row"><a href="#">#{{b.booking.id}}</a></th>
+                                        <td>{{b.booker}}</td>
+                                        <td>
+                                            <span
+                                            class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                                            >{{b.rooms}}</span>
+
+                                        </td>
+                                        <td>{{b.price}}</td>
+                                        <td>
+                                            {% if b.booking.status == 'REQUESTED' %}
+                                            <span class="badge bg-warning">Yêu Cầu</span>
+                                          {% elif b.booking.status == 'CONFIRMED' %}
+                                          <span class="badge bg-success">Đặt Trước</span>
+                                            {% elif b.booking.status == 'CHECKED_IN' %}
+                                           <span class="badge bg-success">{{b.booking.status}}</span>
+                                          {% elif b.booking.status == 'CHECK_OUT' %}
+                                            <span class="badge bg-success">{{b.booking.status}}</span>
+                                          {% elif b.booking.status == 'CANCELED' %}
+                                             <span class="badge bg-danger">{{b.booking.status}}</span>
+                                          {% endif %}
+                                        </td>
+                                      </tr>
+                                      {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

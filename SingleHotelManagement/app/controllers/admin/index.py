@@ -16,21 +16,3 @@ from app.services.invoice_service import total_revenue
 #                            revenue=revenue, bookings=bookings)
 
 
-@app.route('/api/admin/count-guest/', methods=['get'])
-def admin_home_get_total_guest():
-    return jsonify(count_guest())
-
-
-@app.route('/api/admin/count-booking/', methods=['get'])
-def admin_home_get_total_booking():
-    return jsonify(count_booking())
-
-
-@app.route('/api/admin/revenue/', methods=['get'])
-def admin_home_get_revenue():
-    return jsonify(total_revenue())
-
-
-@app.route('/api/admin/booking/', methods=['get'])
-def admin_home_get_booking():
-    return list_booking()

@@ -8,8 +8,8 @@ from app import db
 class Tier(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False)
-    max_guest = Column(Integer, default=3)
     base_price = Column(DECIMAL)
+    max_guest = Column(Integer, default=3)
     normal_guest_count = Column(Integer, default=2)
     extra_guest_surcharge = Column(Float, default=0.25)
     foreign_guest_surcharge = Column(Float, default=1.5)
@@ -26,7 +26,7 @@ class Tier(db.Model):
             'extra_guest_surcharge': self.extra_guest_surcharge,
             'foreign_guest_surcharge': self.foreign_guest_surcharge
         }
-    
+
     def get_price(self, normal_guest_count, foreign_count):
         price = float(self.base_price)
         if normal_guest_count + foreign_count > self.normal_guest_count:
@@ -34,3 +34,6 @@ class Tier(db.Model):
         if foreign_count > 0:
             price = price * self.foreign_guest_surcharge
         return price
+
+    def __str__(self):
+        return self.name

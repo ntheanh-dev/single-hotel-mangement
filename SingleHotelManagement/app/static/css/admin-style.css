@@ -711,8 +711,8 @@ h6 {
 }
 
 .sidebar-nav .nav-link.collapsed {
-    color: #012970;
-    background: #fff;
+    color: #012970 !important;
+    background: #fff !important;
 }
 
 .sidebar-nav .nav-link.collapsed i {
@@ -770,6 +770,9 @@ h6 {
     background-color: #4154f1;
 }
 
+.sidebar-nav .show {
+    visibility: visible !important;
+}
 
 /*--------------------------------------------------------------
   # Dashboard

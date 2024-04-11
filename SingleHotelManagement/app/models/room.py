@@ -18,7 +18,7 @@ class Room(db.Model):
     image = Column(String(255),
                    default='https://res.cloudinary.com/dqpo9h5s2/image/upload/v1711860957/rooms/room_2-1_c4yatw.png',
                    nullable=True)
-    tier_id = Column(Integer, ForeignKey('tier.id'))
+    tier_id = Column(Integer, ForeignKey('tier.id'),nullable=False)
 
     # one to many
     images = relationship("Image", backref="image", lazy=False)
@@ -35,3 +35,7 @@ class Room(db.Model):
             'image': self.image,
             'tier_id': self.tier_id,
         }
+
+    def __str__(self):
+        return self.name
+

@@ -9,3 +9,6 @@ class Floor(db.Model):
     name = Column(String(40), default='', nullable=False)
 
     rooms = relationship('Room',backref='room',lazy=True)
+
+    def __str__(self):
+        return self.name
