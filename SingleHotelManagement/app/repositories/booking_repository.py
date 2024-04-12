@@ -29,7 +29,8 @@ def create_booking(data):
         db.rollback()
         return None
     room = rooms[0]
-
+    # Change status room
+    room.status = RoomStatus.RESERVED
     # Create booking detail
     booking_detail = BookingDetail(
         booking_id=booking.id,
@@ -45,8 +46,7 @@ def create_booking(data):
     tier = get_tier_by_id(int(data.get('tier_id')))
     booking_detail_price = tier.get_price(booking_detail.num_normal_guest,booking_detail.num_foreigner_guest)
     booking_detail.set_price(booking_detail_price)
-    # Change status room
-    room.status = RoomStatus.RESERVED
+
 
     db.session.commit()
     return {

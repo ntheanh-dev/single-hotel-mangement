@@ -1,6 +1,6 @@
 from app.repositories.booking_detail_repository import get_booking_details_by_booking_id as gbd, \
     add_guest_to_booking_detail as ag, check_max_guest, change_num_guest as cng, \
-    get_booking_detail_with_tier_by_booking_id as gbkdwt
+    get_booking_detail_with_tier_by_booking_id as gbkdwt, add_booking_detail_in_booking as abdib
 from app.repositories.booking_repository import get_booking_by_id
 from app.repositories.room_repository import get_room_by_id
 from app.repositories.tier_repository import get_tier_by_id
@@ -49,3 +49,9 @@ def change_num_guest(booking_id, num_foreigner_guest, num_normal_guest, room_id)
         return jsonify(False)
     else:
         return jsonify(cng(booking_id, num_foreigner_guest, num_normal_guest, room_id))
+
+
+def add_booking_detail_in_booking(booking_id=None, tier_id=None):
+    if booking_id is None or tier_id is None:
+        return None
+    return abdib(booking_id, tier_id)

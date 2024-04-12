@@ -21,21 +21,6 @@ $(document).ready(function () {
         $(".add-guest-form").fadeOut();
     });
 
-    // $(".choose-guest-btn, .search-guest, .add-guest-btn").click(function () {
-    //     Toastify({
-    //         text: "Hãy chọn phòng trước",
-    //         duration: 3000,
-    //         // destination: "https://github.com/apvarun/toastify-js",
-    //         newWindow: true,
-    //         gravity: "bottom", // `top` or `bottom`
-    //         position: "center", // `left`, `center` or `right`
-    //         stopOnFocus: true, // Prevents dismissing of toast on hover
-    //         style: {
-    //             background: "#FFAF45",
-    //         },
-    //     }).showToast();
-    // });
-
     // -----------------Tìm kiếm khách mới---------------------
     $(".search-guest-btn").click(function () {
         if ($("#search_guest").val() !== "") {
@@ -318,49 +303,78 @@ removeBooker = () => {
 //-----------Đăt phòng online-------------
 chooseRoom = (room_id) => {
     var urlParams = new URLSearchParams(window.location.search);
-    var max_guest = urlParams.has('max_guest')
-
-    // window.location.href = "/nhan-vien/dat-phong/?ma=3/";
-    var currentHTML = $('.booker').html();
-    if (currentHTML.trim() === '') {
-        Swal.fire({
-            title: 'Hãy chọn khách trước !!!',
-            text: '',
-            icon: 'warning',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Ok',
-        })
-    } else {
-        var booker_id = $('.booker-info').attr('guest_id')
-        var foreigner = $('.booker-info').attr('foreigner')
-        fetch("/api/reception/make-booking/", {
-            method: 'post',
-            body: JSON.stringify({
-                'start_date': $("#startdate").val(),
-                'end_date': $("#enddate").val(),
-                'receptionist_id': 2,
-                'booker_id': booker_id,
-                'tier_id': room_id,
-                'foreigner': foreigner,
-            }),
-            headers: {
-                'Accept': 'application/json',
-                'Context-Type': 'application/json',
-            }
+    var booking_processing = urlParams.has('ma')
+    var booking_id = urlParams.get('ma')
+    // -----------------------Tao mot booking detail------------------------
+    if(booking_processing) {
+         fetch("/api/reception/add-room/", {
+                method: 'post',
+                body: JSON.stringify({
+                    'booking_id': booking_id,
+                    'tier_id': room_id,
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Context-Type': 'application/json',
+                }
         }).then(res => res.json()).then(data => {
+            console.log(data)
             if (data == 'error') {
                 Swal.fire({
-                    title: 'Lỗi đặt phòng !!!',
+                    title: 'Lỗi thêm phòng !!!',
                     text: 'Xin vui lòng thử lại hoặc chọn phòng khác',
                     icon: 'warning',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Ok',
                 })
             } else {
-                booking = data.booking
-                room = data.room
-                window.location.href = `/nhan-vien/dat-phong/?ma=${booking.id}&phong=${room.id}`;
+                window.location.href = `/nhan-vien/dat-phong/?ma=${urlParams.get('ma')}&phong=${data.room_id}`;
             }
         })
+    } else {
+        //------------------------Tao mot booking moi-----------------------
+        var currentHTML = $('.booker').html();
+        if (currentHTML.trim() === '') {
+            Swal.fire({
+                title: 'Hãy chọn khách trước !!!',
+                text: '',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Ok',
+            })
+        } else {
+            var booker_id = $('.booker-info').attr('guest_id')
+            var foreigner = $('.booker-info').attr('foreigner')
+            fetch("/api/reception/make-booking/", {
+                method: 'post',
+                body: JSON.stringify({
+                    'start_date': $("#startdate").val(),
+                    'end_date': $("#enddate").val(),
+                    'receptionist_id': 2,
+                    'booker_id': booker_id,
+                    'tier_id': room_id,
+                    'foreigner': foreigner,
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Context-Type': 'application/json',
+                }
+            }).then(res => res.json()).then(data => {
+                if (data == 'error') {
+                    Swal.fire({
+                        title: 'Lỗi đặt phòng !!!',
+                        text: 'Xin vui lòng thử lại hoặc chọn phòng khác',
+                        icon: 'warning',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Ok',
+                    })
+                } else {
+                    booking = data.booking
+                    room = data.room
+                    window.location.href = `/nhan-vien/dat-phong/?ma=${booking.id}&phong=${room.id}`;
+                }
+            })
+        }
     }
+
 }
