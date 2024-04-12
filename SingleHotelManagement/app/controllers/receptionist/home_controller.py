@@ -5,7 +5,7 @@ from app import app
 from app.models.booking import BookingStatus
 from app.repositories.tier_repository import get_tier_by_room_id
 from app.services.booking_detail_service import get_booking_details_by_booking_id, add_guest_to_booking_detail as ad, \
-    change_num_guest as cng
+    change_num_guest as cng, add_booking_detail_in_booking
 from app.services.guest_service import check_phone_number, register_guest, search_guest as sg
 from app.services.tier_service import get_tiers, get_max_guests, tier_with_available_room_to_dict
 from app.services.floor_service import get_floors
@@ -57,6 +57,21 @@ def booking():
                                current_booking_detail=current_booking_detail,
                                tiers=tiers, floors=floors, max_guests=max_guests
                                )
+
+
+@app.route('/api/reception/add-room/', methods=['post'])
+def add_room():
+    data = json.loads(request.data)
+    booking_id = data.get('booking_id')
+    tier_id = data.get('tier_id')
+    try:
+        result = add_booking_detail_in_booking(booking_id, tier_id)
+        return jsonify(result)
+    except Exception as e:
+        print("-------------------")
+        print(e)
+        print("-------------------")
+        return jsonify('error')
 
 
 @app.route('/api/reception/search-tier/', methods=['post'])
