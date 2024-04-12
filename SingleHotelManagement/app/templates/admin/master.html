@@ -100,7 +100,7 @@
     {% include 'admin/includes/sidebar.html' %}
 
     <!-- ======= Main ======= -->
-    <main id="main" class="main overflow-auto">
+    <main id="main" class="main">
         {% block body %} {% endblock %}
     </main>
     <!-- End #main -->
@@ -136,7 +136,7 @@
 
 
     <!-- Template JS File -->
-    <script src="{{url_for('static', filename='js/admin/home_page.js')}}"></script>
+
     {% if admin_view.extra_js %}
         {% for js_url in admin_view.extra_js %}
             <script src="{{ js_url }}" type="text/javascript"></script>

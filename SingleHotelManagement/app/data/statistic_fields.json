@@ -1,0 +1,68 @@
+{
+  "statistic_type": [
+      {
+        "type": "revenue",
+        "name": "Thống kê doanh thu"
+      },
+
+      {
+        "type": "frequently_tier_booking",
+        "name": "Thống kê tần suất sử dụng phòng theo hạng"
+      }
+  ],
+  "statistic_condition": [
+    {
+      "type": "month_statistic",
+      "name": "Thống kê theo tháng"
+    },
+    {
+      "type": "quarter_statistic",
+      "name": "Thống kê theo quý"
+    },
+    {
+      "type": "year_statistic",
+      "name": "Thống kê theo năm"
+    },
+
+    {
+      "type": "month_to_month_statistic",
+      "name": "Thống kê theo khoảng thời gian giữa 2 tháng"
+    },
+
+    {
+      "type": "quarter_to_quarter_statistic",
+      "name": "Thống kê theo khoảng thơì gian giữa 2 quý"
+    },
+
+    {
+      "type": "year_to_year_statistic",
+      "name": "Thống kê theo khoảng thời gian giữa 2 năm"
+    }
+  ],
+  "chart_type": [
+    {
+      "type": "pie",
+      "name": "Biểu đồ tròn"
+    },
+
+    {
+      "type": "line",
+      "name": "Biểu đồ đường"
+    },
+
+    {
+      "type": "bar",
+      "name": "Biểu đồ cột"
+    },
+
+    {
+      "type": "doughnut",
+      "name": "Biểu đồ doughnut"
+    },
+
+    {
+      "type": "polarArea",
+      "name": "Biểu đồ vùng cực"
+    }
+  ]
+}

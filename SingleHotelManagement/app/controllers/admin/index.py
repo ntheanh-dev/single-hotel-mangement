@@ -1,9 +1,8 @@
-from app import app
-from flask import render_template, request, jsonify
-from app.services.booking_service import count_booking, list_booking
-from app.services.guest_service import count_guest
-from app.services.invoice_service import total_revenue
+import json
 
+from app import app
+from flask import request
+from app.services.tier_service import get_tier_name
 
 # @app.route('/admin/')
 # def admin_home():
@@ -16,3 +15,13 @@ from app.services.invoice_service import total_revenue
 #                            revenue=revenue, bookings=bookings)
 
 
+@app.route('/api/admin/tier-name/', methods=['post'])
+def get_book_name_hint():
+    kw = request.json.get('keyword')
+    tier_names = []
+    for tier in get_tier_name(kw=kw):
+        tier_names.append({
+            'tier_name': tier[0],
+            'tier_id': tier[1]
+        })
+    return json.dumps(tier_names)

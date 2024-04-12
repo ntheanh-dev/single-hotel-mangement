@@ -1,0 +1,54 @@
+<div class="col-md-10">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-head-row">
+                <div class="card-title">Lựa chọn thống kê</div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="stats-choice">
+                <form class="d-flex flex-wrap">
+                    <div class="form-group">
+                        <label for="statisticType">Loại thống kê</label>
+                        <select name="statisticType" id="statisticType"  class="border-solid border-2 border-sky-500 rounded-lg">
+                            {% for s in selections['statistic_type'] %}
+                                <option value={{ s['type'] }}>{{ s['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-group ml--10" id="tierNameInput">
+                            <label for="tierName" class="w-32">Tên hạng phòng</label>
+                            <input class="border-solid border-2 border-sky-500 rounded-lg" type="text" placeholder="Nhập tên hạng phòng" id='tierName' style="padding-left:15px"/>
+                            <div id="tierNameResultInput" class="show-hint ml-32 border-solid border-2 border-sky-500 rounded-lg"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="chartType">Loại biểu đồ</label>
+                        <select name="chartType" id="chartType"  class="border-solid border-2 border-sky-500 rounded-lg">
+                            {% for s in selections['chart_type'] %}
+                                <option value={{ s['type'] }}>{{ s['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="statisticCondition">Điều kiện thống kê</label>
+                        <select name="statisticCondition" id="statisticCondition" class="border-solid border-2 border-sky-500 rounded-lg">
+                            {% for s in selections['statistic_condition'] %}
+                                <option value={{ s['type'] }}>{{ s['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-group ml--10" id="timeInput">
+                            <div class="form-grou p-0">
+                                <label for="leftTime">Bắt đầu</label>
+                                <select class="border-solid border-2 border-sky-500 rounded-lg"  name="leftTime" id="leftTime"></select>
+                            </div>
+                            <div class="form-group p-0 pl-40">
+                                <label for="rightTime">Kết thúc</label>
+                                <select class="border-solid border-2 border-sky-500 rounded-lg" name="rightTime" id="rightTime"></select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

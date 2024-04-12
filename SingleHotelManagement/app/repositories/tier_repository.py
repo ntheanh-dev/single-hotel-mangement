@@ -36,3 +36,13 @@ def get_tier_by_room_id(room_id):
 
 def get_tier_by_id(tier_id):
     return db.session.query(Tier).filter(Tier.id == tier_id).first()
+
+
+def get_tier_name(kw):
+    if kw is None:
+        return None
+
+    return db.session.query(Tier.name,Tier.id) \
+        .filter(func.lower(Tier.name).contains(kw.lower().strip())) \
+        .slice(0, 10) \
+        .all()

@@ -1,5 +1,5 @@
 from app.repositories.tier_repository import get_tier_has_available_room, get_distinct_max_guest, \
-    get_num_available_room_by_id as siu
+    get_num_available_room_by_id as siu, get_tier_name as gtn
 
 
 def get_tiers(floor, max_guest):
@@ -34,3 +34,8 @@ def get_max_guests():
 
 def get_num_available_room_by_id(id):
     return siu(id=id)
+
+
+def get_tier_name(kw=None):
+    tiers_names = gtn(kw=kw)
+    return [] if tiers_names is None else tiers_names

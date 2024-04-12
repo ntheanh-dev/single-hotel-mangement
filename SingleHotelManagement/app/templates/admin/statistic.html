@@ -1,0 +1,22 @@
+{% extends 'admin/master.html'%}
+{% block body %}
+<div class="content">
+    <div class="panel-header bg-white px-4 card">
+        <div class="page-inner py-4">
+            <div>
+                <h1 class=" pb-2 text-lg font-medium card-title">Thống kê</h1>
+                <h2 class=" op-7 mb-3">Quản lý khách sạn</h2>
+            </div>
+        </div>
+    </div>
+    <div class="page-inner " style="margin-top: -50px;">
+        <div class="row justify-content-center">
+            {% include 'admin/includes/statistic_input.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block tail %}
+    <script src="{{url_for('static', filename='js/admin/statistic.js')}}"></script>
+{% endblock %}
