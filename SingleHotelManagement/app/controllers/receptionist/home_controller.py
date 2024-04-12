@@ -1,6 +1,6 @@
 import json
 from distutils.util import strtobool
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, redirect
 from app import app
 from app.models.booking import BookingStatus
 from app.repositories.tier_repository import get_tier_by_room_id
@@ -39,6 +39,10 @@ def booking():
 
         room_id = request.args.get('phong')
         booking = get_booking_by_id(int(booking_id))
+
+        if booking['status'] != 'CONFIRMED':
+            return redirect('/nhan-vien/dat-phong/')
+
         booking_details = get_booking_details_by_booking_id(int(booking_id))
         current_booking_detail = {}
         for bd in booking_details:
@@ -46,14 +50,11 @@ def booking():
                 current_booking_detail = bd
                 break
         current_tier = get_tier_by_room_id(int(room_id))
-        current_price = current_tier.get_price(current_booking_detail['num_normal_guest'],
-                                               current_booking_detail['num_foreigner_guest'])
         return render_template('/receptionist/booking_detail.html',
                                current_tier=current_tier,
                                booking_details=booking_details,
                                booking=booking,
                                current_booking_detail=current_booking_detail,
-                               current_price="{:,.0f}".format(current_price),
                                tiers=tiers, floors=floors, max_guests=max_guests
                                )
 

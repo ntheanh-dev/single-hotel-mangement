@@ -28,8 +28,12 @@ def add_guest_to_booking_detail(booking_id, room_id, foreigner):
 def change_num_guest(booking_id, num_foreigner_guest, num_normal_guest, room_id):
     booking_detail = db.session.query(BookingDetail).filter(BookingDetail.room_id == int(room_id),
                                                             BookingDetail.booking_id == int(booking_id)).first()
+    tier = get_tier_by_room_id(room_id)
     booking_detail.num_foreigner_guest = int(num_foreigner_guest)
     booking_detail.num_normal_guest = int(num_normal_guest)
+
+    booking_detail.set_price(tier.get_price(int(num_normal_guest),int(num_normal_guest)))
+
     db.session.commit()
     return True
 

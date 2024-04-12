@@ -7,9 +7,9 @@ from app.models.booking_detail import BookingDetail
 from app.models.invoice import Invoice
 from app.models.room import Room, RoomStatus
 from distutils.util import strtobool
-
 from app.models.tier import Tier
 from app.models.user import User
+from app.repositories.tier_repository import get_tier_by_id
 
 
 def create_booking(data):
@@ -36,12 +36,17 @@ def create_booking(data):
         room_id=room.id,
     )
     db.session.add(booking_detail)
-    # Change status room
-    room.status = RoomStatus.RESERVED
+    # Cap nhap so luong khach
     if strtobool(data.get('foreigner').lower()):
         booking_detail.num_foreigner_guest = 1
     else:
         booking_detail.num_normal_guest = 1
+    # Cap nhap gia tien
+    tier = get_tier_by_id(int(data.get('tier_id')))
+    booking_detail_price = tier.get_price(booking_detail.num_normal_guest,booking_detail.num_foreigner_guest)
+    booking_detail.set_price(booking_detail_price)
+    # Change status room
+    room.status = RoomStatus.RESERVED
 
     db.session.commit()
     return {

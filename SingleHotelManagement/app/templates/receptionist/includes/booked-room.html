@@ -62,7 +62,7 @@
             </div>
             <div class="rounded-lg border border-gray-600 border-2 flex">
               <div class="border-r-2 pr-2">
-                <label class="ml-3" for="vietnamese">Khách trong nước</label>
+                <label class="ml-3" for="vietnamese_num">Khách trong nước</label>
                 <input
                   class="my-1 w-10 pl-3 text-lg border-bottom border-black-900"
                   type="number"
@@ -75,7 +75,7 @@
                 />
               </div>
               <div>
-                <label class="ml-3" for="foreigner">Khách nước ngoài</label>
+                <label class="ml-3" for="foreigner_num">Khách nước ngoài</label>
                 <input
                   class="my-1 w-10 pl-3 text-lg border-bottom border-black-900"
                   type="number"
@@ -90,7 +90,7 @@
               <button class="mr-2 change_num_guest-btn">Áp dụng</button>
             </div>
           </div>
-          <div class="card-footer text-muted">{{current_price}}</div>
+          <div class="card-footer text-muted">{{current_booking_detail.price}}</div>
         </div>
       </div>
     </div>

@@ -317,6 +317,9 @@ removeBooker = () => {
 }
 //-----------Đăt phòng online-------------
 chooseRoom = (room_id) => {
+    var urlParams = new URLSearchParams(window.location.search);
+    var max_guest = urlParams.has('max_guest')
+
     // window.location.href = "/nhan-vien/dat-phong/?ma=3/";
     var currentHTML = $('.booker').html();
     if (currentHTML.trim() === '') {
