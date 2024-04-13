@@ -1008,3 +1008,12 @@ h6 {
 .profile .profile-edit img {
     max-width: 120px;
 }
+
+.stats-choice select {
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.stats-choice label {
+  margin-right: 10px;
+}

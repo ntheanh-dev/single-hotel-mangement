@@ -1,0 +1,65 @@
+<div class="col-lg-11" style="margin-top: -55px;">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-head-row">
+                <div class="card-title">Lựa chọn báo cáo</div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="stats-choice">
+                <form class="d-flex flex-wrap">
+
+                    <div class="form-group mr-2">
+                        <label class="text-md font-semibold mr-1" for="reportType">Loại báo cáo</label>
+                        <select
+                            class="text-black/70 bg-white px-3 py-2 transition-all cursor-pointer hover:border-blue-600/30 border border-gray-200 rounded-lg outline-blue-600/50 appearance-none invalid:text-black/30 w-64"
+                            id="reportType"
+                        >
+                            {% for s in selections['report_type'] %}
+                                <option value={{ s['type'] }}>{{ s['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group mr-2">
+                        <label class="text-md font-semibold mr-1" for="reportCondition">Điều kiện báo cáo</label>
+                        <select
+                            class="text-black/70 bg-white px-3 py-2 transition-all cursor-pointer hover:border-blue-600/30 border border-gray-200 rounded-lg outline-blue-600/50 appearance-none invalid:text-black/30 w-48"
+                            id="reportCondition"
+                        >
+                            {% for s in selections['report_condition'] %}
+                                <option value={{ s['type'] }}>{{ s['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group mr-2 monthSelection">
+                        <label class="text-md font-semibold mr-1" for="monthInput">Tháng</label>
+                        <select
+                            class="text-black/70 bg-white px-3 py-2 transition-all cursor-pointer hover:border-blue-600/30 border border-gray-200 rounded-lg outline-blue-600/50 appearance-none invalid:text-black/30 w-18"
+                            id="monthInput"
+                        >
+                        </select>
+                    </div>
+
+                    <div class="form-group mr-2 quarterSelection">
+                        <label class="text-md font-semibold mr-1" for="quarterInput">Quý</label>
+                        <select
+                            class="text-black/70 bg-white px-3 py-2 transition-all cursor-pointer hover:border-blue-600/30 border border-gray-200 rounded-lg outline-blue-600/50 appearance-none invalid:text-black/30 w-18"
+                            id="quarterInput"
+                        >
+                        </select>
+                    </div>
+
+                    <div class="form-group mr-2 yearSelection">
+                        <label class="text-md font-semibold mr-1" for="yearInput">Năm</label>
+                        <select
+                            class="text-black/70 bg-white px-3 py-2 transition-all cursor-pointer hover:border-blue-600/30 border border-gray-200 rounded-lg outline-blue-600/50 appearance-none invalid:text-black/30 w-20"
+                            id="yearInput"
+                        >
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

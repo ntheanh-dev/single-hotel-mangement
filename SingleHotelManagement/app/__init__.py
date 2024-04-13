@@ -46,6 +46,7 @@ from app.views.admin.room_model_view import RoomModelView
 from app.views.admin.tier_model_view import TierModelView
 from app.views.admin.floor_model_view import FloorModelView
 from app.views.admin.statistic_view import StatisticView
+from app.views.admin.report_view import ReportView
 
 from app.controllers.receptionist.home_controller import *
 from app.controllers.admin.index import *
@@ -71,4 +72,5 @@ def init_admin():
     my_admin.add_view(FloorModelView(Floor, db.session,name='tầng'))
 
     my_admin.add_view(StatisticView(name='Thống kê',url='statistic'))
+    my_admin.add_view(ReportView(name='Báo cáo',url='report'))
 

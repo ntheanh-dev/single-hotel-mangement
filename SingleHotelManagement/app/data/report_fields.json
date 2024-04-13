@@ -1,0 +1,27 @@
+{
+  "report_type": [
+      {
+        "type": "revenue",
+        "name": "Thống kê doanh thu"
+      },
+
+      {
+        "type": "frequently_tier_booking",
+        "name": "Thống kê tần suất sử dụng phòng"
+      }
+  ],
+  "report_condition": [
+    {
+      "type": "month_report",
+      "name": "Báo cáo theo tháng"
+    },
+    {
+      "type": "quarter_report",
+      "name": "Báo cáo theo quý"
+    },
+    {
+      "type": "year_report",
+      "name": "Báo cáo theo năm"
+    }
+  ]
+}

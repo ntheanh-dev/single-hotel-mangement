@@ -1,4 +1,4 @@
-<div class="col-md-10">
+<div class="col-lg-5">
     <div class="card">
         <div class="card-header">
             <div class="card-head-row">
@@ -7,7 +7,7 @@
         </div>
         <div class="card-body">
             <div class="stats-choice">
-                <form class="d-flex flex-wrap">
+                <form class="d-flex space-y-4 flex-wrap">
                     <div class="form-group">
                         <label for="statisticType">Loại thống kê</label>
                         <select name="statisticType" id="statisticType"  class="border-solid border-2 border-sky-500 rounded-lg">
@@ -15,7 +15,7 @@
                                 <option value={{ s['type'] }}>{{ s['name'] }}</option>
                             {% endfor %}
                         </select>
-                        <div class="form-group ml--10" id="tierNameInput">
+                        <div class="form-group ml--10 mt-2" id="tierNameInput">
                             <label for="tierName" class="w-32">Tên hạng phòng</label>
                             <input class="border-solid border-2 border-sky-500 rounded-lg" type="text" placeholder="Nhập tên hạng phòng" id='tierName' style="padding-left:15px"/>
                             <div id="tierNameResultInput" class="show-hint ml-32 border-solid border-2 border-sky-500 rounded-lg"></div>
@@ -36,7 +36,7 @@
                                 <option value={{ s['type'] }}>{{ s['name'] }}</option>
                             {% endfor %}
                         </select>
-                        <div class="form-group ml--10" id="timeInput">
+                        <div class="form-group ml--10 mt-2" id="timeInput">
                             <div class="form-grou p-0">
                                 <label for="leftTime">Bắt đầu</label>
                                 <select class="border-solid border-2 border-sky-500 rounded-lg"  name="leftTime" id="leftTime"></select>

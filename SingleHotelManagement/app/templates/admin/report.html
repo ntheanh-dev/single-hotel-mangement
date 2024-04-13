@@ -11,13 +11,13 @@
     </div>
     <div class="page-inner ">
         <div class="row justify-content-center">
-            {% include 'admin/includes/statistic_input.html' %}
-            {% include 'admin/includes/statistic_chart.html' %}
+            {% include 'admin/includes/report_input.html' %}
+            {% include 'admin/includes/report_data_table.html' %}
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block tail %}
-    <script src="{{url_for('static', filename='js/admin/statistic.js')}}"></script>
+    <script src="{{url_for('static', filename='js/admin/report.js')}}"></script>
 {% endblock %}

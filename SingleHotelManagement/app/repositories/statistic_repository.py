@@ -14,13 +14,12 @@ def get_revenue_by_month(from_month=None, to_month=None):
     query = db.session.query(func.month(Invoice.paid_at), func.sum(Invoice.amount)) \
         .where(Invoice.paid.__eq__(True)) \
         .group_by(func.month(Invoice.paid_at)) \
-        .order_by(func.month(Invoice.paid_at))
 
     if from_month and to_month:
         from_month = int(from_month)
         to_month = int(to_month)
         query = query.filter(and_(func.month(Invoice.paid_at) >= from_month, func.month(Invoice.paid_at) <= to_month))
-    return query.all()
+    return query.order_by(func.month(Invoice.paid_at)).all()
 
 
 # Lấy thông tin thống kê doanh thu theo quy, hoặc giữa 2 quys
@@ -28,14 +27,14 @@ def get_revenue_by_quarter(from_quarter=None, to_quarter=None):
     query = db.session.query(func.quarter(Invoice.paid_at), func.sum(Invoice.amount)) \
         .where(Invoice.paid.__eq__(True)) \
         .group_by(func.quarter(Invoice.paid_at)) \
-        .order_by(func.quarter(Invoice.paid_at))
+
 
     if from_quarter and to_quarter:
         from_quarter = int(from_quarter)
         to_quarter = int(to_quarter)
         query = query.filter(
             and_(func.quarter(Invoice.paid_at) >= from_quarter, func.quarter(Invoice.paid_at) <= to_quarter))
-    return query.all()
+    return query.order_by(func.quarter(Invoice.paid_at)).all()
 
 
 # Lấy thông tin thống kê doanh thu theo quy, hoặc giữa 2 quys
@@ -43,13 +42,13 @@ def get_revenue_by_year(from_year=None, to_year=None):
     query = db.session.query(func.year(Invoice.paid_at), func.sum(Invoice.amount)) \
         .where(Invoice.paid.__eq__(True)) \
         .group_by(func.year(Invoice.paid_at)) \
-        .order_by(func.year(Invoice.paid_at))
+
 
     if from_year and to_year:
         from_year = int(from_year)
         to_year = int(to_year)
         query = query.filter(and_(func.year(Invoice.paid_at) >= from_year, func.year(Invoice.paid_at) <= to_year))
-    return query.all()
+    return query.order_by(func.year(Invoice.paid_at)).all()
 
 
 def get_frequent_booking_tier_month(from_month=None, to_month=None, tier_id=None):
