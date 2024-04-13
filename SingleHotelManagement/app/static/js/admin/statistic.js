@@ -7,6 +7,26 @@ let choiceObject = {
   hintIndex: null,
   flagTimeInput: null
 }
+
+// Gửi các thông tin lựa chọn lên server để lấy dữ liệu thống kê
+function getStatisticData() {
+  fetch('/api/admin/statistic/', {
+    method: 'post',
+    body: JSON.stringify({
+      'statistic_type': $('#statisticType').val(),
+      'statistic_condition': $('#statisticCondition').val(),
+      'from_time': $('#leftTime').val(),
+      'to_time': $('#rightTime').val(),
+      'tier_id': $('#tierName').attr('tier_id')
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json()).then(statisticData => {
+    console.log((statisticData))
+  })
+}
+
 $(document).ready(function () {
       $('#timeInput').hide()
       $('#tierNameInput').hide()
@@ -22,11 +42,13 @@ $(document).ready(function () {
           $('#tierNameInput').hide()
           $('#tierName').val('')
           $('#tierNameResultInput').html('')
+
+          //----------- Lấy dữ lieu mới nhất----------------
+          getStatisticData()
         }
       })
       //-----------Thay doi dieu kien thong ke-------------
       $('#statisticCondition').change(function () {
-        $('#timeInput').hide()
         if ($(this).val() == 'month_to_month_statistic' ||
           $(this).val() == 'quarter_to_quarter_statistic' ||
           $(this).val() == 'year_to_year_statistic') {
@@ -54,7 +76,14 @@ $(document).ready(function () {
           }
           $('#leftTime').html(selection)
           $('#rightTime').html(selection)
+        } else {
+            $('#timeInput').hide()
+            $('#leftTime').val(null)
+            $('#rightTime').val(null)
         }
+
+        //----------- Lấy dữ lieu mới nhất----------------
+        getStatisticData()
       })
       //--------- Ngan khong cho chọn khoảng thời gian không hợp lý (vd: từ 7 -> 2)--------------
       $('#leftTime').data('lastSelectedIndex', 0)
@@ -71,8 +100,8 @@ $(document).ready(function () {
         if (parseInt($(this).val()) > parseInt($('#rightTime').val())) {
           this.selectedIndex = $(this).data('lastSelectedIndex')
         } else {
-//          gChoiceInfo.fromTime = parseInt($(this).val())
-//          getStatisticData(gChoiceInfo, gChartInfo)
+          //----------- Lấy dữ lieu mới nhất----------------
+          getStatisticData()
         }
       })
 
@@ -80,8 +109,8 @@ $(document).ready(function () {
         if (parseInt($(this).val()) < parseInt($('#leftTime').val())) {
           this.selectedIndex = $(this).data('lastSelectedIndex')
         } else {
-//          gChoiceInfo.toTime = parseInt($(this).val())
-//          getStatisticData(gChoiceInfo, gChartInfo)
+          //----------- Lấy dữ lieu mới nhất----------------
+          getStatisticData()
         }
       })
       //------------Bat su kien thay doi tier name-------------
@@ -116,7 +145,7 @@ function setHintResult(hintResult) {
   if (hintResult.length > 0) {
     $('#tierNameResultInput').show()
     hintResult.map(hint => {
-      row += `<option class="tier-name-option cursor-pointer" onclick = "setOnClickHint('${hint.tier_name}')" value=${hint.tier_id}
+      row += `<option class="tier-name-option cursor-pointer" onclick = "setOnClickHint('${hint.tier_name}','${hint.tier_id}')" value=${hint.tier_id}
       onmouseover="setOnMouseOverHint('${hint.tier_id}')">${hint.tier_name}</option>
       `
     })
@@ -138,8 +167,11 @@ function setOnMouseOverHint(tier_id) {
 }
 
 // Click vao option gợi ý
-function setOnClickHint(hint) {
+function setOnClickHint(hint,id) {
   $('#tierName').val(hint.trim())
-    $('#tierNameResultInput').hide()
+  $('#tierName').attr('tier_id', id);
+  $('#tierNameResultInput').hide()
 
+  //----------- Lấy dữ lieu mới nhất----------------
+  getStatisticData()
 }

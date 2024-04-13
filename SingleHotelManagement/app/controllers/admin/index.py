@@ -1,8 +1,10 @@
 import json
 
 from app import app
-from flask import request
+from flask import request, jsonify
 from app.services.tier_service import get_tier_name
+from app.services.statistict_service import get_statistic as gt
+
 
 # @app.route('/admin/')
 # def admin_home():
@@ -25,3 +27,13 @@ def get_book_name_hint():
             'tier_id': tier[1]
         })
     return json.dumps(tier_names)
+
+
+@app.route('/api/admin/statistic/', methods=['post'])
+def get_statistic():
+    data = json.loads(request.data)
+    # import pdb
+    # pdb.set_trace()
+    result = gt(data=data)
+    return jsonify(result)
+#
