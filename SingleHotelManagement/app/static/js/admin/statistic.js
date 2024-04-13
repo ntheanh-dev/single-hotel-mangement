@@ -1,12 +1,4 @@
-let choiceObject = {
-  statisticType: 'revenue',
-  statisticCondition: 'month_statistic',
-  fromTime: null,
-  toTime: null,
-  tierName: null,
-  hintIndex: null,
-  flagTimeInput: null
-}
+let chart = null
 
 // Gửi các thông tin lựa chọn lên server để lấy dữ liệu thống kê
 function getStatisticData() {
@@ -23,7 +15,7 @@ function getStatisticData() {
       'Content-Type': 'application/json'
     }
   }).then(res => res.json()).then(statisticData => {
-    console.log((statisticData))
+    buildChart(statisticData)
   })
 }
 
@@ -32,9 +24,10 @@ $(document).ready(function () {
       $('#tierNameInput').hide()
       $('#tierNameResultInput').hide()
 
+      getStatisticData()
+
       //-----------Thay doi kieu thong ke------------
       $('#statisticType').change(() => {
-        choiceObject.statisticType = $('#statisticType').val()
         if($('#statisticType').val() == 'frequently_tier_booking') {
           $('#tierNameInput').show()
 
@@ -46,6 +39,10 @@ $(document).ready(function () {
           //----------- Lấy dữ lieu mới nhất----------------
           getStatisticData()
         }
+      })
+      //-----------Thay đổi loại biểu đồ-------------------
+      $('#chartType').change(function () {
+        getStatisticData()
       })
       //-----------Thay doi dieu kien thong ke-------------
       $('#statisticCondition').change(function () {
@@ -174,4 +171,54 @@ function setOnClickHint(hint,id) {
 
   //----------- Lấy dữ lieu mới nhất----------------
   getStatisticData()
+}
+// ----------Build chart-----------
+function buildChart(data) {
+//----------Vi du:data = [{revenue_total: '1.000.000', time:1},{revenue_total: '2.000.000', time:3}]
+    if (data.length == 0) return
+    //------------- Random background color----------------
+    var backgroundColor = [];
+    for (let i = 0; i < data.length; i++) {
+      r = Math.floor(Math.random() * 255 + 1);
+      g = Math.floor(Math.random() * 255 + 1);
+      b = Math.floor(Math.random() * 255 + 1);
+      backgroundColor.push(`rgba(${r},${g}, ${b}, 0.7)`);
+    }
+
+    var result = data.reduce((acc,curr) => {
+      if($('#statisticType').val() == 'revenue') {
+        acc.data.push(curr.revenue_total)
+      } else {
+        acc.data.push(curr.total)
+      }
+      var condition = $('#statisticCondition').val()
+      if(condition.includes('month')) {
+        acc.label.push(`Tháng: ${curr.time}`)
+      } else if (condition.includes('quarter')) {
+        acc.label.push(`Quý: ${curr.time}`)
+      } else {
+        acc.label.push(`Năm: ${curr.time}`)
+      }
+      return acc
+    },{
+      label: [],
+      dataLabel: [],
+      data: []
+    })
+
+    if(chart) {
+        chart.destroy()
+    }
+    chart = new Chart($('#chart'),{
+        type: $('#chartType').val(),
+        data: {
+          labels: result.label,
+          datasets: [{
+            label: "Thống kê doanh thu",
+            data: result.data,
+            backgroundColor: backgroundColor,
+            borderWidth: 1
+          }]
+        }
+    })
 }

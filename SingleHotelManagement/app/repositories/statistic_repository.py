@@ -33,7 +33,8 @@ def get_revenue_by_quarter(from_quarter=None, to_quarter=None):
     if from_quarter and to_quarter:
         from_quarter = int(from_quarter)
         to_quarter = int(to_quarter)
-        query = query.filter(and_(func.quarter(Invoice.paid_at) >= from_quarter, func.quarter(Invoice.paid_at) <= to_quarter))
+        query = query.filter(
+            and_(func.quarter(Invoice.paid_at) >= from_quarter, func.quarter(Invoice.paid_at) <= to_quarter))
     return query.all()
 
 
@@ -55,11 +56,11 @@ def get_frequent_booking_tier_month(from_month=None, to_month=None, tier_id=None
     query = db.session.query(func.month(BookingDetail.created_at),
                              func.sum(BookingDetail.price),
                              Tier.name) \
-            .join(Booking,BookingDetail.booking_id.__eq__(Booking.id)) \
-            .join(Invoice,Booking.id.__eq__(Invoice.booking_id)) \
-            .filter(Invoice.paid.__eq__(True)) \
-            .join(Room,Room.id.__eq__(BookingDetail.room_id)) \
-            .join(Tier,Tier.id.__eq__(Room.tier_id))
+        .join(Booking, BookingDetail.booking_id.__eq__(Booking.id)) \
+        .join(Invoice, Booking.id.__eq__(Invoice.booking_id)) \
+        .filter(Invoice.paid.__eq__(True)) \
+        .join(Room, Room.id.__eq__(BookingDetail.room_id)) \
+        .join(Tier, Tier.id.__eq__(Room.tier_id))
 
     if tier_id:
         query = query.filter(Tier.id.__eq__(int(tier_id)))
@@ -67,11 +68,60 @@ def get_frequent_booking_tier_month(from_month=None, to_month=None, tier_id=None
     if from_month and to_month:
         from_month = int(from_month)
         to_month = int(to_month)
-        query = query.filter(and_(func.month(BookingDetail.created_at) >= from_month,
-                                func.month(BookingDetail.created_at) <= to_month))
+        query = query.filter(
+            and_(func.month(BookingDetail.created_at) >= from_month, func.month(BookingDetail.created_at) <= to_month))
 
-    query = query.group_by(func.month(BookingDetail.created_at),Tier.name) \
-                .order_by(func.month(BookingDetail.created_at))
+    query = query.group_by(func.month(BookingDetail.created_at), Tier.name).order_by(
+        func.month(BookingDetail.created_at))
+
+    return query.all()
+
+
+def get_frequent_booking_tier_quarter(from_quarter=None, to_quarter=None, tier_id=None):
+    query = db.session.query(func.quarter(BookingDetail.created_at),
+                             func.sum(BookingDetail.price),
+                             Tier.name) \
+        .join(Booking, BookingDetail.booking_id.__eq__(Booking.id)) \
+        .join(Invoice, Booking.id.__eq__(Invoice.booking_id)) \
+        .filter(Invoice.paid.__eq__(True)) \
+        .join(Room, Room.id.__eq__(BookingDetail.room_id)) \
+        .join(Tier, Tier.id.__eq__(Room.tier_id))
+
+    if tier_id:
+        query = query.filter(Tier.id.__eq__(int(tier_id)))
+
+    if from_quarter and to_quarter:
+        from_quarter = int(from_quarter)
+        to_quarter = int(to_quarter)
+        query = query.filter(and_(func.quarter(BookingDetail.created_at) >= from_quarter,
+                                  func.quarter(BookingDetail.created_at) <= to_quarter))
+
+    query = query.group_by(func.quarter(BookingDetail.created_at), Tier.name).order_by(
+        func.quarter(BookingDetail.created_at))
+
+    return query.all()
+
+
+def get_frequent_booking_tier_year(from_year=None, to_year=None, tier_id=None):
+    query = db.session.query(func.year(BookingDetail.created_at),
+                             func.sum(BookingDetail.price),
+                             Tier.name) \
+        .join(Booking, BookingDetail.booking_id.__eq__(Booking.id)) \
+        .join(Invoice, Booking.id.__eq__(Invoice.booking_id)) \
+        .filter(Invoice.paid.__eq__(True)) \
+        .join(Room, Room.id.__eq__(BookingDetail.room_id)) \
+        .join(Tier, Tier.id.__eq__(Room.tier_id))
+
+    if tier_id:
+        query = query.filter(Tier.id.__eq__(int(tier_id)))
+
+    if from_year and to_year:
+        from_year = int(from_year)
+        to_year = int(to_year)
+        query = query.filter(
+            and_(func.year(BookingDetail.created_at) >= from_year, func.year(BookingDetail.created_at) <= to_year))
+
+    query = query.group_by(func.year(BookingDetail.created_at), Tier.name).order_by(func.year(BookingDetail.created_at))
 
     return query.all()
 

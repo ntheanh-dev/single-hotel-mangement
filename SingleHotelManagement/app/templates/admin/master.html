@@ -135,7 +135,8 @@
     <script src="{{url_for('static', filename='plugins/chartjs/chart.umd.js')}}"></script>
 
 
-    <!-- Template JS File -->
+    <!-- Main JS File -->
+    <script src="{{url_for('static', filename='js/admin/main.js')}}"></script>
 
     {% if admin_view.extra_js %}
         {% for js_url in admin_view.extra_js %}
