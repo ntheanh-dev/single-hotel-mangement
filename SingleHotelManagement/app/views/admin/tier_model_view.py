@@ -2,6 +2,7 @@ from app.views.admin.base_model_view import BaseModelView
 
 
 class TierModelView(BaseModelView):
+    column_editable_list = ['name','base_price','max_guest','normal_guest_count','extra_guest_surcharge','foreign_guest_surcharge']
     column_labels = dict(
         id='Mã',
         name='Tên',

@@ -14,14 +14,14 @@ from app.services.booking_service import create_booking, get_booking_by_id, canc
 
 
 @app.route('/nhan-vien/lich-dat-phong/')
-def home():
+def receptionist_home():
     status_values = request.args.getlist('trang-thai')
     bookings = list_booking(status_values)
     return render_template('/receptionist/index.html', bookings=bookings, booking_status=BookingStatus)
 
 
 @app.route('/nhan-vien/dat-phong/')
-def booking():
+def receptionist_booking():
     floors = get_floors()
     max_guests = get_max_guests()
     booking_id = request.args.get('ma')

@@ -7,9 +7,9 @@ from app import db
 
 
 class UserRole(enum.Enum):
-    GUEST = "1"
-    RECEPTIONIST = "2"
-    ADMIN = "3"
+    GUEST = 1
+    RECEPTIONIST = 2
+    ADMIN = 3
 
 
 class Account(db.Model, UserMixin):
@@ -23,6 +23,6 @@ class Account(db.Model, UserMixin):
     is_active = Column(Boolean, default=True)
     joined_date = Column(DateTime, default=datetime.now())
 
-    role = Column(Enum(UserRole))
+    role = Column(Enum(UserRole), default=UserRole.GUEST)
 
     user_id = Column(Integer, ForeignKey('user.id'), primary_key=True, nullable=False)
