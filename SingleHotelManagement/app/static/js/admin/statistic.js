@@ -15,7 +15,11 @@ function getStatisticData() {
       'Content-Type': 'application/json'
     }
   }).then(res => res.json()).then(statisticData => {
+    if (statisticData.length <= 0) {
+      chart.destroy()
+    }
     buildChart(statisticData)
+    setStatisticDataTable(statisticData)
   })
 }
 
@@ -119,6 +123,11 @@ $(document).ready(function () {
             $('#tierNameResultInput').hide()
         }
       })
+
+          //-----------In du lieu thong ke----------------
+        $(".printResult").click(() => {
+            window.print();
+        })
 })
 
 // Gửi thông tin từ khóa tìm kiếm tên sách lên server và nhận về danh sách tên sách tìm được
@@ -221,4 +230,33 @@ function buildChart(data) {
           }]
         }
     })
+}
+
+function setStatisticDataTable(statisticData) {
+  var headCol2 = $('#statisticCondition').val().includes('month') ? 'Tháng' :
+        ($('#statisticCondition').val().includes('quarter') ? 'Quý' : 'Năm')
+  var headCol3 = $('#statisticType').val().includes('revenue') ? 'Tổng doanh thu' : 'Tần suất sử dụng phòng theo hạng'
+  var row = ''
+  var header = `<tr>
+                  <th>${'Số thứ tự'}</th>
+                  <th>${headCol2}</th>
+                  <th>${headCol3}</th>
+              </tr>`
+
+  for (let i = 0; i < statisticData.length; i++)
+    if ($('#statisticType').val().includes('revenue'))
+      row += `<tr>
+                  <td>${i + 1}</td>
+                  <td>${statisticData[i]['time']}</td>
+                  <td>${statisticData[i]['revenue_total']}</td>
+              </tr>`
+    else
+      row += `<tr>
+                  <td>${i + 1}</td>
+                  <td>${statisticData[i]['time']}</td>
+                  <td>${statisticData[i]['total']}</td>
+              </tr>`
+
+  $('#titleStatisticTable').html(header)
+  $('#dataStatisticTable').html(row)
 }

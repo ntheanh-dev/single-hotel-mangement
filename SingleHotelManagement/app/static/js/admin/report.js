@@ -75,6 +75,11 @@ $(document).ready(function () {
         getReportData(gChoiceInfo)
     })
 
+    //-----------In du lieu bao cao----------------
+    $(".printResult").click(() => {
+        window.print();
+    })
+
 })
 
 function setTimeSelections() {
