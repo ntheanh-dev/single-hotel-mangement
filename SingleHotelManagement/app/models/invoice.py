@@ -7,8 +7,8 @@ from app import db
 
 
 class PaymentMethod(enum.Enum):
-    CASH = 1
-    VNPAY = 2
+    CASH = 'CASH'
+    VNPAY = 'VNPAY'
 
 
 class Invoice(db.Model):

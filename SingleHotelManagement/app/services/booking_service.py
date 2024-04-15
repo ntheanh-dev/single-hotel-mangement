@@ -1,5 +1,6 @@
 from app.repositories.booking_repository import create_booking as crb, get_booking_by_id as gb, \
-    list_booking as lb, reserve, check_in, check_out, cancel_booking as cb, is_paid as ip,count_booking as count_b
+    list_booking as lb, reserve, check_in, check_out as co, cancel_booking as cb, is_paid as ip, \
+    count_booking as count_b
 from app.services.booking_detail_service import get_booking_detail_with_price
 
 
@@ -9,10 +10,6 @@ def create_booking(data):
 
 def cancel_booking(booking_id):
     cb(booking_id=booking_id)
-
-
-def is_paid(booking_id):
-    return ip(booking_id)
 
 
 def get_booking_by_id(id):
@@ -33,6 +30,19 @@ def get_info_booking(booking_id):
     return result
 
 
+def check_out_with_check_payment(booking_id):
+    is_paid = ip(booking_id)
+    if is_paid:
+        co(booking_id)
+        return '00'
+    else:
+        return '01'
+
+
+def check_out(booking_id):
+    co(booking_id)
+
+
 def change_booking_status(booking_id, status):
     booking_id = int(booking_id)
     status = int(status)
@@ -41,7 +51,7 @@ def change_booking_status(booking_id, status):
     elif status == 2:
         check_in(booking_id)
     elif status == 3:
-        check_out(booking_id)
+        co(booking_id)
     elif status == 4:
         cb(booking_id)
 

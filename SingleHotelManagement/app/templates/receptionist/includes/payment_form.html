@@ -34,26 +34,26 @@
           </tr>
         </thead>
         <tbody class="text-blue-gray-900 payment-form-table-body">
-          <tr class="border-b border-blue-gray-200">
-            <td class="py-2 px-2">
-              Phòng 01 giường đôi cho 2 người
-              <span
-                class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
-                >P201</span
-              >
-            </td>
-            <td class="py-2 px-2">1 Ngày 6 giờ</td>
-            <td class="py-2 px-2">2</td>
-            <td class="py-2 px-2">3</td>
-            <td class="py-2 px-2 font-medium text-black-600">700,000</td>
-          </tr>
-          <tr class="border-b border-blue-gray-200">
-            <td class="py-2 px-2 font-medium">Tổng cộng</td>
-            <td class="py-2 px-2"></td>
-            <td class="py-2 px-2"></td>
-            <td class="py-2 px-2 font-medium">700,000</td>
-            <td class="py-2 px-2"></td>
-          </tr>
+<!--          <tr class="border-b border-blue-gray-200">-->
+<!--            <td class="py-2 px-2">-->
+<!--              Phòng 01 giường đôi cho 2 người-->
+<!--              <span-->
+<!--                class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"-->
+<!--                >P201</span-->
+<!--              >-->
+<!--            </td>-->
+<!--            <td class="py-2 px-2">1 Ngày 6 giờ</td>-->
+<!--            <td class="py-2 px-2">2</td>-->
+<!--            <td class="py-2 px-2">3</td>-->
+<!--            <td class="py-2 px-2 font-medium text-black-600">700,000</td>-->
+<!--          </tr>-->
+<!--          <tr class="border-b border-blue-gray-200">-->
+<!--            <td class="py-2 px-2 font-medium">Tổng cộng</td>-->
+<!--            <td class="py-2 px-2"></td>-->
+<!--            <td class="py-2 px-2"></td>-->
+<!--            <td class="py-2 px-2 font-medium">700,000</td>-->
+<!--            <td class="py-2 px-2"></td>-->
+<!--          </tr>-->
         </tbody>
       </table>
     </div>
@@ -65,31 +65,31 @@
         <div class="flex flex-row justify-start space-x-3">
           <div class="form-check">
             <input
-              class="form-check-input"
+              class="form-check-input payment-method"
               type="radio"
-              name="nationality"
+              name="payment-method"
               checked
-              id="nationality-all"
-              value="All"
+              id="cash-method"
+              value="CASH"
             />
-            <label class="form-check-label" for="nationality-all">
+            <label class="form-check-label" for="cash-method">
               Tiền mặt
             </label>
           </div>
 
           <div class="form-check">
             <input
-              class="form-check-input"
+              class="form-check-input "
               type="radio"
-              name="nationality"
-              id="vietnamese"
-              value="False"
+              name="payment-method"
+              id="vnpay-method"
+              value="VNPAY"
             />
-            <label class="form-check-label" for="vietnamese"> Vnpay </label>
+            <label class="form-check-label" for="vnpay-method"> Vnpay </label>
           </div>
         </div>
       </div>
-      <button class="btn btn-success confirm-payment-btn">Tiếp</button>
+      <button class="btn btn-success confirm-payment-btn" onclick="handlePayment()">Tiếp</button>
     </div>
   </div>
 </div>

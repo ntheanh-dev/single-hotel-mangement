@@ -10,7 +10,8 @@ from app.services.guest_service import check_phone_number, register_guest, searc
 from app.services.tier_service import get_tiers, get_max_guests, tier_with_available_room_to_dict
 from app.services.floor_service import get_floors
 from app.services.booking_service import create_booking, get_booking_by_id, cancel_booking as cb, list_booking, \
-    change_booking_status as cbs, is_paid as ip, get_info_booking
+    change_booking_status as cbs, get_info_booking, check_out_with_check_payment as cowcp,check_out as co
+from app.services.payment_service import payment as pm
 
 
 @app.route('/nhan-vien/lich-dat-phong/')
@@ -176,12 +177,27 @@ def change_booking_status():
     return jsonify(1)
 
 
-@app.route('/api/receptionist/check_payment/', methods=['post'])
+@app.route('/api/receptionist/check_out/', methods=['post'])
 def check_out():
     data = json.loads(request.data)
     booking_id = data.get('booking_id')
-    result = ip(booking_id)
+    result = cowcp(booking_id)
     return jsonify(result)
+
+
+@app.route('/api/receptionist/payment/', methods=['post'])
+def payment():
+    data = json.loads(request.data)
+    booking_id = data.get('booking_id')
+    payment_method = data.get('payment_method')
+    amount = data.get('amount')
+    try:
+        result = pm(booking_id, payment_method, amount)
+        co(booking_id)
+        return jsonify(result)
+    except Exception as e:
+        print(e)
+        return jsonify('00')
 
 
 @app.route('/api/receptionist/get-booking-info/', methods=['post'])

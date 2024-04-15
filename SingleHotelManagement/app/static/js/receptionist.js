@@ -89,6 +89,7 @@ $(document).ready(function () {
         $(".overlay-payment").fadeOut();
         $(".payment-form").fadeOut();
     });
+
 });
 
 $(window).on('load', function () {
@@ -119,8 +120,8 @@ change_booking_status = (booking_id, status) => {
     })
 }
 
-check_payment = (booking_id) => {
-    fetch("/api/receptionist/check_payment/", {
+check_out = (booking_id) => {
+    fetch("/api/receptionist/check_out/", {
         method: 'post',
         body: JSON.stringify({
             'booking_id': booking_id,
@@ -130,8 +131,9 @@ check_payment = (booking_id) => {
             'Context-Type': 'application/json',
         }
     }).then(res => res.json()).then(data => {
-        if (data) {
-            window.location.reload();
+        // 00: unpaid, 01: paid
+        if (data == '00') {
+    //      window.location.reload();
         } else {
             Swal.fire({
                 title: 'Trả phòng và thanh toán?',
@@ -153,6 +155,9 @@ check_payment = (booking_id) => {
                             'Context-Type': 'application/json',
                         }
                     }).then(resp => resp.json()).then(result => {
+                        // Lưu booking_id để gọi api từ một chỗ khác
+                        localStorage.setItem('payment-booking', booking_id);
+
                         var booking = result.booking
                         var booking_details = result.booking_details
                         $('.payment-form-title').text("THANH TOÁN")
@@ -180,7 +185,7 @@ check_payment = (booking_id) => {
                                 <td class="py-2 px-2 font-medium">Tổng cộng</td>
                                 <td class="py-2 px-2"></td>
                                 <td class="py-2 px-2"></td>
-                                <td class="py-2 px-2 font-medium">${total}</td>
+                                <td class="py-2 px-2 font-medium payment_amount">${total}</td>
                                 <td class="py-2 px-2"></td>
                             </tr>
                         `
@@ -192,6 +197,70 @@ check_payment = (booking_id) => {
             })
         }
     })
+}
+
+function handlePayment() {
+    var booking_id = localStorage.getItem('payment-booking')
+    var amount = $('.payment_amount').text()
+    if (booking_id) {
+        fetch("/api/receptionist/payment/", {
+        method: 'post',
+        body: JSON.stringify({
+            'booking_id': booking_id,
+            'payment_method':$('input[type="radio"][name="payment-method"]:checked').val(),
+            'amount': amount
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Context-Type': 'application/json',
+        }
+        }).then(res => res.json()).then(data => {
+        // 00: lỗi, 01: thanh toán thành công, 02: chưa hỗ trợ thanh toán bằng phương thức đó,
+            console.log(data)
+            switch (data) {
+                case '00':
+                    Swal.fire({
+                            title: 'Thanh Toán Thất Bại',
+                            text:'Hãy thử lại sau',
+                            icon: 'warning',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Xác nhận',
+                    })
+                    break;
+                case '01':
+                    Swal.fire({
+                            title: 'Thanh Toán Thành Công',
+                            text:'Tải lại trang',
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Xác nhận',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const newUrl = window.location.pathname;
+                            window.location.href = newUrl;
+                        }
+                    })
+                    break
+                case '02':
+                    Swal.fire({
+                            title: 'Hiện chưa hỗ trợ phương thức thanh toán này',
+                            text:'Hãy thử lại với phương thức khác',
+                            icon: 'warning',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Xác nhận',
+                    })
+                    break;
+            }
+        })
+    } else {
+        Swal.fire({
+                title: 'Thanh Toán Thất Bại',
+                text:'Hãy thử lại sau',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Xác nhận',
+        })
+    }
 }
 
 function calculate_booking_time(start_date, end_date) {

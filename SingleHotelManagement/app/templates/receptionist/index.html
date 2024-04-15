@@ -133,7 +133,7 @@
               {% elif b.booking.status == 'CHECKED_IN' %}
               <button
                 class="btn btn-success"
-                onclick="check_payment({{b.booking.id}})"
+                onclick="check_out({{b.booking.id}})"
               >
                 Trả phòng
               </button>
@@ -159,7 +159,7 @@
       </table>
   </div>
 
-  
+
 
   <!-- Phiếu đặt phòng phòng    -->
   <div class="overlay-booking-form">

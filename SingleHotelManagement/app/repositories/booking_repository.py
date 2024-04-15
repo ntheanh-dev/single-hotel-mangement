@@ -1,4 +1,6 @@
-from sqlalchemy import exists
+import datetime
+
+from sqlalchemy import exists, and_
 from sqlalchemy.sql.functions import concat, func, coalesce
 
 from app import db
@@ -69,6 +71,7 @@ def cancel_booking(booking_id):
 def check_out(booking_id):
     booking = get_booking_by_id(booking_id)
     booking.status = BookingStatus.CHECKED_OUT
+    booking.checkout = datetime.datetime.now()
     db.session.commit()
     set_status_room_by_booking_id(booking_id, RoomStatus.AVAILABLE)
 
@@ -76,6 +79,7 @@ def check_out(booking_id):
 def check_in(booking_id):
     booking = get_booking_by_id(booking_id)
     booking.status = BookingStatus.CHECKED_IN
+    booking.checkin = datetime.datetime.now()
     db.session.commit()
     set_status_room_by_booking_id(booking_id, RoomStatus.OCCUPIED)
 
@@ -175,9 +179,7 @@ def list_booking(status_values=None):
 
 
 def is_paid(booking_id):
-    booking = get_booking_by_id(booking_id)
-    query = db.session.query(Invoice).join(Booking, Booking.id == Invoice.booking_id).filter(
-        Invoice.paid == True).first()
+    query = db.session.query(Invoice).filter(and_(Invoice.paid.__eq__(True),Invoice.booking_id.__eq__(booking_id))).first()
     return query is not None
 
 
