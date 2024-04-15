@@ -52,17 +52,6 @@
       <input
         class="list-booking-checkbox"
         type="checkbox"
-        value="6"
-        id="flexCheckChecked5"
-      />
-      <label class="form-check-label" for="flexCheckChecked5">
-        Chờ tạo hoá đơn
-      </label>
-    </div>
-    <div class="form-check mx-4">
-      <input
-        class="list-booking-checkbox"
-        type="checkbox"
         value="5"
         id="flexCheckChecked6"
       />
@@ -117,12 +106,16 @@
               >
                 Nhận phòng
               </button>
-              <button
-                class="btn btn-danger"
-                onclick="change_booking_status({{b.booking.id}},4)"
-              >
-                Huỷ
-              </button>
+              <div class="filter mt-1 ml-2">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Lựa chọn</h6>
+                    </li>
+                    <li><a class="dropdown-item" href="javascript:;" onclick="viewRequestedBooking({{b.booking.id}},{{b.rooms_id}})">Chi Tiết</a></li>
+                    <li><a class="dropdown-item" href="javascript:;" onclick="change_booking_status({{b.booking.id}},4)">Huỷ</a></li>
+                  </ul>
+              </div>
               {% elif b.booking.status == 'CONFIRMED' %}
               <button
                 class="btn btn-success"
@@ -152,6 +145,7 @@
               {% elif b.booking.status == 'CHECKED_OUT' %}
               <h1 class="text-gray-700 font-medium text-md">Đã hoàn thành</h1>
               {% endif %}
+
             </td>
           </tr>
           {% endfor %}

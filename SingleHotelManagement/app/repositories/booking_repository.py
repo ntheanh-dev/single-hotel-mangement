@@ -1,8 +1,6 @@
 import datetime
-
-from sqlalchemy import exists, and_
+from sqlalchemy import  and_
 from sqlalchemy.sql.functions import concat, func, coalesce
-
 from app import db
 from app.models.booking import Booking, BookingStatus
 from app.models.booking_detail import BookingDetail
@@ -18,7 +16,7 @@ def create_booking(data):
     booking = Booking(
         start_date=data.get('start_date'),
         end_date=data.get('end_date'),
-        status=BookingStatus.CONFIRMED,
+        status=BookingStatus.REQUESTED,
         receptionist_id=data.get('receptionist_id'),
         booker_id=data.get('booker_id')
     )

@@ -286,3 +286,8 @@ function calculate_booking_time(start_date, end_date) {
     }
     return ''
 }
+viewRequestedBooking = (booking_id,rooms_id) => {
+    console.log(booking_id)
+    console.log(rooms_id)
+    window.location.href = `/nhan-vien/dat-phong/?ma=${booking_id}&phong=${rooms_id}`
+}

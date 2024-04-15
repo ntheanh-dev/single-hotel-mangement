@@ -100,15 +100,16 @@
       <div>
         <button
           class="btn btn-outline-warning rounded-lg cancel-current-booking-btn"
+          onclick="changeBookingStatus(4)"
         >
           <i class="fa fa-trash mr-2" aria-hidden="true"></i>Huỷ
         </button>
       </div>
       <div>
-        <button class="btn btn-success rounded-lg payment-btn">
+        <button class="btn btn-success rounded-lg payment-btn" onclick="changeBookingStatus(2)">
           Nhận phòng
         </button>
-        <button class="btn btn-warning rounded-lg payment-btn">
+        <button class="btn btn-warning rounded-lg payment-btn" onclick="changeBookingStatus(1)">
           Đặt Trước
         </button>
         <button class="btn btn-success rounded-lg payment-btn">

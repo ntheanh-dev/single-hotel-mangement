@@ -17,7 +17,13 @@ from app.services.payment_service import payment as pm
 @app.route('/nhan-vien/lich-dat-phong/')
 def receptionist_home():
     status_values = request.args.getlist('trang-thai')
+    # Chỉ hiện các đơn đặt online, đã đặt trước, đã check_in
+    if len(status_values) == 0:
+        status_values.append('1')
+        status_values.append('2')
+        status_values.append('3')
     bookings = list_booking(status_values)
+
     return render_template('/receptionist/index.html', bookings=bookings, booking_status=BookingStatus)
 
 
@@ -33,16 +39,16 @@ def receptionist_booking():
         tiers = get_tiers(max_guest=max_guest, floor=floor)
         return render_template('/receptionist/booking.html', tiers=tiers, floors=floors, max_guests=max_guests)
     else:
+        booking = get_booking_by_id(int(booking_id))
+
+        if booking['status'] != 'REQUESTED':
+            return redirect('/nhan-vien/dat-phong/')
 
         max_guest = request.args.get('max_guest')
         floor = request.args.get('floor')
         tiers = get_tiers(max_guest=max_guest, floor=floor)
 
         room_id = request.args.get('phong')
-        booking = get_booking_by_id(int(booking_id))
-
-        if booking['status'] != 'CONFIRMED':
-            return redirect('/nhan-vien/dat-phong/')
 
         booking_details = get_booking_details_by_booking_id(int(booking_id))
         current_booking_detail = {}
@@ -128,10 +134,9 @@ def make_booking():
     return jsonify(result)
 
 
-@app.route('/api/reception/search/', methods=['post'])
+@app.route('/api/reception/search-guest/', methods=['post'])
 def search_guest():
     data = json.loads(request.data)
-
     return sg(data)
 
 
@@ -173,8 +178,11 @@ def change_booking_status():
     data = json.loads(request.data)
     booking_id = data.get('booking_id')
     status = data.get('status')
-    cbs(booking_id, status)
-    return jsonify(1)
+    try:
+        cbs(booking_id, status)
+        return jsonify('01')
+    except Exception as e:
+        return jsonify('00')
 
 
 @app.route('/api/receptionist/check_out/', methods=['post'])

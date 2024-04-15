@@ -24,7 +24,7 @@ $(document).ready(function () {
     // -----------------Tìm kiếm khách mới---------------------
     $(".search-guest-btn").click(function () {
         if ($("#search_guest").val() !== "") {
-            fetch("/api/reception/search/", {
+            fetch("/api/reception/search-guest/", {
                 method: 'post',
                 body: JSON.stringify({
                     'search_type': $("#search_type").val(),
@@ -306,17 +306,17 @@ chooseRoom = (room_id) => {
     var booking_processing = urlParams.has('ma')
     var booking_id = urlParams.get('ma')
     // -----------------------Tao mot booking detail------------------------
-    if(booking_processing) {
-         fetch("/api/reception/add-room/", {
-                method: 'post',
-                body: JSON.stringify({
-                    'booking_id': booking_id,
-                    'tier_id': room_id,
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Context-Type': 'application/json',
-                }
+    if (booking_processing) {
+        fetch("/api/reception/add-room/", {
+            method: 'post',
+            body: JSON.stringify({
+                'booking_id': booking_id,
+                'tier_id': room_id,
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Context-Type': 'application/json',
+            }
         }).then(res => res.json()).then(data => {
             console.log(data)
             if (data == 'error') {

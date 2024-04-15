@@ -187,3 +187,59 @@ render_tier = (t) => {
     <!-- END Column -->
         `
 }
+changeBookingStatus = (status) => {
+    var urlParams = new URLSearchParams(window.location.search);
+
+    if (status == 4) {
+         Swal.fire({
+            title: 'Bạn có chắc chắn muốn hủy đơn đặt phòng này không?',
+            text: '',
+            icon: 'warning',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Huỷ bỏ'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                 fetch("/api/receptionist/change-booking-status/", {
+                    method: 'post',
+                    body: JSON.stringify({
+                        'booking_id': urlParams.get('ma'),
+                        'status' : status
+                    }),
+                    headers: {
+                        'Context-Type': 'application/json',
+                    }
+                }).then(res => res.json()).then(data => {
+                    if (data == '01') {
+                        const newUrl = window.location.pathname;
+                        window.location.href = newUrl;
+                    }
+                })
+        }})
+    } else {
+        fetch("/api/receptionist/change-booking-status/", {
+            method: 'post',
+            body: JSON.stringify({
+                'booking_id': urlParams.get('ma'),
+                'status' : status
+            }),
+            headers: {
+                'Context-Type': 'application/json',
+            }
+        }).then(res => res.json()).then(data => {
+            if (data == '01') {
+                const newUrl = window.location.pathname;
+                window.location.href = newUrl;
+            } else {
+                var alertTitle = status == 1 ? 'Đặt phòng thất bại!' : 'Nhận phòng thất bại!'
+                Swal.fire({
+                    title: alertTitle,
+                    text: 'Hãy thử lại sau',
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Xác nhận',
+                })
+            }
+        })
+    }
+}
