@@ -17,6 +17,8 @@ $(document).ready(function () {
         $(this).text(formattedValue);
     });
 
+
+
   const select = (el, all = false) => {
     el = el.trim()
     if (all) {

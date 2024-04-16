@@ -1,5 +1,6 @@
 from app.repositories.statistic_repository import get_revenue_by_month, get_revenue_by_quarter, get_revenue_by_year,\
     get_frequent_booking_tier_month,get_frequent_booking_tier_quarter,get_frequent_booking_tier_year
+from datetime import datetime
 
 
 def get_revenue(statistic_condition, from_time, to_time):
@@ -50,3 +51,5 @@ def get_statistic(data=None):
                 'total': r[1]
             })
     return statistic_data
+
+

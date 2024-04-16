@@ -4,7 +4,7 @@ from app import app
 from flask import request, jsonify
 from app.services.tier_service import get_tier_name
 from app.services.statistict_service import get_statistic as gt
-from app.services.report_service import get_report_data as grd
+from app.services.report_service import get_report_data_with_date_detail as grd, get_revenue_data as gr
 
 
 @app.route('/api/admin/tier-name/', methods=['post'])
@@ -36,3 +36,11 @@ def get_report_data():
                        month=month,
                        quarter=quarter,
                        year=year))
+
+
+@app.route('/api/admin/revenue/', methods=['post'])
+def get_revenue_data():
+    day = request.json.get('day')
+    month = request.json.get('month')
+    year = request.json.get('year')
+    return jsonify(gr(day=day, month=month, year=year))

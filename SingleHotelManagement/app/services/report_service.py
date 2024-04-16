@@ -1,9 +1,10 @@
-from app.repositories.report_repository import get_revenue as gr, get_frequent_booking_room as gfbr
+from app.repositories.report_repository import get_revenue_with_date_detail as grwdd, get_frequent_booking_room as gfbr, \
+    get_revenue as gr
 
 
-def get_report_data(report_type=None, month=None, quarter=None, year=None):
+def get_report_data_with_date_detail(report_type=None, month=None, quarter=None, year=None):
     if report_type == 'revenue':
-        result = gr(month, quarter, year)
+        result = grwdd(month, quarter, year)
         arr_dic = []
         for value in result:
             arr_dic.append({
@@ -23,3 +24,20 @@ def get_report_data(report_type=None, month=None, quarter=None, year=None):
             })
             return arr_dic
     return []
+
+
+def get_revenue_data(day=None, month=None, year=None):
+    if day is not None:
+        day = int(day)
+    if month is not None:
+        month = int(month)
+    if year is not None:
+        year = int(year)
+    result = gr(day=day, month=month, year=year)
+    arr_dic = []
+    for value in result:
+        arr_dic.append({
+            'paid_at': value[0],
+            'revenue_total': float(value[1])
+        })
+    return arr_dic
