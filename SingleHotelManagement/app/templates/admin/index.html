@@ -51,7 +51,7 @@
                                         <i class="bi bi-cart"></i>
                                     </div>
                                     <div class="ps-3">
-                                            <span>{{revenue}} VNĐ</span>
+                                            <span class="price">{{revenue}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
 
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    Các Đơn Booking
+                                    Các Đơn Booking Gần Đây
                                 </h5>
 
                                 <table class="table table-borderless datatable">
@@ -99,7 +99,7 @@
                                     <tr>
                                         <th scope="col">Mã</th>
                                         <th scope="col">Khách</th>
-                                        <th scope="col">Hạng</th>
+                                        <th scope="col">Phòng</th>
                                         <th scope="col">Tổng</th>
                                         <th scope="col">Trạng Thái</th>
                                     </tr>
@@ -115,15 +115,15 @@
                                             >{{b.rooms}}</span>
 
                                         </td>
-                                        <td>{{b.price}}</td>
+                                        <td class="price">{{b.price}}</td>
                                         <td>
-                                            {% if b.booking.status == 'REQUESTED' %}
+                                          {% if b.booking.status == 'REQUESTED' %}
                                             <span class="badge bg-warning">Yêu Cầu</span>
                                           {% elif b.booking.status == 'CONFIRMED' %}
                                           <span class="badge bg-success">Đặt Trước</span>
                                             {% elif b.booking.status == 'CHECKED_IN' %}
                                            <span class="badge bg-success">{{b.booking.status}}</span>
-                                          {% elif b.booking.status == 'CHECK_OUT' %}
+                                          {% elif b.booking.status == 'CHECKED_OUT' %}
                                             <span class="badge bg-success">{{b.booking.status}}</span>
                                           {% elif b.booking.status == 'CANCELED' %}
                                              <span class="badge bg-danger">{{b.booking.status}}</span>

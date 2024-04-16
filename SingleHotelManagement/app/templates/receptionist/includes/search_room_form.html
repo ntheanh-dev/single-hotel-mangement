@@ -149,11 +149,11 @@
             >
               <p class="text-sm text-gray-600">Tối đa: {{t.max_guest}}</p>
               <p class="text-sm text-gray-600">
-                Giá: {{t.base_price}} ({{t.normal_guest_count}}/{{t.max_guest}}
+                Giá: <span class="price">{{t.base_price}}</span> ({{t.normal_guest_count}}/{{t.max_guest}}
                 khách)
               </p>
               <p class="text-sm text-gray-600">
-                Giá: {{t.surcharge }} (>{{t.normal_guest_count}} khách)
+                Giá: <span class="price">{{t.surcharge }}</span> (>{{t.normal_guest_count}} khách)
               </p>
               <p class="text-sm text-gray-600">
                 Nếu có khách nước ngoài : giá * {{t.foreign_guest_surcharge}}

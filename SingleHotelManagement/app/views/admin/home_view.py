@@ -15,6 +15,6 @@ class HomeView(AdminIndexView):
         total_guest = count_guest()
         revenue = total_revenue()
         status_values = request.args.getlist('trang-thai')
-        bookings = list_booking(status_values)
+        bookings = list_booking(status_values, limit=10)
         return self.render('/admin/index.html', total_booking=total_booking, total_guest=total_guest, revenue=revenue,
                            bookings=bookings)

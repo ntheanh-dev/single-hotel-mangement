@@ -1,4 +1,22 @@
 $(document).ready(function () {
+
+  $('.price').each(function() {
+        // Lấy giá trị hiện tại
+        var value = $(this).text();
+
+        // Chuyển đổi giá trị thành số
+        var number = parseFloat(value);
+
+        // Định dạng lại giá trị
+        var formattedValue = number.toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        });
+
+        // Gán lại giá trị mới vào phần tử
+        $(this).text(formattedValue);
+    });
+
   const select = (el, all = false) => {
     el = el.trim()
     if (all) {

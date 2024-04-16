@@ -1,4 +1,21 @@
 $(document).ready(function () {
+    //-------------Đổi định dạng tien---------------
+      $('.price').each(function() {
+        // Lấy giá trị hiện tại
+        var value = $(this).text();
+
+        // Chuyển đổi giá trị thành số
+        var number = parseFloat(value);
+
+        // Định dạng lại giá trị
+        var formattedValue = number.toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        });
+
+        // Gán lại giá trị mới vào phần tử
+        $(this).text(formattedValue);
+    });
     //----------------Neu dang co tham so tim phong thi khi submit xong hien lai form tim kiem -----------------
     var urlParams = new URLSearchParams(window.location.search);
     var max_guest = urlParams.has('max_guest')
