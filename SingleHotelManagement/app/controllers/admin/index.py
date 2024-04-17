@@ -5,9 +5,12 @@ from flask import request, jsonify
 from app.services.tier_service import get_tier_name
 from app.services.statistict_service import get_statistic as gt
 from app.services.report_service import get_report_data_with_date_detail as grd, get_revenue_data as gr
+from app.utils.decorator import required_role
+from app.models.account import UserRole
 
 
 @app.route('/api/admin/tier-name/', methods=['post'])
+@required_role(UserRole.ADMIN)
 def get_book_name_hint():
     kw = request.json.get('keyword')
     tier_names = []
@@ -20,6 +23,7 @@ def get_book_name_hint():
 
 
 @app.route('/api/admin/statistic/', methods=['post'])
+@required_role(UserRole.ADMIN)
 def get_statistic_data():
     data = json.loads(request.data)
     result = gt(data=data)
@@ -27,6 +31,7 @@ def get_statistic_data():
 
 
 @app.route('/api/admin/report/', methods=['post'])
+@required_role(UserRole.ADMIN)
 def get_report_data():
     report_type = request.json.get('report_type')
     month = request.json.get('month')
@@ -39,6 +44,7 @@ def get_report_data():
 
 
 @app.route('/api/admin/revenue/', methods=['post'])
+@required_role(UserRole.ADMIN)
 def get_revenue_data():
     day = request.json.get('day')
     month = request.json.get('month')

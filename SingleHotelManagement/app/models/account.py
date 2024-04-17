@@ -3,6 +3,8 @@ from datetime import datetime
 
 from flask_login import UserMixin
 from sqlalchemy import Column, String, Boolean, Text, DateTime, Integer, ForeignKey, Enum
+from sqlalchemy.orm import relationship
+
 from app import db
 
 
@@ -25,4 +27,6 @@ class Account(db.Model, UserMixin):
 
     role = Column(Enum(UserRole), default=UserRole.GUEST)
 
-    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True, nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+
+    notifications = relationship("Notification", backref="notifications", lazy=True)

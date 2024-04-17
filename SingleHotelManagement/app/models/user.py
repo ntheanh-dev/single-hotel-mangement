@@ -22,7 +22,6 @@ class User(db.Model):
     receptionists = relationship('Receptionist', backref="receptionist", lazy=True)
     admins = relationship('Admin', backref="admins", lazy=True)
 
-    notifications = relationship("Notification", backref="notifications", lazy=True)
 
     def to_dict(self):
         return {

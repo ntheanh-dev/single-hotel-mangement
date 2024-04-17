@@ -3,13 +3,12 @@ from flask import request
 from app.services.booking_service import count_booking, list_booking
 from app.services.guest_service import count_guest
 from app.services.invoice_service import total_revenue
-from app.services.report_service import get_revenue_data
-from datetime import datetime
+from app.models.account import UserRole
+from flask_login import current_user
 
 
 # Lớp tượng trưng cho trang home page
 class HomeView(AdminIndexView):
-
     @expose('/')
     def index(self):
         total_booking = count_booking()
@@ -18,5 +17,9 @@ class HomeView(AdminIndexView):
         status_values = request.args.getlist('trang-thai')
         bookings = list_booking(status_values, limit=10)
 
-        return self.render('/admin/index.html', total_booking=total_booking, total_guest=total_guest, revenue=revenue,
-                           bookings=bookings)
+        if current_user.is_authenticated and current_user.role == UserRole.ADMIN:
+            return self.render('/admin/index.html', total_booking=total_booking, total_guest=total_guest,
+                               revenue=revenue,
+                               bookings=bookings)
+        else:
+            return self.render('login.html')

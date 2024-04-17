@@ -3,6 +3,7 @@ from distutils.util import strtobool
 from flask import render_template, request, jsonify, redirect
 from app import app
 from app.models.booking import BookingStatus
+from app.models.account import UserRole
 from app.repositories.tier_repository import get_tier_by_room_id
 from app.services.booking_detail_service import get_booking_details_by_booking_id, add_guest_to_booking_detail as ad, \
     change_num_guest as cng, add_booking_detail_in_booking
@@ -10,11 +11,13 @@ from app.services.guest_service import check_phone_number, register_guest, searc
 from app.services.tier_service import get_tiers, get_max_guests, tier_with_available_room_to_dict
 from app.services.floor_service import get_floors
 from app.services.booking_service import create_booking, get_booking_by_id, cancel_booking as cb, list_booking, \
-    change_booking_status as cbs, get_info_booking, check_out_with_check_payment as cowcp,check_out as co
+    change_booking_status as cbs, get_info_booking, check_out_with_check_payment as cowcp, check_out as co
 from app.services.payment_service import payment as pm
+from app.utils.decorator import required_role
 
 
 @app.route('/nhan-vien/lich-dat-phong/')
+@required_role(UserRole.RECEPTIONIST)
 def receptionist_home():
     status_values = request.args.getlist('trang-thai')
     # Chỉ hiện các đơn đặt online, đã đặt trước, đã check_in
@@ -28,6 +31,7 @@ def receptionist_home():
 
 
 @app.route('/nhan-vien/dat-phong/')
+@required_role(UserRole.RECEPTIONIST)
 def receptionist_booking():
     floors = get_floors()
     max_guests = get_max_guests()
@@ -67,6 +71,7 @@ def receptionist_booking():
 
 
 @app.route('/api/reception/add-room/', methods=['post'])
+@required_role(UserRole.RECEPTIONIST)
 def add_room():
     data = json.loads(request.data)
     booking_id = data.get('booking_id')
@@ -82,6 +87,7 @@ def add_room():
 
 
 @app.route('/api/reception/search-tier/', methods=['post'])
+@required_role(UserRole.RECEPTIONIST)
 def search_tier():
     data = json.loads(request.data)
     floors = data.get('floors')
@@ -92,6 +98,7 @@ def search_tier():
 
 
 @app.route('/api/reception/add-guest/', methods=['post'])
+@required_role(UserRole.RECEPTIONIST)
 def add_guest():
     data = json.loads(request.data)
     listData = {
@@ -116,6 +123,7 @@ def add_guest():
 
 
 @app.route('/api/reception/make-booking/', methods=['post'])
+@required_role(UserRole.RECEPTIONIST)
 def make_booking():
     data = json.loads(request.data)
     listData = {
@@ -135,12 +143,14 @@ def make_booking():
 
 
 @app.route('/api/reception/search-guest/', methods=['post'])
+@required_role(UserRole.RECEPTIONIST)
 def search_guest():
     data = json.loads(request.data)
     return sg(data)
 
 
 @app.route('/api/reception/add-guest/', methods=['post'])
+@required_role(UserRole.RECEPTIONIST)
 def add_guest_to_booking_detail():
     data = json.loads(request.data)
     booking_id = data.get('booking_id')
@@ -150,6 +160,7 @@ def add_guest_to_booking_detail():
 
 
 @app.route('/api/reception/change-num-guest/', methods=['post'])
+@required_role(UserRole.RECEPTIONIST)
 def change_num_guest_in_booking_detail():
     data = json.loads(request.data)
     booking_id = data.get('booking_id')
@@ -161,6 +172,7 @@ def change_num_guest_in_booking_detail():
 
 
 @app.route('/api/receptionist/cancel/', methods=['post'])
+@required_role(UserRole.RECEPTIONIST)
 def cancel_booking():
     data = json.loads(request.data)
 
@@ -174,6 +186,7 @@ def cancel_booking():
 
 
 @app.route('/api/receptionist/change-booking-status/', methods=['post'])
+@required_role(UserRole.RECEPTIONIST)
 def change_booking_status():
     data = json.loads(request.data)
     booking_id = data.get('booking_id')
@@ -186,6 +199,7 @@ def change_booking_status():
 
 
 @app.route('/api/receptionist/check_out/', methods=['post'])
+@required_role(UserRole.RECEPTIONIST)
 def check_out():
     data = json.loads(request.data)
     booking_id = data.get('booking_id')
@@ -194,6 +208,7 @@ def check_out():
 
 
 @app.route('/api/receptionist/payment/', methods=['post'])
+@required_role(UserRole.RECEPTIONIST)
 def payment():
     data = json.loads(request.data)
     booking_id = data.get('booking_id')
@@ -209,6 +224,7 @@ def payment():
 
 
 @app.route('/api/receptionist/get-booking-info/', methods=['post'])
+@required_role(UserRole.RECEPTIONIST)
 def get_booking():
     data = json.loads(request.data)
     booking_id = data.get('booking_id')

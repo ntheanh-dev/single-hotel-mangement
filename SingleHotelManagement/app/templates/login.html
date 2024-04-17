@@ -48,26 +48,26 @@
                     <h5 class="card-title text-center pb-0 fs-4">Đăng Nhập Bằng Tài Khoản Của Bạn</h5>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <form class="row g-3 needs-validation" novalidate  method="post" action="/login">
                     <div class="col-12">
-                      <label for="yourUsername" class="form-label">Tài khoản</label>
+                      <label for="username" class="form-label">Tài khoản</label>
                       <div class="input-group has-validation">
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
+                        <input type="text" name="username" class="form-control" id="username" required>
                         <div class="invalid-feedback">Vui Lòng Nhập Tài Khoản</div>
                       </div>
                     </div>
 
                     <div class="col-12">
-                      <label for="yourPassword" class="form-label">Mật Khẩu</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
+                      <label for="password" class="form-label">Mật Khẩu</label>
+                      <input type="password" name="password" class="form-control" id="password" required>
                       <div class="invalid-feedback">Vui Lòng Nhập Mật Khẩu</div>
                     </div>
 
                     <div class="col-6">
-                      <button class="btn btn-primary w-100" type="submit">Quản Lý</button>
+                      <button class="btn btn-primary w-100" type="submit" name="login_role" value="admin">Quản Lý</button>
                     </div>
                     <div class="col-6">
-                        <button class="btn btn-success w-100" type="submit">Nhân Viên</button>
+                        <button class="btn btn-success w-100" type="submit" name="login_role" value="receptionist">Nhân Viên</button>
                       </div>
                   </form>
 

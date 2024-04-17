@@ -1,4 +1,4 @@
-from app.views.admin.base_model_view import BaseModelView
+from app.model_views.base_model_view import BaseModelView
 
 
 class RoomModelView(BaseModelView):

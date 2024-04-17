@@ -1,5 +1,4 @@
-from flask import session
-from flask_admin import BaseView
+from flask_login import current_user
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 from app.models.account import UserRole
@@ -23,3 +22,4 @@ class BaseModelView(AuthenticatedAdmin):
     column_display_all_relations = True
     can_view_details = True
     can_export = True
+
