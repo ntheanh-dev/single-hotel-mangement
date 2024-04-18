@@ -6,16 +6,6 @@
   >
     <div class="flex justify-between items-center py-3 px-3">
       <h1 class="text-lg font-bold payment-form-title">ĐẶT/NHẬN PHÒNG</h1>
-      <div class="flex space-x-2">
-        <span
-          class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 checkin-time-payment-form"
-          >7/4/2024 21:00</span
-        >
-        <span
-          class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 checkout-time-payment-form"
-          >7/4/2024 22:00</span
-        >
-      </div>
       <button
         type="button"
         class="btn-close close-search-room-form"
@@ -26,34 +16,16 @@
       <table class="min-w-full bg-white shadow-md rounded-t-lg">
         <thead>
           <tr class="bg-blue-gray-600 text-gray-700">
-            <th class="py-2 px-2 font-medium text-left">Thông tin phòng</th>
-            <th class="py-2 px-2 text-left">Thời gian</th>
-            <th class="py-2 px-2 text-left">Khách trong nước</th>
-            <th class="py-2 px-2 text-left">Khách nước ngoài</th>
-            <th class="py-2 px-2 text-left">Giá</th>
+            <th scope="col" >Mã</th>
+            <th scope="col" >Phòng</th>
+            <th scope="col" >Giờ nhận</th>
+            <th scope="col" >Giờ trả</th>
+            <th scope="col" >Khách Trong Nước</th>
+            <th scope="col" >Khách Nước Ngoài</th>
+            <th scope="col" >Giá</th>
           </tr>
         </thead>
-        <tbody class="text-blue-gray-900 payment-form-table-body">
-<!--          <tr class="border-b border-blue-gray-200">-->
-<!--            <td class="py-2 px-2">-->
-<!--              Phòng 01 giường đôi cho 2 người-->
-<!--              <span-->
-<!--                class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"-->
-<!--                >P201</span-->
-<!--              >-->
-<!--            </td>-->
-<!--            <td class="py-2 px-2">1 Ngày 6 giờ</td>-->
-<!--            <td class="py-2 px-2">2</td>-->
-<!--            <td class="py-2 px-2">3</td>-->
-<!--            <td class="py-2 px-2 font-medium text-black-600">700,000</td>-->
-<!--          </tr>-->
-<!--          <tr class="border-b border-blue-gray-200">-->
-<!--            <td class="py-2 px-2 font-medium">Tổng cộng</td>-->
-<!--            <td class="py-2 px-2"></td>-->
-<!--            <td class="py-2 px-2"></td>-->
-<!--            <td class="py-2 px-2 font-medium">700,000</td>-->
-<!--            <td class="py-2 px-2"></td>-->
-<!--          </tr>-->
+        <tbody class="text-blue-gray-900 payment-form-table-body payment-info-row">
         </tbody>
       </table>
     </div>

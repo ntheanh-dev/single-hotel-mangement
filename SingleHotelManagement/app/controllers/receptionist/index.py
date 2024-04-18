@@ -11,9 +11,11 @@ from app.services.guest_service import check_phone_number, register_guest, searc
 from app.services.tier_service import get_tiers, get_max_guests, tier_with_available_room_to_dict
 from app.services.floor_service import get_floors
 from app.services.booking_service import create_booking, get_booking_by_id, cancel_booking as cb, list_booking, \
-    change_booking_status as cbs, get_info_booking, check_out_with_check_payment as cowcp, check_out as co
+    change_booking_status as cbs, check_out_with_check_payment as cowcp,check_out as co
+from app.services.payment_service import is_paid as ip
 from app.services.payment_service import payment as pm
 from app.utils.decorator import required_role
+from flask_login import current_user
 
 
 @app.route('/nhan-vien/lich-dat-phong/')
@@ -22,9 +24,7 @@ def receptionist_home():
     status_values = request.args.getlist('trang-thai')
     # Chỉ hiện các đơn đặt online, đã đặt trước, đã check_in
     if len(status_values) == 0:
-        status_values.append('1')
-        status_values.append('2')
-        status_values.append('3')
+        status_values.append('1,2,3')
     bookings = list_booking(status_values)
 
     return render_template('/receptionist/index.html', bookings=bookings, booking_status=BookingStatus)
@@ -44,7 +44,7 @@ def receptionist_booking():
         return render_template('/receptionist/booking.html', tiers=tiers, floors=floors, max_guests=max_guests)
     else:
         booking = get_booking_by_id(int(booking_id))
-
+        is_paid = ip(booking_id)
         if booking['status'] != 'REQUESTED':
             return redirect('/nhan-vien/dat-phong/')
 
@@ -56,17 +56,19 @@ def receptionist_booking():
 
         booking_details = get_booking_details_by_booking_id(int(booking_id))
         current_booking_detail = {}
+        total_price = 0
         for bd in booking_details:
+            total_price += bd['price']
             if bd['room_id'] == int(room_id):
                 current_booking_detail = bd
-                break
         current_tier = get_tier_by_room_id(int(room_id))
         return render_template('/receptionist/booking_detail.html',
                                current_tier=current_tier,
                                booking_details=booking_details,
                                booking=booking,
                                current_booking_detail=current_booking_detail,
-                               tiers=tiers, floors=floors, max_guests=max_guests
+                               tiers=tiers, floors=floors, max_guests=max_guests, total_price=total_price,
+                               is_paid=is_paid
                                )
 
 
@@ -127,7 +129,7 @@ def add_guest():
 def make_booking():
     data = json.loads(request.data)
     listData = {
-        'receptionist_id': 2,
+        'receptionist_id': current_user.id,
         'booker_id': data.get('booker_id'),
         'start_date': data.get('start_date'),
         'end_date': data.get('end_date'),
@@ -208,25 +210,19 @@ def check_out():
 
 
 @app.route('/api/receptionist/payment/', methods=['post'])
-@required_role(UserRole.RECEPTIONIST)
 def payment():
     data = json.loads(request.data)
     booking_id = data.get('booking_id')
     payment_method = data.get('payment_method')
-    amount = data.get('amount')
+    current_booking_detail_id = data.get('current_booking_detail_id')
+    additional_action = data.get('additional_action')
     try:
-        result = pm(booking_id, payment_method, amount)
-        co(booking_id)
+        result = pm(booking_id, payment_method, current_booking_detail_id)
+        if additional_action == 'CHECK_OUT':
+            co(booking_id)
         return jsonify(result)
     except Exception as e:
         print(e)
         return jsonify('00')
 
 
-@app.route('/api/receptionist/get-booking-info/', methods=['post'])
-@required_role(UserRole.RECEPTIONIST)
-def get_booking():
-    data = json.loads(request.data)
-    booking_id = data.get('booking_id')
-    result = get_info_booking(booking_id)
-    return jsonify(result)

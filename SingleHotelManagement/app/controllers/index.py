@@ -1,9 +1,10 @@
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, jsonify
 from flask_login import current_user, login_user, logout_user
 from app.models.account import UserRole, Account
 from app import app, login
 from app.utils.decorator import logged
-from app.services.account_service import user_login,receptionist_login,admin_login
+from app.services.account_service import user_login, receptionist_login, admin_login
+from app.services.booking_service import retrieve_booking as rb,get_info_booking
 
 
 @login.user_loader
@@ -33,7 +34,7 @@ def login():
         password = request.form.get('password')
         login_role = request.form.get('login_role')
         if login_role.__eq__('receptionist'):
-            user = receptionist_login(username,password)
+            user = receptionist_login(username, password)
             if user:
                 login_user(user)
                 return redirect(url_for("receptionist_home"))
@@ -55,3 +56,8 @@ def login():
 def logout_my_user():
     logout_user()
     return redirect('/login')
+
+
+@app.route('/api/booking/<booking_id>', methods=['GET'])
+def retrieve_booking(booking_id):
+    return jsonify(get_info_booking(booking_id))

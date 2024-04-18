@@ -1,14 +1,4 @@
 $(document).ready(function () {
-    $(".confirmation-btn").click(function () {
-        $(".overlay-confirm-booking").fadeIn();
-        $(".modal-confirm-booking").fadeIn();
-    });
-
-    $(".close, .overlay-confirm-booking").click(function () {
-        $(".overlay-confirm-booking").fadeOut();
-        $(".modal-confirm-booking").fadeOut();
-    });
-
     // ----------------- Show modal booking form -----------------
     $(".confirm-booking-online-btn").click(function () {
         $(".overlay-booking-form").fadeIn();
@@ -105,19 +95,47 @@ $(window).on('load', function () {
 });
 
 change_booking_status = (booking_id, status) => {
-    fetch("/api/receptionist/change-booking-status/", {
-        method: 'post',
-        body: JSON.stringify({
-            'booking_id': booking_id,
-            'status': status
-        }),
-        headers: {
-            'Accept': 'application/json',
-            'Context-Type': 'application/json',
-        }
-    }).then(res => res.json()).then(data => {
-        window.location.reload();
-    })
+    if (status == 4) {
+            Swal.fire({
+                title: 'Bạn có chắc muốn huỷ đơn đặt phòng này?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Huỷ bỏ'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("/api/receptionist/change-booking-status/", {
+                        method: 'post',
+                        body: JSON.stringify({
+                            'booking_id': booking_id,
+                            'status': status
+                        }),
+                        headers: {
+                            'Accept': 'application/json',
+                            'Context-Type': 'application/json',
+                        }
+                    }).then(res => res.json()).then(data => {
+                        window.location.reload();
+                    })
+                }
+            })
+    } else {
+        fetch("/api/receptionist/change-booking-status/", {
+            method: 'post',
+            body: JSON.stringify({
+                'booking_id': booking_id,
+                'status': status
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Context-Type': 'application/json',
+            }
+        }).then(res => res.json()).then(data => {
+            window.location.reload();
+        })
+    }
 }
 
 check_out = (booking_id) => {
@@ -145,54 +163,35 @@ check_out = (booking_id) => {
                 cancelButtonText: 'Huỷ bỏ'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fetch("/api/receptionist/get-booking-info/", {
-                        method: 'post',
-                        body: JSON.stringify({
-                            'booking_id': booking_id,
-                        }),
-                        headers: {
-                            'Accept': 'application/json',
-                            'Context-Type': 'application/json',
-                        }
-                    }).then(resp => resp.json()).then(result => {
-                        // Lưu booking_id để gọi api từ một chỗ khác
-                        localStorage.setItem('payment-booking', booking_id);
-
-                        var booking = result.booking
-                        var booking_details = result.booking_details
-                        $('.payment-form-title').text("THANH TOÁN")
-                        $('.checkin-time-payment-form').text(moment(booking.start_date).format('LLL'))
-                        $('.checkout-time-payment-form').text(moment(booking.end_date).format('LLL'))
-                        let row = ''
-                        total = 0
-                        duration = calculate_booking_time(booking.start_date, booking.end_date)
-                        booking_details.map(ele => {
-                            total += ele.price
-                            row +=
-                                `<tr class="border-b border-blue-gray-200">
-                                <td class="py-2 px-2">
-                                  ${ele.tier_name}
-                                  <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">${ele.room_name}</span>
-                                </td>
-                                <td class="py-2 px-2">${duration}</td>
-                                <td class="py-2 px-2">${ele.booking_detail.num_normal_guest}</td>
-                                <td class="py-2 px-2">${ele.booking_detail.num_foreigner_guest}</td>
-                                <td class="py-2 px-2 font-medium text-black-600">${ele.price}</td>
-                              </tr>`
+                    fetch(`/api/booking/${booking_id}`, {
+                        method: 'get',
+                    }).then(res => res.json()).then(data => {
+                        var booking = data.booking
+                        var booking_details = data.booking_details
+                        var target = $('.payment-info-row')
+                        var row = ''
+                        booking_details.map(b => {
+                            row += `
+                                <tr>
+                                    <td>${booking.id}</td>
+                                    <td><span class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                                        >${b.room_name}</span
+                                    ></td>
+                                    <td>${moment(booking.start_date).format('LLL')}</td>
+                                    <td>${moment(booking.end_date).format('LLL')}</td>
+                                    <td>${b.booking_detail.num_normal_guest}</td>
+                                    <td>${b.booking_detail.num_foreigner_guest}</td>
+                                    <td>${b.price}</td>
+                                </tr>
+                            `
                         })
-                        row += `
-                            <tr class="border-b border-blue-gray-200">
-                                <td class="py-2 px-2 font-medium">Tổng cộng</td>
-                                <td class="py-2 px-2"></td>
-                                <td class="py-2 px-2"></td>
-                                <td class="py-2 px-2 font-medium payment_amount">${total}</td>
-                                <td class="py-2 px-2"></td>
-                            </tr>
-                        `
+                        target.html(row)
                         $('.payment-form-table-body').html(row)
                         $(".overlay-payment").fadeIn();
                         $(".payment-form").fadeIn();
                     })
+                    // Lưu booking_id để gọi api từ một chỗ khác
+                    localStorage.setItem('payment-booking', booking_id);
                 }
             })
         }
@@ -201,14 +200,13 @@ check_out = (booking_id) => {
 
 function handlePayment() {
     var booking_id = localStorage.getItem('payment-booking')
-    var amount = $('.payment_amount').text()
     if (booking_id) {
         fetch("/api/receptionist/payment/", {
         method: 'post',
         body: JSON.stringify({
             'booking_id': booking_id,
             'payment_method':$('input[type="radio"][name="payment-method"]:checked').val(),
-            'amount': amount
+            'additional_action': 'CHECK_OUT'
         }),
         headers: {
             'Accept': 'application/json',
@@ -250,6 +248,8 @@ function handlePayment() {
                             confirmButtonText: 'Xác nhận',
                     })
                     break;
+                default:
+                    window.location.href = data
             }
         })
     } else {

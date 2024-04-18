@@ -123,6 +123,15 @@
               >
                 Nhận phòng
               </button>
+              <div class="filter mt-1 ml-2">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Lựa chọn</h6>
+                    </li>
+                    <li><a class="dropdown-item" href="javascript:;" onclick="change_booking_status({{b.booking.id}},4)">Huỷ</a></li>
+                  </ul>
+              </div>
               {% elif b.booking.status == 'CHECKED_IN' %}
               <button
                 class="btn btn-success"
@@ -130,13 +139,14 @@
               >
                 Trả phòng
               </button>
-              {% elif b.booking.status == 'UNPAID' %}
-              <button
-                class="btn btn-warning"
-                onclick="change_booking_status({{b.booking.id}},)4"
-              >
-                Thanh toán
-              </button>
+              <div class="filter mt-1 ml-2">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Lựa chọn</h6>
+                    </li>
+                  </ul>
+              </div>
               {% elif b.booking.status == 'CANCELED' %}
               <span
                 class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-1 rounded dark:bg-red-900 dark:text-red-300"

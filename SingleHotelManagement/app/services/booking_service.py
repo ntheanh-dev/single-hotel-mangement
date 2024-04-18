@@ -1,6 +1,7 @@
 from app.repositories.booking_repository import create_booking as crb, get_booking_by_id as gb, \
-    list_booking as lb, reserve as rs, check_in as ci, check_out as co, cancel_booking as cb, is_paid as ip, \
-    count_booking as count_b
+    list_booking as lb, reserve as rs, check_in as ci, check_out as co, cancel_booking as cb, \
+    count_booking as count_b, retrieve_booking as rb
+from app.services.payment_service import is_paid as ip
 from app.services.booking_detail_service import get_booking_detail_with_price
 
 
@@ -16,8 +17,8 @@ def get_booking_by_id(id):
     return gb(id).to_dict()
 
 
-def list_booking(status_values=None,limit=None):
-    return lb(status_values,limit)
+def list_booking(status_values=None, limit=None):
+    return lb(status_values, limit)
 
 
 def get_info_booking(booking_id):
@@ -28,6 +29,10 @@ def get_info_booking(booking_id):
         'booking_details': booking_details
     }
     return result
+
+
+def retrieve_booking(booking_id):
+    return rb(int(booking_id))
 
 
 def check_out_with_check_payment(booking_id):

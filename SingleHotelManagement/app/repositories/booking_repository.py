@@ -1,7 +1,7 @@
 import datetime
 from sqlalchemy import  and_
 from sqlalchemy.sql.functions import concat, func, coalesce
-from app import db
+from app import db,app
 from app.models.booking import Booking, BookingStatus
 from app.models.booking_detail import BookingDetail
 from app.models.invoice import Invoice
@@ -122,6 +122,7 @@ def list_booking(status_values=None,limit=None):
         Booking).order_by(Booking.id.desc())
     if limit is not None:
         query = query.limit(10)
+
     if status_values is None or len(status_values) == 0:
         query = query.all()
     else:
@@ -178,9 +179,28 @@ def list_booking(status_values=None,limit=None):
     return booking_dict
 
 
-def is_paid(booking_id):
-    query = db.session.query(Invoice).filter(and_(Invoice.paid.__eq__(True),Invoice.booking_id.__eq__(booking_id))).first()
-    return query is not None
+def retrieve_booking(booking_id):
+    query = db.session.query(Booking, func.sum(BookingDetail.price),
+                             concat(func.group_concat(Room.name)).label('room_names'),
+                             coalesce(concat(User.first_name, User.last_name), 'Khách lẻ').label(
+                                 'guest'), concat(func.group_concat(Room.id)).label('room_id')).select_from(
+        Booking).filter(Booking.id.__eq__(int(booking_id))).join(
+        BookingDetail, BookingDetail.booking_id == Booking.id,
+        isouter=True).join(User,
+                           Booking.booker_id == User.id,
+                           isouter=True).join(Room,
+                                              BookingDetail.room_id == Room.id,
+                                              isouter=True).group_by(Booking).first()
+
+    return {
+            'booking': query[0].to_dict(),
+            'price': query[1],
+            'rooms': query[2],
+            'booker': query[3],
+            'rooms_id': query[4]
+        }
+
+
 
 
 def get_total_price_by_booking_id(id):

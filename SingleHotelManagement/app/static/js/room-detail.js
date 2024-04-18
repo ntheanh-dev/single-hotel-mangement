@@ -138,6 +138,36 @@ $(document).ready(function () {
     $(".payment-btn").click(function () {
         $(".overlay-payment").fadeIn();
         $(".payment-form").fadeIn();
+        // ---------Lay thong tin booking hien tai---------------
+        var booking_id = urlParams.get('ma')
+        var current_booking_detail_id = urlParams.get('phong')
+
+        fetch(`/api/booking/${booking_id}`, {
+            method: 'get',
+        }).then(res => res.json()).then(data => {
+            var booking = data.booking
+            var booking_details = data.booking_details
+            var target = $('.payment-info-row')
+            var row = ''
+            booking_details.map(b => {
+                row += `
+                    <tr>
+                        <td>${booking.id}</td>
+                        <td><span class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                            >${b.room_name}</span
+                        ></td>
+                        <td>${moment(booking.start_date).format('LLL')}</td>
+                        <td>${moment(booking.end_date).format('LLL')}</td>
+                        <td>${b.booking_detail.num_normal_guest}</td>
+                        <td>${b.booking_detail.num_foreigner_guest}</td>
+                        <td>${b.price}</td>
+                    </tr>
+                `
+            })
+            target.html(row)
+        })
+
+
     });
     $(".close-search-room-form").click(function () {
         $(".overlay-payment").fadeOut();
@@ -242,4 +272,59 @@ changeBookingStatus = (status) => {
             }
         })
     }
+}
+handlePayment = () => {
+    var urlParams = new URLSearchParams(window.location.search);
+    var booking_id = urlParams.get("ma")
+    var current_booking_detail_id = urlParams.get("phong")
+    fetch("/api/receptionist/payment/", {
+        method: 'post',
+        body: JSON.stringify({
+            'booking_id': booking_id,
+            'payment_method':$('input[type="radio"][name="payment-method"]:checked').val(),
+            'current_booking_detail_id' : current_booking_detail_id
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Context-Type': 'application/json',
+        }
+        }).then(res => res.json()).then(data => {
+        // 00: lỗi, 01: thanh toán thành công, 02: chưa hỗ trợ thanh toán bằng phương thức đó,
+            switch (data) {
+                case '00':
+                    Swal.fire({
+                            title: 'Thanh Toán Thất Bại',
+                            text:'Hãy thử lại sau',
+                            icon: 'warning',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Xác nhận',
+                    })
+                    break;
+                case '01':
+                    Swal.fire({
+                            title: 'Thanh Toán Thành Công',
+                            text:'Tải lại trang',
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Xác nhận',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const newUrl = window.location.pathname;
+                            window.location.href = newUrl;
+                        }
+                    })
+                    break
+                case '02':
+                    Swal.fire({
+                            title: 'Hiện chưa hỗ trợ phương thức thanh toán này',
+                            text:'Hãy thử lại với phương thức khác',
+                            icon: 'warning',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Xác nhận',
+                    })
+                    break;
+                default:
+                    window.location.href = data
+            }
+        })
 }

@@ -12,6 +12,14 @@ app = Flask("APH Hotel")
 app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql+pymysql://root:%s@localhost/hoteldb?charset=utf8mb4' % quote('Admin@123')
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.secret_key = '234jl23k4j234jlk@34987452ijodjdf'
+# VNPay config
+
+app.config["VNPAY_TMN_CODE"] = 'Q2L9DE6D'
+app.config["VNPAY_HASH_SECRET_KEY"] = 'IDKCETNVMRJOMDYZCCEEFMSJJLTRQRKX'
+app.config["VNPAY_PAYMENT_URL"] = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
+app.config["VNPAY_RETURN_URL"] = 'http://192.168.1.207:8000/vnpay/payment_return/'
+
+
 db = SQLAlchemy(app=app)
 login = LoginManager(app)
 

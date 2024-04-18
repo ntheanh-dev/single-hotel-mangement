@@ -1,4 +1,6 @@
-from app import db
+from sqlalchemy import func
+
+from app import db, app
 from app.models.booking_detail import BookingDetail
 from app.models.room import Room, RoomStatus
 from app.models.tier import Tier
@@ -70,3 +72,8 @@ def add_booking_detail_in_booking(booking_id=None, tier_id=None):
     return {
         'room_id': room.id
     }
+
+
+def get_total_price(booking_id):
+    query = db.session.query(func.sum(BookingDetail.price)).group_by(BookingDetail.booking_id).filter(BookingDetail.booking_id.__eq__(int(booking_id))).first()
+    return int(query[0])

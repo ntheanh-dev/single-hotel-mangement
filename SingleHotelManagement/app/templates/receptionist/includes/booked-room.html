@@ -112,9 +112,11 @@
         <button class="btn btn-warning rounded-lg payment-btn" onclick="changeBookingStatus(1)">
           Đặt Trước
         </button>
+        {% if not is_paid %}
         <button class="btn btn-success rounded-lg payment-btn">
-          Thanh toán 1,200,000
+          Thanh toán <span class="price">{{total_price}}</span>
         </button>
+        {% endif %}
       </div>
     </div>
   </div>
