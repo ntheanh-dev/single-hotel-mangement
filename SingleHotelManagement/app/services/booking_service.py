@@ -1,12 +1,17 @@
-from app.repositories.booking_repository import create_booking as crb, get_booking_by_id as gb, \
+from app.repositories.booking_repository import create_booking_offline as crbo, create_booking_online as crbon, \
+    get_booking_by_id as gb, \
     list_booking as lb, reserve as rs, check_in as ci, check_out as co, cancel_booking as cb, \
     count_booking as count_b, retrieve_booking as rb
 from app.services.payment_service import is_paid as ip
 from app.services.booking_detail_service import get_booking_detail_with_price
 
 
-def create_booking(data):
-    return crb(data)
+def create_booking_offline(data):
+    return crbo(data)
+
+
+def create_booking_online(data):
+    return crbon(data)
 
 
 def cancel_booking(booking_id):

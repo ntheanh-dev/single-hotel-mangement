@@ -49,7 +49,7 @@ def login():
                 login_user(user)
                 return redirect(url_for("guest_home"))
 
-    return render_template("login.html")
+    return render_template("login.html",err_msg="Tên đăng nhập hoặc mật khẩu không đúng!")
 
 
 @app.route('/logout', methods=['get'])

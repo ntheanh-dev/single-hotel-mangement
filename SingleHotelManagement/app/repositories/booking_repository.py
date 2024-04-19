@@ -1,7 +1,7 @@
 import datetime
-from sqlalchemy import  and_
+from sqlalchemy import and_
 from sqlalchemy.sql.functions import concat, func, coalesce
-from app import db,app
+from app import db, app
 from app.models.booking import Booking, BookingStatus
 from app.models.booking_detail import BookingDetail
 from app.models.invoice import Invoice
@@ -12,7 +12,7 @@ from app.models.user import User
 from app.repositories.tier_repository import get_tier_by_id
 
 
-def create_booking(data):
+def create_booking_offline(data):
     booking = Booking(
         start_date=data.get('start_date'),
         end_date=data.get('end_date'),
@@ -44,14 +44,48 @@ def create_booking(data):
         booking_detail.num_normal_guest = 1
     # Cap nhap gia tien
     tier = get_tier_by_id(int(data.get('tier_id')))
-    booking_detail_price = tier.get_price(booking_detail.num_normal_guest,booking_detail.num_foreigner_guest)
+    booking_detail_price = tier.get_price(booking_detail.num_normal_guest, booking_detail.num_foreigner_guest)
     booking_detail.set_price(booking_detail_price)
-
 
     db.session.commit()
     return {
         'booking': booking.to_dict(),
         'room': room.to_dict()
+    }
+
+
+def create_booking_online(data):
+    booking = Booking(
+        start_date=data.get('start_date'),
+        end_date=data.get('end_date'),
+        status=BookingStatus.REQUESTED,
+        booker_id=data.get('booker_id')
+    )
+    db.session.add(booking)
+    print(data)
+    for r in data.get('rooms'):
+        # Get available room
+        rooms = db.session.query(Room).filter(Room.tier_id.__eq__(r['id']),Room.status.__eq__(RoomStatus.AVAILABLE)).all()
+        if len(rooms) == 0:
+            db.rollback()
+            return None
+        for x in range(r['quantity']):
+            room = rooms[x]
+            # Change status room
+            room.status = RoomStatus.RESERVED
+            # Create booking detail
+            booking_detail = BookingDetail(
+                booking_id=booking.id,
+                room_id=room.id,
+                num_foreigner_guest=r['foreignNum'],
+                num_normal_guest=r['domesticNum'],
+                price=r['price'] / r['quantity']
+            )
+            db.session.add(booking_detail)
+
+    db.session.commit()
+    return {
+        'booking': booking.to_dict(),
     }
 
 
@@ -100,7 +134,7 @@ def set_status_room_by_booking_id(booking_id, status_room):
     db.session.commit()
 
 
-def list_booking(status_values=None,limit=None):
+def list_booking(status_values=None, limit=None):
     formatted_grouped_values = func.group_concat(
         concat(
             Tier.id, '-',
@@ -193,14 +227,12 @@ def retrieve_booking(booking_id):
                                               isouter=True).group_by(Booking).first()
 
     return {
-            'booking': query[0].to_dict(),
-            'price': query[1],
-            'rooms': query[2],
-            'booker': query[3],
-            'rooms_id': query[4]
-        }
-
-
+        'booking': query[0].to_dict(),
+        'price': query[1],
+        'rooms': query[2],
+        'booker': query[3],
+        'rooms_id': query[4]
+    }
 
 
 def get_total_price_by_booking_id(id):

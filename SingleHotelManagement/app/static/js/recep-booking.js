@@ -238,7 +238,6 @@ $(document).ready(function () {
         }).then(res => res.json()).then(data => {
             renderData(data.results, "district", "district");
         })
-
     }
 
     var renderData = (array, select, type) => {
@@ -362,7 +361,7 @@ chooseRoom = (room_id) => {
         } else {
             var booker_id = $('.booker-info').attr('guest_id')
             var foreigner = $('.booker-info').attr('foreigner')
-            fetch("/api/reception/make-booking/", {
+            fetch("/api/reception/make-booking-offline/", {
                 method: 'post',
                 body: JSON.stringify({
                     'start_date': $("#startdate").val(),

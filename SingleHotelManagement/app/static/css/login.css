@@ -1,0 +1,130 @@
+/* Global styles */
+* {
+    font-family: "Outfit", sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Container styles */
+.login-container {
+    width: 380px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(9px);
+    color: white;
+    border-radius: 14px;
+    padding: 30px 40px;
+}
+
+/* Heading styles */
+.login-container h1 {
+    font-size: 39px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+/* Social icons styles */
+.social-icons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.social-icons .icon {
+    display: inline-block;
+    font-size: 20px;
+    color: white;
+    margin: 0 10px;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 16px;
+    padding: 7px 10px;
+    transition: color 0.3s ease;
+}
+
+.social-icons .icon:hover {
+    color: #c2c2c2;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form container styles */
+.form-container {
+    padding: 40px;
+    transition: all 0.3s ease;
+}
+
+/* Form message container styles */
+.form-message-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Form input and button styles */
+input,
+button {
+    width: 100%;
+    height: 100%;
+    height: 50px;
+    margin: 10px 0;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 60px;
+    font-size: 15px;
+    color: white;
+    text-indent: 15px;
+}
+
+input::placeholder {
+    color: white;
+    text-indent: 15px;
+}
+
+input:focus,
+button:focus {
+    border-color: transparent;
+}
+
+button {
+    background-color: #02a152;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s ease ease-in-out;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Anchor tag styles */
+a {
+    text-align: center;
+    text-decoration: underline;
+    color: white;
+    transition: 0.4s ease-in-out;
+}
+
+a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+/* Hidden class */
+.hidden {
+    display: none;
+}

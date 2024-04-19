@@ -1,0 +1,293 @@
+{% extends 'guest/layout.html'%} {% block title %}
+<title>Đặt Phòng Trực Tuyến</title>
+{% endblock %} {% block body %} {{super()}}
+    <main class="main" style="padding-bottom: 100px!important;">
+        <div class="ht-container"><!----><!---->
+            <div class="order-page ht-pt-5 ht-pb-6">
+                <section class="order-page-content">
+                    <div>
+                        <h2 class="ht-mb-3"> Thông tin liên hệ </h2><!---->
+                        <div class="order-page-box order-contact">
+                            <form class="w-full mt-4 add_guest_form">
+                              <div class="flex flex-wrap -mx-3 mb-4">
+                                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                  <label
+                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                    for="grid-first-name"
+                                  >
+                                    Họ
+                                  </label>
+                                  <input
+                                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    id="last_name"
+                                    type="text"
+                                    placeholder="Họ của bạn"
+                                    name="last_name"
+                                  />
+                                  <!-- <p class="text-red-500 text-xs italic">Please fill out this field.</p> -->
+                                </div>
+                                <div class="w-full md:w-1/2 px-3">
+                                  <label
+                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                    for="first_name"
+                                  >
+                                    Tên
+                                  </label>
+                                  <input
+                                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    id="first_name"
+                                    type="text"
+                                    placeholder="Tên của bạn"
+                                    name="first_name"
+                                  />
+                                </div>
+                              </div>
+
+                              <div class="flex flex-wrap -mx-3 mb-4">
+                                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                  <label
+                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                    for="grid-first-name"
+                                  >
+                                    Số điện thoại
+                                  </label>
+                                  <input
+                                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    id="phone_number"
+                                    type="text"
+                                    placeholder="Số điện thoại"
+                                    name="phone_number"
+                                  />
+                                  <!-- <p class="text-red-500 text-xs italic">Please fill out this field.</p> -->
+                                </div>
+                                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                  <label
+                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                    for="grid-first-name"
+                                  >
+                                    Email
+                                  </label>
+                                  <input
+                                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    id="grid-first-name"
+                                    type="text"
+                                    placeholder="example@gmail.com"
+                                  />
+                                  <!-- <p class="text-red-500 text-xs italic">Please fill out this field.</p> -->
+                                </div>
+                              </div>
+
+                              <div class="flex flex-wrap -mx-3 mb-4">
+                                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                  <label
+                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                    for="birthdate"
+                                  >
+                                    Ngày sinh
+                                  </label>
+                                  <input
+                                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                    id="birthdate"
+                                    type="date"
+                                    placeholder=""
+                                    name="birthdate"
+                                  />
+                                  <!-- <p class="text-red-500 text-xs italic">Please fill out this field.</p> -->
+                                </div>
+                                <div class="w-full md:w-1/2 px-3">
+                                  <label
+                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                    for="foreigner"
+                                  >
+                                    Quốc tịch
+                                  </label>
+                                  <div class="relative">
+                                    <select
+                                      class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                      id="foreigner"
+                                      name="foreigner"
+                                    >
+                                      <option value="False">Việt Nam</option>
+                                      <option value="True">Khác</option>
+                                    </select>
+                                    <div
+                                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                                    >
+                                      <svg
+                                        class="fill-current h-4 w-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                      >
+                                        <path
+                                          d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="flex flex-wrap -mx-3 mb-2">
+                                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                  <label
+                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                    for="address"
+                                  >
+                                    Địa chỉ
+                                  </label>
+                                  <input
+                                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    id="address"
+                                    type="text"
+                                    placeholder="Địa chỉ"
+                                    name="address"
+                                  />
+                                </div>
+                                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                  <label
+                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                    for="district"
+                                  >
+                                    Quận/huyện
+                                  </label>
+                                  <div class="relative">
+                                    <select
+                                      class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                      id="district"
+                                      name="district"
+                                    >
+                                      <option disable value="">Chọn</option>
+                                    </select>
+                                    <div
+                                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                                    >
+                                      <svg
+                                        class="fill-current h-4 w-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                      >
+                                        <path
+                                          d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                  <label
+                                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                    for="city"
+                                  >
+                                    Thành phố
+                                  </label>
+                                  <div class="relative">
+                                    <select
+                                      class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                      id="city"
+                                      name="city"
+                                    ></select>
+                                    <div
+                                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                                    >
+                                      <svg
+                                        class="fill-current h-4 w-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                      >
+                                        <path
+                                          d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="order-cart">
+                            <div class="cart-list">
+                                <h4 class="order-page-box ht-pt-2 ht-pb-2">Chi
+                                    nhánh trung tâm - - <span class="ht-d-inline-block">087789334</span>
+                                </h4>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <aside class="order-page-aside">
+                    <div>
+                        <h2 class="ht-mb-3 ht-d-none ht-d-lg-block"> Thông tin
+                            thanh toán </h2>
+                        <div class="order-page-box order-payment">
+                            <div class="order-payment-container">
+                                <div class="order-payment-info">
+                                    <div class="payment-form-row ht-form-row">
+                                        <div
+                                            class="payment-form-label ht-col-form-label ht-pt-0 ht-text-gray">
+                                            Tổng tiền phòng </div>
+                                        <div
+                                            class="payment-total payment-form-control ht-col-form-control ht-pt-0 ht-font-semibold">
+                                        </div>
+                                    </div>
+                                    <div class="payment-form-row ht-form-row">
+                                        <div
+                                            class="payment-form-label ht-col-form-label ht-pt-3 ht-text-gray">
+                                            Thu khác </div>
+                                        <div
+                                            class="payment-total-bonus payment-form-control ht-col-form-control ht-pt-3 ht-font-semibold">
+                                            0 </div>
+                                    </div>
+                                    <div class="ht-divider"></div>
+                                </div>
+                                <div class="order-payment-footer">
+                                    <div class="payment-form-row ht-form-row">
+                                        <div class="payment-form-label ht-col-form-label ht-pt-0"> Thanh
+                                            toán </div>
+                                        <div
+                                            class="payment-total-amount payment-form-control ht-col-form-control ht-text-primary ht-pt-0">
+                                            <span>600,000</span><i
+                                                class="ht-d-lg-none far fa-info-circle icon-mask ht-text-primary ht-ml-2"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button
+                                            class="ht-btn ht-btn-primary ht-w-100 ht-d-none ht-d-lg-inline-block confirmBookingBtn"
+                                            > Hoàn tất đặt phòng
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div><!----><!---->
+        </div>
+    </main>
+{% endblock %}
+{% block footer %}
+    <div class="order-notification order-notification-complete">
+        <div class="ht-container">
+            <div class="order-notification-content">
+                <div class="order-notification-info">
+                    <button class="ht-btn ht-btn-outline-gray"><i class="far fa-angle-left icon-btn"></i><a
+                        href="/trang-chu/">Chọn
+                        lại</a>
+                    </button><!---->
+                    <div class="order-notification-detail flex-fill">
+                        <h4 class="ht-d-lg-none order-notification-title-detail"> Chi tiết đặt </h4>
+                        <h3 class="ht-d-none ht-mb-0 order-notification-title-confirm"> Xác nhận
+                            thanh toán </h3>
+                        <span class="quantity-of-customer"></span>
+                        <span class="h2 confirm-booking-date"></span>
+                        <div class="ht-divider ht-d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block tail %}
+    <script src="{{url_for('static', filename='js/guest/booked-room.js')}}"></script>
+{% endblock %}

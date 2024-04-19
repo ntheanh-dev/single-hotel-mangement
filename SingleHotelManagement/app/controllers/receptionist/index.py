@@ -10,7 +10,7 @@ from app.services.booking_detail_service import get_booking_details_by_booking_i
 from app.services.guest_service import check_phone_number, register_guest, search_guest as sg
 from app.services.tier_service import get_tiers, get_max_guests, tier_with_available_room_to_dict
 from app.services.floor_service import get_floors
-from app.services.booking_service import create_booking, get_booking_by_id, cancel_booking as cb, list_booking, \
+from app.services.booking_service import create_booking_offline, get_booking_by_id, cancel_booking as cb, list_booking, \
     change_booking_status as cbs, check_out_with_check_payment as cowcp,check_out as co
 from app.services.payment_service import is_paid as ip
 from app.services.payment_service import payment as pm
@@ -100,7 +100,6 @@ def search_tier():
 
 
 @app.route('/api/reception/add-guest/', methods=['post'])
-@required_role(UserRole.RECEPTIONIST)
 def add_guest():
     data = json.loads(request.data)
     listData = {
@@ -124,9 +123,8 @@ def add_guest():
         return jsonify('-1')
 
 
-@app.route('/api/reception/make-booking/', methods=['post'])
-@required_role(UserRole.RECEPTIONIST)
-def make_booking():
+@app.route('/api/reception/make-booking-offline/', methods=['post'])
+def make_booking_offline():
     data = json.loads(request.data)
     listData = {
         'receptionist_id': current_user.id,
@@ -137,7 +135,7 @@ def make_booking():
         'foreigner': data.get('foreigner')
     }
     try:
-        result = create_booking(data=listData)
+        result = create_booking_offline(data=listData)
     except Exception as e:
         print(e)
         return jsonify('error')

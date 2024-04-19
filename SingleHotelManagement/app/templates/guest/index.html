@@ -1,10 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>TRANG HOME CUA GUEST</h1>
-</body>
-</html>
+{% extends 'guest/layout.html'%} {% block title %}
+<title>Đặt Phòng Trực Tuyến</title>
+{% endblock %} {% block body %} {{super()}}
+<main class="main" style="padding-bottom: 100px!important;">
+    <div class="ht-container">
+        <div class="room-class-page">
+            <aside class="room-class-aside">
+                <div class="room-class-aside-body">
+                    <div>
+                        <div class="room-class-filter-form">
+                            <div class="ht-form-group">
+                                <div>
+                                    <label class="k-label">Nhận phòng :</label>
+                                    <input type="datetime-local" name="daterange" value="" id="start_date" />
+                                </div>
+                            </div>
+                            <div class="ht-form-group">
+                                <div>
+                                    <label class="k-label">Trả phòng : </label>
+                                    <input type="datetime-local" name="daterange" value="" id="end_date" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="ht-form-row ht-mb-4 justify-content-between">
+                        <label class="ht-btn ht-btn-sm ht-mb-0 ht-pl-0 ht-font-regular">Khách nước
+                            ngoài </label>
+                        <div class="ht-col-form-control">
+                            <div class="ht-form-number  ht-form-number-sm ht-width-130">
+                                <button type="button" class="ht-btn ht-btn-icon-only ht-btn-outline-gray down minus">
+                                    -
+                                </button>
+                                <input type="number" inputmode="decimal" value="0"
+                                    class="ht-form-control ng-untouched ng-pristine ng-valid quantity foreign" readonly>
+                                <button type="button" class="ht-btn ht-btn-icon-only ht-btn-outline-gray up plus">
+                                    <i class="far fa-plus icon-btn">
+                                    </i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ht-form-row ht-mb-4 justify-content-between">
+                        <label class="ht-btn ht-btn-sm ht-mb-0 ht-pl-0 ht-font-regular">Khách nội
+                            địa
+                        </label>
+                        <div class="ht-col-form-control">
+                            <div class="ht-form-number ht-form-number-sm ht-width-130">
+                                <button type="button" class="ht-btn ht-btn-icon-only ht-btn-outline-gray down minus">
+                                    -
+                                </button>
+                                <input type="number" inputmode="decimal" value="0"
+                                    class="ht-form-control ng-untouched ng-pristine ng-valid quantity domestic"
+                                    readonly>
+                                <button type="button" class="ht-btn ht-btn-icon-only ht-btn-outline-gray up plus"><i
+                                        class="far fa-plus icon-btn"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="ht-btn ht-btn-primary ht-w-100 search"><i class="bi bi-search mr-2"></i><span
+                            class="ht-font-lg">Tìm
+                            phòng</span></button>
+                </div>
+            </aside>
+            <section class="room-class-content room-class-content-mobile">
+                <h3 class="ht-d-lg-none ht-mb-4">Chọn phòng đặt</h3>
+                <div class="room-class-filter-tags">
+                    <div class="ht-d-flex ht-spacer ht-spacer-6">
+                        <div class="ht-d-flex ht-spacer align-items-center">
+                            <span class="label ht-font-sm ht-text-gray">Nhận
+                                - Trả phòng:</span><span class="ht-tag ht-tag-sm ht-tag-light-gray"><i
+                                    class="far fa-calendar-day ht-d-none ht-d-sm-inline-block ht-d-lg-none ht-mr-2 booking-date"></i></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="room-class-list">
+                    <!---->
+                    <!---->
+
+
+                </div>
+            </section>
+            <!---->
+            <!---->
+            <!---->
+            <div class="ht-text-center ht-mt-4 ht-d-lg-none"> Liên hệ: <a href="tel:0373506763">
+                    0373 506 763 </a></div>
+        </div>
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+    </div>
+</main>
+{% endblock %} {% block footer %}
+<div class="order-notification order-notification-complete">
+    <div class="ht-container">
+        <div class="order-notification-content">
+            <div class="order-notification-info">
+                <div class="order-notification-detail flex-fill">
+                    <h4 class="ht-d-lg-none order-notification-title-detail"> Chi tiết đặt </h4>
+                    <h3 class="ht-d-none ht-mb-0 order-notification-title-confirm"> Xác nhận thanh toán </h3>
+                    <span class="quantity-of-customer"></span>
+                    <span class="h2 confirm-booking-date"></span>
+                    <div class="ht-divider ht-d-lg-none"></div>
+                </div>
+            </div>
+            <div class="order-notification-payment">
+                <div class="text-left text-lg-right">
+                    <span>Đã chọn</span>
+                    <h2 class="ht-mb-0 ht-text-primary ht-flex-center-left">
+                        <span class="total-payment"></span>
+                        <i class="ht-d-lg-none far fa-info-circle icon-mask ht-text-primary ht-ml-2"></i>
+                    </h2>
+                </div>
+                <button class="ht-btn ht-btn-primary " id="nextBtn"><a> Đi tiếp </a><i class="bi bi-arrow-right ml-2"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block tail %}
+<script src="{{url_for('static', filename='js/guest/script.js')}}"></script>
+{% endblock %}
