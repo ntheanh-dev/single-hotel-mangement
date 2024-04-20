@@ -92,7 +92,7 @@ function setTimeSelections() {
         options += `<option value=${i}>${i}</option>`
     $('#quarterInput').html(options)
     options = ''
-    for (let i = 2020; i <= 2100; i++)
+    for (let i = 2023; i <= 2100; i++)
         options += `<option value=${i}>${i}</option>`
     $('#yearInput').html(options)
 

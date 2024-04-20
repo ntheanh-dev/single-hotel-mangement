@@ -68,13 +68,12 @@ from app.controllers.index import *
 
 
 def init_tables():
-    with app.app_context():
-        try:
-            db.drop_all()
-            db.create_all()
-        except Exception as e:
-            print("An error occurred:", str(e))
-            db.session.rollback()
+    try:
+        db.drop_all()
+        db.create_all()
+    except Exception as e:
+        print("An error occurred:", str(e))
+        db.session.rollback()
 
 
 # Tạo view phía my_admin

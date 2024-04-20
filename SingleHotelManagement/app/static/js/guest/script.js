@@ -72,6 +72,7 @@ $(document).ready(function () {
         fetch(`/api/room/?max_guest=${foreignNum + domestic}`, {
             method: 'get',
         }).then(res => res.json()).then(data => {
+            console.log(data)
             localStorage.setItem('searched_tiers', JSON.stringify(data));
             localStorage.setItem('total_price', JSON.stringify(0));
             let row = ''

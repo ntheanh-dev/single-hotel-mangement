@@ -66,7 +66,7 @@ $(document).ready(function () {
           }
 
           if ($(this).val() == 'year_to_year_statistic') {
-              minVal = 2020
+              minVal = 2023
               maxVal = 2100
           }
 
