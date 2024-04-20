@@ -21,7 +21,7 @@ class User(db.Model):
     guests = relationship('Guest', backref="guests", lazy=True)
     receptionists = relationship('Receptionist', backref="receptionist", lazy=True)
     admins = relationship('Admin', backref="admins", lazy=True)
-
+    notifications = relationship("Notification", backref="notifications", lazy=True)
 
     def to_dict(self):
         return {
@@ -37,4 +37,7 @@ class User(db.Model):
         }
 
     def __str__(self):
+        return "{0} {1}".format(self.first_name, self.last_name)
+
+    def get_full_name(self):
         return "{0} {1}".format(self.first_name, self.last_name)

@@ -62,7 +62,6 @@ def create_booking_online(data):
         booker_id=data.get('booker_id')
     )
     db.session.add(booking)
-    print(data)
     for r in data.get('rooms'):
         # Get available room
         rooms = db.session.query(Room).filter(Room.tier_id.__eq__(r['id']),Room.status.__eq__(RoomStatus.AVAILABLE)).all()

@@ -5,6 +5,7 @@ from app.services.guest_service import count_guest
 from app.services.invoice_service import total_revenue
 from app.models.account import UserRole
 from flask_login import current_user
+from app.services.notification_service import list_notif
 
 
 # Lớp tượng trưng cho trang home page
@@ -20,6 +21,6 @@ class HomeView(AdminIndexView):
         if current_user.is_authenticated and current_user.role == UserRole.ADMIN:
             return self.render('/admin/index.html', total_booking=total_booking, total_guest=total_guest,
                                revenue=revenue,
-                               bookings=bookings)
+                               bookings=bookings, notifications=list_notif())
         else:
             return self.render('login.html')

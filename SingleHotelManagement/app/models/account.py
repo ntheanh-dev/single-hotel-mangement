@@ -28,5 +28,3 @@ class Account(db.Model, UserMixin):
     role = Column(Enum(UserRole), default=UserRole.GUEST)
 
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-
-    notifications = relationship("Notification", backref="notifications", lazy=True)

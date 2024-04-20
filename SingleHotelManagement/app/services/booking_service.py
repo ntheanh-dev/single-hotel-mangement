@@ -4,7 +4,8 @@ from app.repositories.booking_repository import create_booking_offline as crbo, 
     count_booking as count_b, retrieve_booking as rb
 from app.services.payment_service import is_paid as ip
 from app.services.booking_detail_service import get_booking_detail_with_price
-
+from app.services.notification_service import CreateNotif
+from flask_login import current_user
 
 def create_booking_offline(data):
     return crbo(data)
@@ -44,6 +45,8 @@ def check_out_with_check_payment(booking_id):
     is_paid = ip(booking_id)
     if is_paid:
         co(booking_id)
+        recep = current_user
+        CreateNotif.cancel_booking(account_id=recep.id, booking_id=booking_id)
         return '00'
     else:
         return '01'

@@ -11,11 +11,12 @@ from app.services.guest_service import check_phone_number, register_guest, searc
 from app.services.tier_service import get_tiers, get_max_guests, tier_with_available_room_to_dict
 from app.services.floor_service import get_floors
 from app.services.booking_service import create_booking_offline, get_booking_by_id, cancel_booking as cb, list_booking, \
-    change_booking_status as cbs, check_out_with_check_payment as cowcp,check_out as co
+    change_booking_status as cbs, check_out_with_check_payment as cowcp, check_out as co
 from app.services.payment_service import is_paid as ip
 from app.services.payment_service import payment as pm
 from app.utils.decorator import required_role
 from flask_login import current_user
+from app.services.notification_service import CreateNotif
 
 
 @app.route('/nhan-vien/lich-dat-phong/')
@@ -136,6 +137,7 @@ def make_booking_offline():
     }
     try:
         result = create_booking_offline(data=listData)
+        CreateNotif.booking_offline(data.get('booker_id'))
     except Exception as e:
         print(e)
         return jsonify('error')
@@ -179,6 +181,9 @@ def cancel_booking():
     booking_id = data.get('booking_id')
     try:
         cb(booking_id=int(booking_id))
+
+        recep = current_user
+        CreateNotif.cancel_booking(account_id=recep.id, booking_id=booking_id)
     except Exception as e:
         print(e)
         return jsonify(False)
@@ -222,5 +227,3 @@ def payment():
     except Exception as e:
         print(e)
         return jsonify('00')
-
-

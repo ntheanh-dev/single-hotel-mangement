@@ -111,4 +111,35 @@ $(document).ready(function () {
       }]
     }
   });
+  //--------------Tinh toan thoi gian thong bao duoc tao ra------------------
+  $('.created-notif').each(function() {
+    const createdAt = $(this).text();
+    const diffInSeconds = moment().diff(moment(createdAt), 'seconds');
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInSeconds / 3600);
+    const diffInDays = Math.floor(diffInSeconds / 86400);
+    const diffInWeeks = Math.floor(diffInSeconds / 604800);
+    const diffInMonths = Math.floor(diffInSeconds / 2592000);
+
+    let timeAgo;
+    if (diffInMinutes < 60) {
+        timeAgo = diffInMinutes + ' phút trước';
+    } else if (diffInHours < 24) {
+        timeAgo = diffInHours + ' giờ trước';
+    } else if (diffInDays < 7) {
+        timeAgo = diffInDays + ' ngày trước';
+    } else if (diffInWeeks < 4) {
+        timeAgo = diffInWeeks + ' tuần trước';
+    } else {
+        timeAgo = diffInMonths + ' tháng trước';
+    }
+
+    $(this).text(timeAgo);
+  })
+
+  var colors = ['text-success','text-primary','text-info','text-warning','text-muted','']
+  $('.notif-badge').each(function () {
+    var randomColor = colors[Math.floor(Math.random() * colors.length)];
+    $(this).addClass(randomColor)
+  })
 })

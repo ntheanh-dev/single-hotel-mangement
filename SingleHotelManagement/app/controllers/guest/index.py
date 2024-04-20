@@ -4,6 +4,7 @@ from app import app
 from app.services.tier_service import get_tiers, convert_get_tiers_to_dict
 from app.services.booking_service import create_booking_online
 
+
 @app.route('/trang-chu/')
 def guest_home():
     return render_template('/guest/index.html')

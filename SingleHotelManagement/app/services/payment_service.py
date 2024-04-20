@@ -9,6 +9,7 @@ from app.models.account import UserRole
 from app.repositories.booking_detail_repository import get_total_price
 from app import app
 from app.repositories.payment_repository import is_paid as ip
+from app.services.notification_service import CreateNotif
 
 
 def payment(booking_id=None, payment_method=None, current_booking_detail_id=None):
@@ -23,6 +24,8 @@ def payment(booking_id=None, payment_method=None, current_booking_detail_id=None
             create_invoice(booking_id, payment_method, amount)
         else:
             update_invoice(booking_id, paid=True, amount=amount)
+
+        CreateNotif.payment(booking_id=booking_id)
         return '01'
     elif payment_method == 'VNPAY':
         try:
@@ -51,7 +54,7 @@ def payment(booking_id=None, payment_method=None, current_booking_detail_id=None
             # Tạo URL thanh toán VNPay
             vnpay_payment_url = vnp.get_payment_url(app.config.get('VNPAY_PAYMENT_URL'),
                                                     app.config.get('VNPAY_HASH_SECRET_KEY'))
-
+            CreateNotif.payment(booking_id=booking_id)
             return vnpay_payment_url
         except Exception as e:
             print(e)
