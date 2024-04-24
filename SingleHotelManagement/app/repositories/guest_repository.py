@@ -37,33 +37,33 @@ def count_guest():
 
 
 def search_guest_by_phone_number(phone_number=None, foreigner=None, **kwargs):
+    query = db.session.query(User).join(Guest, Guest.user_id.__eq__(User.id)).filter(
+        User.phone_number.__eq__(phone_number))
+
     if foreigner:
-        return db.session.query(User).filter(User.phone_number.__eq__(phone_number),
-                                             User.foreigner.__eq__(foreigner)) \
-            .join(Guest, Guest.user_id.__eq__(User.id)).all()
-    else:
-        return db.session.query(User).filter(User.phone_number.__eq__(phone_number)) \
-            .join(Guest, Guest.user_id.__eq__(User.id)).all()
+        query = query.filter(User.foreigner.__eq__(True))
+    elif foreigner is not None:
+        query = query.filter(User.foreigner.__eq__(False))
+    return query.all()
 
 
 def search_guest_by_name(name=None, foreigner=None, **kwargs):
+    query = db.session.query(User).join(Guest, Guest.user_id.__eq__(User.id)).filter(
+        or_(User.first_name.contains(name), User.last_name.contains(name)))
+
     if foreigner:
-        return db.session.query(User).filter(or_(and_(User.first_name.contains(name), User.foreigner.__eq__(foreigner)),
-                                                 and_(User.last_name.contains(name),
-                                                      User.foreigner.__eq__(foreigner))), ) \
-            .join(Guest, Guest.user_id.__eq__(User.id)).all()
-    else:
-        return db.session.query(User).filter(or_(User.first_name.contains(name), User.last_name.contains(name))) \
-            .join(Guest, Guest.user_id.__eq__(User.id)).all()
+        query = query.filter(User.foreigner.__eq__(True))
+    elif foreigner is not None:
+        query = query.filter(User.foreigner.__eq__(False))
+    return query.all()
 
 
 def search_guest_by_address(address=None, foreigner=None, **kwargs):
+    query = db.session.query(User).join(Guest, Guest.user_id.__eq__(User.id)).filter(
+        or_(User.address.contains(address), User.district.contains(address), User.city.contains(address)),
+        User.foreigner.__eq__(foreigner))
     if foreigner:
-        return db.session.query(User).filter(
-            or_(User.address.contains(address), User.district.contains(address), User.city.contains(address)),
-            User.foreigner.__eq__(foreigner)) \
-            .join(Guest, Guest.user_id.__eq__(User.id)).all()
-    else:
-        return db.session.query(User).filter(
-            or_(User.address.contains(address), User.district.contains(address), User.city.contains(address))) \
-            .join(Guest, Guest.user_id.__eq__(User.id)).all()
+        query = query.filter(User.foreigner.__eq__(True))
+    elif foreigner is not None:
+        query = query.filter(User.foreigner.__eq__(False))
+    return query.all()
