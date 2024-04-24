@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bill</title>
+    <script src="{{url_for('static', filename='plugins/momentjs/index.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div style="height:27px"><span style="float:right">{{invoice.id}}</span></div>
+    <div style="height:27px"><span style="float:right">{{invoice.paid_at}}</span></div>
+    <div>
+        <h3 style="text-align:center"><strong>HÓA ĐƠN TIỀN PHÒNG</strong></h3>
+    </div>
+    <div>
+        <p style="text-align:center"><strong>Ngày <strong class="paid_at">{{invoice.paid_at}}</strong> </strong></p>
+    </div>
+    <div>
+        <p style="text-align:center">(Từ ngày {{booking.start_date}} đến {{booking.end_date}})</p>
+    </div>
+    <div>
+        <p>Họ tên: <strong>{{booker_name}}</strong></p>
+    </div>
+    <div>
+        <p>Phương thức thanh toán: <strong>{{payment_method}}</strong></p>
+    </div>
+    <div style="border-bottom: 2px solid black; border-top: 2px solid black">
+        <table>
+            <thead>
+            <tr>
+                <th scope="col" style="width:10%;">Phòng</th>
+                <th scope="col" style="width:10%;">Giờ nhận</th>
+                <th scope="col" style="width:10%;">Giờ trả</th>
+                <th scope="col" style="width:10%;">Khách Trong Nước</th>
+                <th scope="col" style="width:10%;">Khách Nước Ngoài</th>
+                <th scope="col" style="width:10%;">Giá</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for b in booking_details %}
+                <tr>
+                    <td><span
+                            class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{b.room_name}}</span>
+                    </td>
+                    <td>{{booking.start_date}}</td>
+                    <td>{{booking.end_date}}</td>
+                    <td>{{b.booking_detail.num_normal_guest}}</td>
+                    <td>{{b.booking_detail.num_foreigner_guest}}</td>
+                    <td class="price">{{b.price}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div style="border-bottom: 2px solid black">
+        <h3><strong>TỔNG CỘNG</strong><strong style="float:right" class="price">{{total}}</strong></h3>
+    </div>
+    <div>
+        <span style="float:left" name="textKyTen">
+            <strong>Nhân viên thanh toán</strong>
+        </span>
+    </div>
+    <br/>
+    <span style="float:left" name="textKyTen">
+        <span>{{recep_name}}</span>
+    </span>
+    <br>
+
+    <script>
+    $(document).ready(function(){
+      //-------------Đổi định dạng tien---------------
+      $('.price').each(function() {
+        // Lấy giá trị hiện tại
+        var value = $(this).text();
+
+        // Chuyển đổi giá trị thành số
+        var number = parseFloat(value);
+
+        // Định dạng lại giá trị
+        var formattedValue = number.toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        });
+
+        // Gán lại giá trị mới vào phần tử
+        $(this).text(formattedValue);
+      });
+      //-------------Doi format ngay------------
+      var paid_at = $('.paid_at').text()
+      $('.paid_at').text(moment(paid_at).format('DD/MM/YY'))
+      //----------------------------------------
+      $(window).on('load', function() {
+        // In trang
+        window.print();
+
+        // Chờ 3 giây, sau đó chuyển hướng người dùng về trang A
+        setTimeout(function() {
+            window.location.href = "/nhan-vien/lich-dat-phong/";
+        }, 3000);
+    });
+    });
+    </script>
+
+</body>
+</html>

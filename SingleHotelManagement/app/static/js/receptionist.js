@@ -149,9 +149,15 @@ check_out = (booking_id) => {
             'Context-Type': 'application/json',
         }
     }).then(res => res.json()).then(data => {
-        // 00: unpaid, 01: paid
+        // 00: paid, 01: unpaid
         if (data == '00') {
-    //      window.location.reload();
+            Swal.fire({
+                title: 'Nhận Phòng Thành Công',
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Xác nhận',
+            }).then((result) => { window.location.reload();})
         } else {
             Swal.fire({
                 title: 'Trả phòng và thanh toán?',
@@ -228,12 +234,18 @@ function handlePayment() {
                 case '01':
                     Swal.fire({
                             title: 'Thanh Toán Thành Công',
-                            text:'Tải lại trang',
+                            text:'In hoá đơn?',
+                            showCancelButton: true,
                             icon: 'success',
                             confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
                             confirmButtonText: 'Xác nhận',
+                            cancelButtonText: 'Huỷ bỏ'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            var currentURL = window.location.origin;
+                            window.location.href = `${currentURL}/bill/${booking_id}`;
+                        } else {
                             const newUrl = window.location.pathname;
                             window.location.href = newUrl;
                         }

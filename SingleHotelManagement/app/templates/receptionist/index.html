@@ -3,290 +3,288 @@
 {% endblock %} {% block body %} {{super()}}
 
 <div class="card mt-16">
-  <div class="card-body">
+  <div class="card-body overflow-y-auto max-h-screen">
     <h5 class="card-title text-2xl font-bold">Lịch đặt phòng hiện tại</h5>
-  <div class="d-flex justify-content-center align-items-center my-3">
-    <div class="form-check mx-4">
-      <input
-        class="list-booking-checkbox"
-        type="checkbox"
-        value="1"
-        id="flexCheckChecked1"
-      />
-      <label class="form-check-label" for="flexCheckChecked1">
-        Chờ xác nhận
-      </label>
+    <div class="d-flex justify-content-center align-items-center my-3">
+      <div class="form-check mx-4">
+        <input
+          class="list-booking-checkbox"
+          type="checkbox"
+          value="1"
+          id="flexCheckChecked1"
+        />
+        <label class="form-check-label" for="flexCheckChecked1">
+          Chờ xác nhận
+        </label>
+      </div>
+      <div class="form-check mx-4">
+        <input
+          class="list-booking-checkbox"
+          type="checkbox"
+          value="2"
+          id="flexCheckChecked2"
+        />
+        <label class="form-check-label" for="flexCheckChecked2"> Đặt trước </label>
+      </div>
+      <div class="form-check mx-4">
+        <input
+          class="list-booking-checkbox"
+          type="checkbox"
+          value="3"
+          id="flexCheckChecked3"
+        />
+        <label class="form-check-label" for="flexCheckChecked3">
+          Đang sử dụng
+        </label>
+      </div>
+      <div class="form-check mx-4">
+        <input
+          class="list-booking-checkbox"
+          type="checkbox"
+          value="4"
+          id="flexCheckChecked4"
+        />
+        <label class="form-check-label" for="flexCheckChecked4">
+          Đã trả phòng
+        </label>
+      </div>
+      <div class="form-check mx-4">
+        <input
+          class="list-booking-checkbox"
+          type="checkbox"
+          value="5"
+          id="flexCheckChecked6"
+        />
+        <label class="form-check-label" for="flexCheckChecked6"> Đã huỷ </label>
+      </div>
+      <button class="btn btn-outline-warning mr-3 clear-check-input-btn">
+        Xoá bộ lọc
+      </button>
     </div>
-    <div class="form-check mx-4">
-      <input
-        class="list-booking-checkbox"
-        type="checkbox"
-        value="2"
-        id="flexCheckChecked2"
-      />
-      <label class="form-check-label" for="flexCheckChecked2"> Đặt trước </label>
-    </div>
-    <div class="form-check mx-4">
-      <input
-        class="list-booking-checkbox"
-        type="checkbox"
-        value="3"
-        id="flexCheckChecked3"
-      />
-      <label class="form-check-label" for="flexCheckChecked3">
-        Đang sử dụng
-      </label>
-    </div>
-    <div class="form-check mx-4">
-      <input
-        class="list-booking-checkbox"
-        type="checkbox"
-        value="4"
-        id="flexCheckChecked4"
-      />
-      <label class="form-check-label" for="flexCheckChecked4">
-        Đã trả phòng
-      </label>
-    </div>
-    <div class="form-check mx-4">
-      <input
-        class="list-booking-checkbox"
-        type="checkbox"
-        value="5"
-        id="flexCheckChecked6"
-      />
-      <label class="form-check-label" for="flexCheckChecked6"> Đã huỷ </label>
-    </div>
-    <button class="btn btn-outline-warning mr-3 clear-check-input-btn">
-      Xoá bộ lọc
-    </button>
-  </div>
-    <table class="table ">
-        <thead>
-          <tr style="background-color: aliceblue">
-            <th scope="col" style="width: 10%">Mã đặt phòng</th>
-            <th scope="col" style="width: 15%">Phòng</th>
-            <th scope="col" style="width: 15%">Khách đặt</th>
-            <th scope="col" style="width: 15%">Giờ nhận</th>
-            <th scope="col" style="width: 15%">Giờ trả</th>
-            <th scope="col" style="width: 5%">Giá</th>
-            <th scope="col" style="width: 25%"></th>
-          </tr>
-        </thead>
+      <table class="table ">
+          <thead>
+            <tr style="background-color: aliceblue">
+              <th scope="col" style="width: 10%">Mã đặt phòng</th>
+              <th scope="col" style="width: 15%">Phòng</th>
+              <th scope="col" style="width: 15%">Khách đặt</th>
+              <th scope="col" style="width: 15%">Giờ nhận</th>
+              <th scope="col" style="width: 15%">Giờ trả</th>
+              <th scope="col" style="width: 5%">Giá</th>
+              <th scope="col" style="width: 25%"></th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {% for b in bookings %}
-          <tr>
-            <td>
-              <p style="color: cadetblue; font-weight: 600">{{b.booking.id}}</p>
-            </td>
-            <td>
-              <span
-                class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
-                >{{b.rooms}}</span
-              >
-            </td>
-            <td>
-              <p style="color: cadetblue; font-weight: 600">{{b.booker}}</p>
-            </td>
-            <td>{{b.booking.start_date}}</td>
-            <td>{{b.booking.end_date}}</td>
-            <td class="price">{{b.price}}</td>
-            <td class="flex justify-end">
-              {% if b.booking.status == 'REQUESTED' %}
-              <button
-                class="btn btn-warning mx-2"
-                onclick="change_booking_status({{b.booking.id}},1)"
-              >
-                Đặt trước
-              </button>
-              <button
-                class="btn btn-success mx-2"
-                onclick="change_booking_status({{b.booking.id}},2)"
-              >
-                Nhận phòng
-              </button>
-              <div class="filter mt-1 ml-2">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Lựa chọn</h6>
-                    </li>
-                    <li><a class="dropdown-item" href="javascript:;" onclick="viewRequestedBooking({{b.booking.id}},{{b.rooms_id}})">Chi Tiết</a></li>
-                    <li><a class="dropdown-item" href="javascript:;" onclick="change_booking_status({{b.booking.id}},4)">Huỷ</a></li>
-                  </ul>
-              </div>
-              {% elif b.booking.status == 'CONFIRMED' %}
-              <button
-                class="btn btn-success"
-                onclick="change_booking_status({{b.booking.id}},2)"
-              >
-                Nhận phòng
-              </button>
-              <div class="filter mt-1 ml-2">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Lựa chọn</h6>
-                    </li>
-                    <li><a class="dropdown-item" href="javascript:;" onclick="change_booking_status({{b.booking.id}},4)">Huỷ</a></li>
-                  </ul>
-              </div>
-              {% elif b.booking.status == 'CHECKED_IN' %}
-              <button
-                class="btn btn-success"
-                onclick="check_out({{b.booking.id}})"
-              >
-                Trả phòng
-              </button>
-              <div class="filter mt-1 ml-2">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Lựa chọn</h6>
-                    </li>
-                  </ul>
-              </div>
-              {% elif b.booking.status == 'CANCELED' %}
-              <span
-                class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-1 rounded dark:bg-red-900 dark:text-red-300"
-                >Đã Huỷ</span
-              >
-              {% elif b.booking.status == 'CHECKED_OUT' %}
-              <h1 class="text-gray-700 font-medium text-md">Đã hoàn thành</h1>
-              {% endif %}
-
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-  </div>
-
-
-
-  <!-- Phiếu đặt phòng phòng    -->
-  <div class="overlay-booking-form">
-    <div class="modal-booking-form">
-      <div id="print-booking-form">
-        <div style="display: flex; justify-content: space-between">
-          <h2
-            style="color: black; text-align: center; width: 100%"
-            class="text-2xl font-bold"
-          >
-            Phiếu đặt phòng
-          </h2>
-          <div class="close-modal-booking-form">
-            <i
-              class="fa fa-window-close"
-              style="color: black; cursor: pointer"
-              aria-hidden="true"
-            ></i>
-          </div>
-        </div>
-        <table class="table table-bordered">
           <tbody>
+            {% for b in bookings %}
             <tr>
-              <th colspan="3" style="width: 50%">
-                Họ tên người đặt: Nguyễn Thế Anhádfasdfasdfasdfsad
-              </th>
-              <th colspan="2" style="width: 50%">Các phòng đặt: P01,P02</th>
+              <td>
+                <p style="color: cadetblue; font-weight: 600">{{b.booking.id}}</p>
+              </td>
+              <td>
+                <span
+                  class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                  >{{b.rooms}}</span
+                >
+              </td>
+              <td>
+                <p style="color: cadetblue; font-weight: 600">{{b.booker}}</p>
+              </td>
+              <td>{{b.booking.start_date}}</td>
+              <td>{{b.booking.end_date}}</td>
+              <td class="price">{{b.price}}</td>
+              <td class="flex justify-end">
+                {% if b.booking.status == 'REQUESTED' %}
+                <button
+                  class="btn btn-warning mx-2"
+                  onclick="change_booking_status({{b.booking.id}},1)"
+                >
+                  Đặt trước
+                </button>
+                <button
+                  class="btn btn-success mx-2"
+                  onclick="change_booking_status({{b.booking.id}},2)"
+                >
+                  Nhận phòng
+                </button>
+                <div class="filter mt-1 ml-2">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                      <li class="dropdown-header text-start">
+                        <h6>Lựa chọn</h6>
+                      </li>
+                      <li><a class="dropdown-item" href="javascript:;" onclick="viewRequestedBooking({{b.booking.id}},{{b.rooms_id}})">Chi Tiết</a></li>
+                      <li><a class="dropdown-item" href="javascript:;" onclick="change_booking_status({{b.booking.id}},4)">Huỷ</a></li>
+                    </ul>
+                </div>
+                {% elif b.booking.status == 'CONFIRMED' %}
+                <button
+                  class="btn btn-success"
+                  onclick="change_booking_status({{b.booking.id}},2)"
+                >
+                  Nhận phòng
+                </button>
+                <div class="filter mt-1 ml-2">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                      <li class="dropdown-header text-start">
+                        <h6>Lựa chọn</h6>
+                      </li>
+                      <li><a class="dropdown-item" href="javascript:;" onclick="change_booking_status({{b.booking.id}},4)">Huỷ</a></li>
+                    </ul>
+                </div>
+                {% elif b.booking.status == 'CHECKED_IN' %}
+                <button
+                  class="btn btn-success"
+                  onclick="check_out({{b.booking.id}})"
+                >
+                  Trả phòng
+                </button>
+                <div class="filter mt-1 ml-2">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                      <li class="dropdown-header text-start">
+                        <h6>Lựa chọn</h6>
+                      </li>
+                    </ul>
+                </div>
+                {% elif b.booking.status == 'CANCELED' %}
+                <span
+                  class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-1 rounded dark:bg-red-900 dark:text-red-300"
+                  >Đã Huỷ</span
+                >
+                {% elif b.booking.status == 'CHECKED_OUT' %}
+                <h1 class="text-gray-700 font-medium text-md">Đã hoàn thành</h1>
+                {% endif %}
+
+              </td>
             </tr>
-            <tr>
-              <th colspan="3" style="width: 50%">Ngày nhận phòng:</th>
-              <th colspan="2" style="width: 50%">Ngày trả phòng:</th>
-            </tr>
-            <tr>
-              <th>STT</th>
-              <td>Khách hàng</td>
-              <td>Loại khách</td>
-              <td>CMND</td>
-              <td>Địa chỉ</td>
-            </tr>
-            <tr>
-              <th>1</th>
-              <td>Nguyễn Thế Anh</td>
-              <td>Trong nước</td>
-              <td>001209092033</td>
-              <td>Đông Thạnh, Hóc Môn, Tp Hồ Chí Minh</td>
-            </tr>
-            <tr>
-              <th>2</th>
-              <td>Nguyễn Thế Em</td>
-              <td>Ngoài nước</td>
-              <td>Visa: 92098490</td>
-              <td>Đông Thạnh, Hóc Môn, Tp Hồ Chí Minh</td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
-      </div>
-      <div style="display: flex; justify-content: flex-end">
-        <button class="btn btn-success" id="print-booking-form-btn">
-          Xác nhận
-        </button>
-      </div>
     </div>
-  </div>
-  <!-- Phiếu đặt thue phòng    -->
-  <div class="overlay-leasing-form">
-    <div class="modal-leasing-form">
-      <div id="print-leasing-form">
-        <div style="display: flex; justify-content: space-between">
-          <h2
-            style="color: black; text-align: center; width: 100%"
-            class="text-2xl font-bold"
-          >
-            Phiếu thuê phòng
-          </h2>
-          <div class="close-modal-leasing-form">
-            <i
-              class="fa fa-window-close"
-              style="color: black; cursor: pointer"
-              aria-hidden="true"
-            ></i>
+
+    <!-- Phiếu đặt phòng phòng    -->
+    <div class="overlay-booking-form">
+      <div class="modal-booking-form">
+        <div id="print-booking-form">
+          <div style="display: flex; justify-content: space-between">
+            <h2
+              style="color: black; text-align: center; width: 100%"
+              class="text-2xl font-bold"
+            >
+              Phiếu đặt phòng
+            </h2>
+            <div class="close-modal-booking-form">
+              <i
+                class="fa fa-window-close"
+                style="color: black; cursor: pointer"
+                aria-hidden="true"
+              ></i>
+            </div>
           </div>
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th colspan="3" style="width: 50%">
+                  Họ tên người đặt: Nguyễn Thế Anhádfasdfasdfasdfsad
+                </th>
+                <th colspan="2" style="width: 50%">Các phòng đặt: P01,P02</th>
+              </tr>
+              <tr>
+                <th colspan="3" style="width: 50%">Ngày nhận phòng:</th>
+                <th colspan="2" style="width: 50%">Ngày trả phòng:</th>
+              </tr>
+              <tr>
+                <th>STT</th>
+                <td>Khách hàng</td>
+                <td>Loại khách</td>
+                <td>CMND</td>
+                <td>Địa chỉ</td>
+              </tr>
+              <tr>
+                <th>1</th>
+                <td>Nguyễn Thế Anh</td>
+                <td>Trong nước</td>
+                <td>001209092033</td>
+                <td>Đông Thạnh, Hóc Môn, Tp Hồ Chí Minh</td>
+              </tr>
+              <tr>
+                <th>2</th>
+                <td>Nguyễn Thế Em</td>
+                <td>Ngoài nước</td>
+                <td>Visa: 92098490</td>
+                <td>Đông Thạnh, Hóc Môn, Tp Hồ Chí Minh</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <table class="table table-bordered">
-          <tbody>
-            <tr>
-              <th colspan="3" style="width: 50%">Các phòng thuê: P01,P02</th>
-              <th colspan="2" style="width: 50%">Ngày nhận phòng:</th>
-            </tr>
-            <tr>
-              <th colspan="3" style="width: 50%">Ngày trả phòng:</th>
-              <th colspan="2" style="width: 50%"></th>
-            </tr>
-            <tr>
-              <th>STT</th>
-              <td>Khách hàng</td>
-              <td>Loại khách</td>
-              <td>CMND</td>
-              <td>Địa chỉ</td>
-            </tr>
-            <tr>
-              <th>1</th>
-              <td>Nguyễn Thế Anh</td>
-              <td>Trong nước</td>
-              <td>001209092033</td>
-              <td>Đông Thạnh, Hóc Môn, Tp Hồ Chí Minh</td>
-            </tr>
-            <tr>
-              <th>2</th>
-              <td>Nguyễn Thế Em</td>
-              <td>Ngoài nước</td>
-              <td>Visa: 92098490</td>
-              <td>Đông Thạnh, Hóc Môn, Tp Hồ Chí Minh</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div style="display: flex; justify-content: flex-end">
-        <button class="btn btn-success" id="print-leasing-form-btn">
-          Xác nhận
-        </button>
+        <div style="display: flex; justify-content: flex-end">
+          <button class="btn btn-success" id="print-booking-form-btn">
+            Xác nhận
+          </button>
+        </div>
       </div>
     </div>
-  </div>
+    <!-- Phiếu đặt thue phòng    -->
+    <div class="overlay-leasing-form">
+      <div class="modal-leasing-form">
+        <div id="print-leasing-form">
+          <div style="display: flex; justify-content: space-between">
+            <h2
+              style="color: black; text-align: center; width: 100%"
+              class="text-2xl font-bold"
+            >
+              Phiếu thuê phòng
+            </h2>
+            <div class="close-modal-leasing-form">
+              <i
+                class="fa fa-window-close"
+                style="color: black; cursor: pointer"
+                aria-hidden="true"
+              ></i>
+            </div>
+          </div>
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th colspan="3" style="width: 50%">Các phòng thuê: P01,P02</th>
+                <th colspan="2" style="width: 50%">Ngày nhận phòng:</th>
+              </tr>
+              <tr>
+                <th colspan="3" style="width: 50%">Ngày trả phòng:</th>
+                <th colspan="2" style="width: 50%"></th>
+              </tr>
+              <tr>
+                <th>STT</th>
+                <td>Khách hàng</td>
+                <td>Loại khách</td>
+                <td>CMND</td>
+                <td>Địa chỉ</td>
+              </tr>
+              <tr>
+                <th>1</th>
+                <td>Nguyễn Thế Anh</td>
+                <td>Trong nước</td>
+                <td>001209092033</td>
+                <td>Đông Thạnh, Hóc Môn, Tp Hồ Chí Minh</td>
+              </tr>
+              <tr>
+                <th>2</th>
+                <td>Nguyễn Thế Em</td>
+                <td>Ngoài nước</td>
+                <td>Visa: 92098490</td>
+                <td>Đông Thạnh, Hóc Môn, Tp Hồ Chí Minh</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="display: flex; justify-content: flex-end">
+          <button class="btn btn-success" id="print-leasing-form-btn">
+            Xác nhận
+          </button>
+        </div>
+      </div>
+    </div>
 </div>
 
 {% include 'receptionist/includes/payment_form.html' %}

@@ -46,9 +46,7 @@ def payment(booking_id=None, payment_method=None, current_booking_detail_id=None
             vnp.requestData['vnp_CreateDate'] = datetime.now().strftime('%Y%m%d%H%M%S')  # 20150410063022
             vnp.requestData['vnp_IpAddr'] = "127.0.0.1"
             if current_user.role == UserRole.RECEPTIONIST:
-                vnp.requestData['vnp_ReturnUrl'] = url_for('receptionist_booking', ma=booking_id,
-                                                           phong=current_booking_detail_id,
-                                                           _external=True)  # Điều hướng sau khi thanh toán
+                vnp.requestData['vnp_ReturnUrl'] = url_for('print_bill', booking_id=booking_id,_external=True)  # Điều hướng sau khi thanh toán
             else:
                 pass
             # Tạo URL thanh toán VNPay

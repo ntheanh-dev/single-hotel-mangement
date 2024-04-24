@@ -128,7 +128,7 @@ def add_guest():
 def make_booking_offline():
     data = json.loads(request.data)
     listData = {
-        'receptionist_id': current_user.id,
+        'receptionist_id': current_user.user_id,
         'booker_id': data.get('booker_id'),
         'start_date': data.get('start_date'),
         'end_date': data.get('end_date'),

@@ -11,4 +11,4 @@ def create(user_id, content):
 
 
 def list_notif():
-    return db.session.query(Notification).order_by(desc(Notification.created_date)).limit(20)
+    return db.session.query(Notification).order_by(desc(Notification.created_date)).limit(15)

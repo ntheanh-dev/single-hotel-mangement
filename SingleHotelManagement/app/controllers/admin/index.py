@@ -11,7 +11,7 @@ from app.models.account import UserRole
 
 @app.route('/api/admin/tier-name/', methods=['post'])
 @required_role(UserRole.ADMIN)
-def get_book_name_hint():
+def get_tier_name_hint():
     kw = request.json.get('keyword')
     tier_names = []
     for tier in get_tier_name(kw=kw):

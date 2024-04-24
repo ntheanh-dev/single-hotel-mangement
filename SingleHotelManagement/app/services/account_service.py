@@ -12,3 +12,4 @@ def receptionist_login(username, password):
 
 def admin_login(username, password):
     return auth_user(username=username, password=password, role=UserRole.ADMIN)
+

@@ -27,5 +27,6 @@ def search_guest(data):
     user_info_list = [result.to_dict() for result in results]
     return jsonify(user_info_list)
 
+
 def count_guest():
     return count_g()

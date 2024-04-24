@@ -7,6 +7,7 @@ from app.services.booking_detail_service import get_booking_detail_with_price
 from app.services.notification_service import CreateNotif
 from flask_login import current_user
 
+
 def create_booking_offline(data):
     return crbo(data)
 
