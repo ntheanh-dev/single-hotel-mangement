@@ -17,6 +17,13 @@ $(document).ready(function () {
         $(this).text(formattedValue);
     });
 
+  $('.nav-link').each(function () {
+    if($(this).attr('href') == window.location.pathname) {
+        $(this).removeClass("collapsed");
+    } else {
+        $(this).addClass("collapsed");
+    }
+  })
 
 
   const select = (el, all = false) => {

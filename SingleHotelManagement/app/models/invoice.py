@@ -22,3 +22,6 @@ class Invoice(db.Model):
 
     # one-to-one relationship
     booking_id = Column(Integer, ForeignKey('booking.id'))
+
+    def __str__(self):
+        return "#{0}".format(self.id)

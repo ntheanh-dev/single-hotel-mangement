@@ -27,7 +27,7 @@ class Booking(db.Model):
     receptionist_id = Column(Integer, ForeignKey('receptionist.user_id'), nullable=True)
     booker_id = Column(Integer, ForeignKey('guest.user_id'), nullable=True)
 
-    # many to many with intermediate table
+    # many to many
     booking_details = relationship("BookingDetail", backref="booking", lazy=True)
 
     # one-to-one relationship

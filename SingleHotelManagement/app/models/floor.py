@@ -8,7 +8,7 @@ class Floor(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(40), default='', nullable=False)
 
-    rooms = relationship('Room',backref='room',lazy=True)
+    rooms = relationship('Room',backref='floor',lazy=True)
 
     def __str__(self):
         return self.name

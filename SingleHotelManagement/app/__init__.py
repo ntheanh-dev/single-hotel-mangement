@@ -19,14 +19,13 @@ app.config["VNPAY_HASH_SECRET_KEY"] = 'IDKCETNVMRJOMDYZCCEEFMSJJLTRQRKX'
 app.config["VNPAY_PAYMENT_URL"] = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
 app.config["VNPAY_RETURN_URL"] = 'http://192.168.1.207:8000/vnpay/payment_return/'
 
-
 db = SQLAlchemy(app=app)
 login = LoginManager(app)
 
 from app.model_views.home_view import HomeView
 
 # Flask Admin
-my_admin = Admin(app=app, name='Quan Ly Khach San', template_mode='bootstrap4', index_view=HomeView(name="Trang Chu"))
+my_admin = Admin(app=app, name='Quản Lý Khách Sạn', template_mode='bootstrap4', index_view=HomeView(name="Trang Chu"))
 
 from app.models import user
 from app.models import account
@@ -51,8 +50,9 @@ from app.models.room import Room
 from app.models.tier import Tier
 from app.models.floor import Floor
 from app.models.account import Account, UserRole
+from app.models.guest import Guest
 
-from app.model_views.guest_model_view import GuestModelView
+from app.model_views.user_model_view import UserModelView
 from app.model_views.booking_model_view import BookingModelView
 from app.model_views.booking_detail_model_view import BookingDetailModelView
 from app.model_views.room_model_view import RoomModelView
@@ -60,7 +60,7 @@ from app.model_views.tier_model_view import TierModelView
 from app.model_views.floor_model_view import FloorModelView
 from app.model_views.statistic_view import StatisticView
 from app.model_views.report_view import ReportView
-
+from app.model_views.guest_model_view import GuestModelView
 from app.controllers.guest.index import *
 from app.controllers.receptionist.index import *
 from app.controllers.admin.index import *
@@ -78,12 +78,13 @@ def init_tables():
 
 # Tạo view phía my_admin
 def init_admin():
-    my_admin.add_view(GuestModelView(User, db.session, name='nguoi dung'))
-    my_admin.add_view(BookingModelView(Booking, db.session, name='booking'))
-    my_admin.add_view(BookingDetailModelView(BookingDetail, db.session, name='booking-detail'))
-    my_admin.add_view(RoomModelView(Room, db.session, name='phong'))
-    my_admin.add_view(TierModelView(Tier, db.session, name='hang phong'))
-    my_admin.add_view(FloorModelView(Floor, db.session, name='tầng'))
+    my_admin.add_view(UserModelView(User, db.session, name='Người dùng'))
+    my_admin.add_view(GuestModelView(Guest, db.session, name='Khách'))
+    my_admin.add_view(BookingModelView(Booking, db.session, name="Đặt Phòng"))
+    # my_admin.add_view(BookingDetailModelView(BookingDetail, db.session, name='Chi Tiết Đặt Phòng'))
+    my_admin.add_view(TierModelView(Tier, db.session, name='Hạng Phòng'))
+    my_admin.add_view(FloorModelView(Floor, db.session, name='Tầng'))
+    my_admin.add_view(RoomModelView(Room, db.session, name='Phòng'))
 
     my_admin.add_view(StatisticView(name='Thống kê', url='statistic'))
     my_admin.add_view(ReportView(name='Báo cáo', url='report'))

@@ -13,17 +13,18 @@ class RoomStatus(enum.Enum):
 class Room(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(40), nullable=False)
-    floor_id = Column(Integer, ForeignKey('floor.id'), nullable=False)
     status = Column(Enum(RoomStatus))
     image = Column(String(255),
                    default='https://res.cloudinary.com/dqpo9h5s2/image/upload/v1711860957/rooms/room_2-1_c4yatw.png',
                    nullable=True)
+
+    floor_id = Column(Integer, ForeignKey('floor.id'), nullable=False)
     tier_id = Column(Integer, ForeignKey('tier.id'),nullable=False)
 
     # one to many
     images = relationship("Image", backref="image", lazy=False)
 
-    # many to many with intermediate table
+    # many to many
     booking_details = relationship("BookingDetail", backref="room", lazy=True)
 
     def to_dict(self):
