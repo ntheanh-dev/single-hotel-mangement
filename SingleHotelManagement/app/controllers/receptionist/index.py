@@ -23,7 +23,7 @@ from app.services.notification_service import CreateNotif
 @required_role(UserRole.RECEPTIONIST)
 def receptionist_home():
     status_values = request.args.getlist('trang-thai')
-    # Chỉ hiện các đơn đặt online, đã đặt trước, đã check_in
+    #Mặc định chỉ hiện các đơn đặt online, đã đặt trước, đã check_in
     if len(status_values) == 0:
         status_values.append('1,2,3')
     bookings = list_booking(status_values)

@@ -134,14 +134,7 @@ def set_status_room_by_booking_id(booking_id, status_room):
 
 
 def list_booking(status_values=None, limit=None):
-    formatted_grouped_values = func.group_concat(
-        concat(
-            Tier.id, '-',
-            BookingDetail.num_normal_guest, '-',
-            BookingDetail.num_foreigner_guest, '-',
-        )
-    )
-    query = db.session.query(Booking, formatted_grouped_values,
+    query = db.session.query(Booking, func.sum(BookingDetail.price),
                              concat(func.group_concat(Room.name)).label('room_names'),
                              coalesce(concat(User.first_name, User.last_name), 'Khách lẻ').label(
                                  'guest'), concat(func.group_concat(Room.id)).label('room_id')).select_from(
@@ -154,7 +147,7 @@ def list_booking(status_values=None, limit=None):
                                               isouter=True).join(Tier, Tier.id == Room.tier_id).group_by(
         Booking).order_by(Booking.id.desc())
     if limit is not None:
-        query = query.limit(10)
+        query = query.limit(limit)
 
     if status_values is None or len(status_values) == 0:
         query = query.all()
@@ -166,43 +159,9 @@ def list_booking(status_values=None, limit=None):
     booking_dict = []
     # Convert to dict
     for booking in query:
-        # Lấy ra chuỗi '6-2-1,7-1-2'
-        room_details_str = booking[1]
-
-        # Tách chuỗi thành các phần tử riêng biệt dựa trên dấu ','
-        room_details_list = room_details_str.split(',')
-
-        # Tạo biến lưu tổng giá cho mỗi đối tượng booking_detail
-        booking_detail_total_price = 0
-
-        # Lặp qua từng phần tử trong chuỗi '6-2-1,7-1-2'
-        for room_detail in room_details_list:
-            # Tách mỗi phần tử thành các số riêng biệt dựa trên dấu '-'
-            detail_parts = room_detail.split('-')
-
-            # Lấy ra id của Tier từ phần tử đầu tiên
-            tier_id = int(detail_parts[0])
-
-            # Truy vấn CSDL để lấy đối tượng Tier
-            tier = db.session.query(Tier).filter_by(id=tier_id).first()
-
-            # Nếu tìm thấy đối tượng Tier
-            if tier:
-                # Lấy số lượng khách từ phần tử thứ hai và thứ ba
-                num_normal_guest = int(detail_parts[1])
-                num_foreign_guest = int(detail_parts[2])
-
-                # Tính toán giá từ đối tượng Tier
-                price = tier.get_price(num_normal_guest, num_foreign_guest)
-
-                # Cập nhật tổng giá cho mỗi đối tượng booking
-                booking_detail_total_price += price
-            else:
-                print("Tier with ID", tier_id, "not found")
-
         temp = {
             'booking': booking[0].to_dict(),
-            'price': booking_detail_total_price,
+            'price': booking[1],
             'rooms': booking[2],
             'booker': booking[3],
             'rooms_id': booking[4]
