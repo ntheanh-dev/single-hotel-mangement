@@ -1,4 +1,4 @@
-{% extends 'auth_layout.html'%} {% block title %}
+{% extends 'auth/auth_layout.html'%} {% block title %}
 <title>Trang Đăng Nhập</title>
 {% endblock %} {% block body %} {{super()}}
 <div class="login-form" id="loginForm">
@@ -21,11 +21,11 @@
             <button  style="margin: 2px;" name="login_role" value="receptionist" type="submit">Lễ Tân</button>
             <button  style="margin: 2px;" name="login_role" value="admin" type="submit">Quản Trị</button>
         </div>
-        {% if err_msg %}
-            <div style="color:red;margin:2px;">
-                {{err_msg}}
-            </div>
-        {% endif %}
+<!--        {% if err_msg %}-->
+<!--            <div style="color:red;margin:2px;">-->
+<!--                {{err_msg}}-->
+<!--            </div>-->
+<!--        {% endif %}-->
         <a href="#">Quên mật khẩu?</a>
     </form>
     <p>Bạn chưa có tài khoản? <a href="#" id="showSignup">Đăng ký ngay</a></p>

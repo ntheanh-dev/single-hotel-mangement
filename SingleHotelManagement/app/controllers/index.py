@@ -52,8 +52,7 @@ def login():
             if user:
                 login_user(user)
                 return redirect(url_for("guest_home"))
-
-    return render_template("login.html", err_msg="Tên đăng nhập hoặc mật khẩu không đúng!")
+    return render_template("/auth/login.html", err_msg="Tên đăng nhập hoặc mật khẩu không đúng!")
 
 
 @app.route('/logout', methods=['get'])
@@ -82,3 +81,24 @@ def print_bill(booking_id):
                            recep_name=recep_name, booker_name=booker_name, invoice=invoice,
                            booking=booking_info['booking'], booking_details=booking_info['booking_details'],
                            payment_method=payment_method, total=total)
+
+
+# ------------Chỉ dùng cho mục đích demo--------------
+@app.route("/api/switch/<role>", methods=['get'])
+def switch_role(role):
+    print("-------------------------")
+    print(role)
+    print("-------------------------")
+    if role == 'guest':
+        logout_user()
+        return redirect(url_for("guest_home"))
+    elif role == 'admin':
+        logout_user()
+        user = admin_login("admin", "12345")
+        login_user(user)
+        return redirect('/admin')
+    elif role == 'receptionist':
+        logout_user()
+        user = receptionist_login("receptionist", "12345")
+        login_user(user)
+        return redirect(url_for("receptionist_home"))

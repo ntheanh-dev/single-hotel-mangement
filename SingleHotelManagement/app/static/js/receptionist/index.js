@@ -1,57 +1,20 @@
 $(document).ready(function () {
-    // ----------------- Show modal booking form -----------------
-    $(".confirm-booking-online-btn").click(function () {
-        $(".overlay-booking-form").fadeIn();
-        $(".modal-booking-form").fadeIn();
-    });
+      //-------------Đổi định dạng tien---------------
+      $('.price').each(function() {
+        // Lấy giá trị hiện tại
+        var value = $(this).text();
 
-    $(".close-modal-booking-form").click(function () {
-        $(".overlay-booking-form").fadeOut();
-        $(".modal-booking-form").fadeOut();
-    });
+        // Chuyển đổi giá trị thành số
+        var number = parseFloat(value);
 
-    $("#print-booking-form-btn").click(function () {
-        var printSection = $("#print-section");
-        if (printSection) {
-            var printSection = document.createElement("div");
-            printSection.id = "printSection";
-            document.body.appendChild(printSection);
-        }
+        // Định dạng lại giá trị
+        var formattedValue = number.toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        });
 
-        $("#print-booking-form").clone().appendTo("#printSection");
-        window.print();
-
-        $(".overlay-booking-form").fadeOut();
-        $(".modal-booking-form").fadeOut();
-
-    });
-
-
-    // ----------------- Show modal leasing form -----------------
-    $(".confirm-leasing-btn").click(function () {
-        $(".overlay-leasing-form").fadeIn();
-        $(".modal-leasing-form").fadeIn();
-    });
-
-    $(".close-modal-leasing-form").click(function () {
-        $(".overlay-leasing-form").fadeOut();
-        $(".modal-leasing-form").fadeOut();
-    });
-
-    $("#print-leasing-form-btn").click(function () {
-        var printSection = $("#print-section");
-        if (printSection) {
-            var printSection = document.createElement("div");
-            printSection.id = "printSection";
-            document.body.appendChild(printSection);
-        }
-
-        $("#print-leasing-form").clone().appendTo("#printSection");
-        window.print();
-
-        $(".overlay-leasing-form").fadeOut();
-        $(".modal-leasing-form").fadeOut();
-
+        // Gán lại giá trị mới vào phần tử
+        $(this).text(formattedValue);
     });
 
     //------------------Filter tất cả booking hiện tại--------------
@@ -79,6 +42,61 @@ $(document).ready(function () {
         $(".overlay-payment").fadeOut();
         $(".payment-form").fadeOut();
     });
+
+        // ----------------- Show modal booking form -----------------
+//    $(".confirm-booking-online-btn").click(function () {
+//        $(".overlay-booking-form").fadeIn();
+//        $(".modal-booking-form").fadeIn();
+//    });
+//
+//    $(".close-modal-booking-form").click(function () {
+//        $(".overlay-booking-form").fadeOut();
+//        $(".modal-booking-form").fadeOut();
+//    });
+//
+//    $("#print-booking-form-btn").click(function () {
+//        var printSection = $("#print-section");
+//        if (printSection) {
+//            var printSection = document.createElement("div");
+//            printSection.id = "printSection";
+//            document.body.appendChild(printSection);
+//        }
+//
+//        $("#print-booking-form").clone().appendTo("#printSection");
+//        window.print();
+//
+//        $(".overlay-booking-form").fadeOut();
+//        $(".modal-booking-form").fadeOut();
+//
+//    });
+//
+//
+//    // ----------------- Show modal leasing form -----------------
+//    $(".confirm-leasing-btn").click(function () {
+//        $(".overlay-leasing-form").fadeIn();
+//        $(".modal-leasing-form").fadeIn();
+//    });
+//
+//    $(".close-modal-leasing-form").click(function () {
+//        $(".overlay-leasing-form").fadeOut();
+//        $(".modal-leasing-form").fadeOut();
+//    });
+//
+//    $("#print-leasing-form-btn").click(function () {
+//        var printSection = $("#print-section");
+//        if (printSection) {
+//            var printSection = document.createElement("div");
+//            printSection.id = "printSection";
+//            document.body.appendChild(printSection);
+//        }
+//
+//        $("#print-leasing-form").clone().appendTo("#printSection");
+//        window.print();
+//
+//        $(".overlay-leasing-form").fadeOut();
+//        $(".modal-leasing-form").fadeOut();
+//
+//    });
 
 });
 
