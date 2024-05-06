@@ -3,7 +3,7 @@ from flask import render_template, jsonify, request
 from app import app
 from app.services.tier_service import get_tiers, convert_get_tiers_to_dict
 from app.services.booking_service import create_booking_online
-
+from app.utils.send_mail import send_mail
 
 @app.route('/trang-chu/')
 def guest_home():
@@ -34,6 +34,7 @@ def make_booking_online():
     }
     try:
         result = create_booking_online(data=listData)
+        send_mail(receiver_name=data.get('full_name'),receiver_email=data.get("email"))
         # return jsonify('error')
     except Exception as e:
         print(e)

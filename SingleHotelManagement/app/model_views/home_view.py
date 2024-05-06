@@ -23,4 +23,4 @@ class HomeView(AdminIndexView):
                                revenue=revenue,
                                bookings=bookings, notifications=list_notif())
         else:
-            return self.render('login.html')
+            return self.render('/auth/login.html')

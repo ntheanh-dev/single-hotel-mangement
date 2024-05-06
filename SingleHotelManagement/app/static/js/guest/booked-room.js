@@ -148,80 +148,98 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --------------- xác nhận đặt phòng-------------------
     $(".confirmBookingBtn").click(function () {
-        fetch("/api/reception/add-guest/", {
-            method: 'post',
-            body: JSON.stringify({
-                'last_name': $("#last_name").val(),
-                'first_name': $("#first_name").val(),
-                'birthdate': $("#birthdate").val(),
-                'phone_number': $("#phone_number").val(),
-                'city': $("#city").val(),
-                'district': $("#district").val(),
-                'address': $("#address").val(),
-                'foreigner': $("#foreigner").val(),
-            }),
-            headers: {
-                'Accept': 'application/json',
-                'Context-Type': 'application/json',
-            }
-        }).then(res => res.json()).then(data => {
-            if (data == '-1') {
-                Swal.fire({
-                    title: 'Thông tin bạn nhập không hợp lệ !!!',
-                    text: 'Xin vui lòng thử lại',
+        if( $("#last_name").val() == '' || $("#first_name").val() == "" || $("#phone_number").val() =="" ||
+            $("#email").val() == ''
+        ) {
+            Swal.fire({
+                    title: 'Vui lòng nhập đầy đủ thông tin',
                     icon: 'warning',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Ok',
                 })
-            } else if (data == '0') {
-                Swal.fire({
-                    title: 'Hãy thử với số điện thoại khách!!!',
-                    text: '',
-                    icon: 'warning',
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Ok',
-                })
-            } else {
-                console.log(data)
-                var booker_id = data.id
-                    var domestic = Number(JSON.parse(localStorage.getItem('domestic'))) * cartItemLength;
-                    var foreign =  Number(JSON.parse(localStorage.getItem('foreign')))  * cartItemLength;
-                    fetch("/api/reception/make-booking-online/", {
-                        method: 'post',
-                        body: JSON.stringify({
-                            'start_date': JSON.parse(localStorage.getItem('start_date')),
-                            'end_date': JSON.parse(localStorage.getItem('end_date')),
-                            'booked_room': JSON.parse(localStorage.getItem('booking')),
-                            'booker_id': booker_id,
-                        }),
-                        headers: {
-                            'Accept': 'application/json',
-                            'Context-Type': 'application/json',
-                        }
-                    }).then(res => res.json()).then(data => {
-                        if (data == 'error') {
-                            Swal.fire({
-                                title: 'Lỗi đặt phòng !!!',
-                                text: 'Xin vui lòng thử lại hoặc chọn phòng khác',
-                                icon: 'warning',
-                                confirmButtonColor: '#3085d6',
-                                confirmButtonText: 'Ok',
-                            })
-                        } else {
-                            Swal.fire({
-                                title: 'Đặt phòng thành công Thành Công',
-                                text:'Trở về trang chủ?',
-                                icon: 'success',
-                                confirmButtonColor: '#3085d6',
-                                confirmButtonText: 'Xác nhận',
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = `/trang-chu/`;
-                                }
-                            })
-                        }
+        } else {
+            var loading = $("#loading")
+            loading.addClass("loading")
+            fetch("/api/reception/add-guest/", {
+                method: 'post',
+                body: JSON.stringify({
+                    'last_name': $("#last_name").val(),
+                    'first_name': $("#first_name").val(),
+                    'birthdate': $("#birthdate").val(),
+                    'phone_number': $("#phone_number").val(),
+                    'city': $("#city").val(),
+                    'district': $("#district").val(),
+                    'address': $("#address").val(),
+                    'foreigner': $("#foreigner").val(),
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Context-Type': 'application/json',
+                }
+            }).then(res => res.json()).then(data => {
+                if (data == '-1') {
+                    loading.removeClass("loading")
+                    Swal.fire({
+                        title: 'Thông tin bạn nhập không hợp lệ !!!',
+                        text: 'Xin vui lòng thử lại',
+                        icon: 'warning',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Ok',
                     })
-            }
-        })
+                } else if (data == '0') {
+                    loading.removeClass("loading")
+                    Swal.fire({
+                        title: 'Hãy thử với số điện thoại khách!!!',
+                        text: '',
+                        icon: 'warning',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Ok',
+                    })
+                } else {
+                    var booker_id = data.id
+                        var domestic = Number(JSON.parse(localStorage.getItem('domestic'))) * cartItemLength;
+                        var foreign =  Number(JSON.parse(localStorage.getItem('foreign')))  * cartItemLength;
+                        fetch("/api/reception/make-booking-online/", {
+                            method: 'post',
+                            body: JSON.stringify({
+                                'start_date': JSON.parse(localStorage.getItem('start_date')),
+                                'end_date': JSON.parse(localStorage.getItem('end_date')),
+                                'booked_room': JSON.parse(localStorage.getItem('booking')),
+                                'booker_id': booker_id,
+                                'full_name': `${$("#first_name").val()} ${$("#last_name").val()}`,
+                                'email': $("#email").val()
+                            }),
+                            headers: {
+                                'Accept': 'application/json',
+                                'Context-Type': 'application/json',
+                            }
+                        }).then(res => res.json()).then(data => {
+                            if (data == 'error') {
+                                loading.removeClass("loading")
+                                Swal.fire({
+                                    title: 'Lỗi đặt phòng !!!',
+                                    text: 'Xin vui lòng thử lại hoặc chọn phòng khác',
+                                    icon: 'warning',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Ok',
+                                })
+                            } else {
+                                loading.removeClass("loading")
+                                Swal.fire({
+                                    title: 'Đặt phòng thành công Thành Công',
+                                    text:'Trở về trang chủ?',
+                                    icon: 'success',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Xác nhận',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = `/trang-chu/`;
+                                    }
+                                })
+                            }
+                        })
+                }
+            })
+        }
     })
 });

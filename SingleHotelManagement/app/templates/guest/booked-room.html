@@ -13,9 +13,9 @@
                                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                   <label
                                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                                    for="grid-first-name"
+                                    for="last_name"
                                   >
-                                    Họ
+                                    Họ*
                                   </label>
                                   <input
                                     class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
@@ -31,7 +31,7 @@
                                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                                     for="first_name"
                                   >
-                                    Tên
+                                    Tên*
                                   </label>
                                   <input
                                     class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -47,9 +47,9 @@
                                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                   <label
                                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                                    for="grid-first-name"
+                                    for="phone_number"
                                   >
-                                    Số điện thoại
+                                    Số điện thoại*
                                   </label>
                                   <input
                                     class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
@@ -63,13 +63,13 @@
                                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                   <label
                                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                                    for="grid-first-name"
+                                    for="email"
                                   >
-                                    Email
+                                    Email *
                                   </label>
                                   <input
                                     class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                                    id="grid-first-name"
+                                    id="email"
                                     type="text"
                                     placeholder="example@gmail.com"
                                   />
@@ -287,6 +287,7 @@
             </div>
         </div>
     </div>
+<div class="" id="loading"></div>
 {% endblock %}
 {% block tail %}
     <script src="{{url_for('static', filename='js/guest/booked-room.js')}}"></script>

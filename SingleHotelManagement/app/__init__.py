@@ -1,11 +1,10 @@
 import hashlib
-
 from flask import Flask
 from urllib.parse import quote
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_login import LoginManager
-
+from flask_mail import Mail
 app = Flask("APH Hotel")
 
 # Mysql config
@@ -27,6 +26,15 @@ from app.model_views.home_view import HomeView
 # Flask Admin
 my_admin = Admin(app=app, name='Quản Lý Khách Sạn', template_mode='bootstrap4', index_view=HomeView(name="Trang Chu"))
 
+#flask-email
+app.config['MAIL_SERVER']= ''
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = ''
+app.config['MAIL_PASSWORD'] = ''
+app.config['MAIL_USE_TLS'] = True
+mail = Mail(app)
+
+# Model
 from app.models import user
 from app.models import account
 from app.models import admin
