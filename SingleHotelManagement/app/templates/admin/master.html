@@ -102,5 +102,12 @@
 
     {% block tail %}
     {% endblock %}
+
+    <script>
+      function switchToReceptionist() {
+        fetch("/api/switch/receptionist", {method: 'get'}).then(res => {window.location.href = "/nhan-vien/lich-dat-phong/"})
+      }
+    </script>
+
   </body>
 </html>
