@@ -40,6 +40,8 @@
         <link href="{{url_for('static',filename='plugins/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet"/>
 
         <link rel="stylesheet" href="{{url_for('static', filename='css/admin-style.css')}}" />
+        <link rel="stylesheet" href="{{url_for('static',filename='css/loading.css')}}"/>
+
         <script src="https://cdn.tailwindcss.com"></script>
     {% endblock %}
     {% block head %}
@@ -59,6 +61,8 @@
         {% block body %} {% endblock %}
     </main>
     <!-- End #main -->
+
+    <div class="" id="loading"></div>
 
     {% block messages %}
         {{ layout.messages() }}

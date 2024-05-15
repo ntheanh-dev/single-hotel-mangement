@@ -132,6 +132,8 @@ $(document).ready(function () {
 
 // Gửi thông tin từ khóa tìm kiếm tên hang phong lên server và nhận về danh sách hạng phòng tìm được
 function getTierHintName(keyword) {
+  var loading = $("#loading")
+  loading.addClass("loading")
   fetch('/api/admin/tier-name/', {
     method: 'post',
     body: JSON.stringify({
@@ -141,7 +143,11 @@ function getTierHintName(keyword) {
       'Content-Type': 'application/json'
     }
   }).then(res => res.json()).then(data => {
+    loading.removeClass("loading")
     setHintResult(data)
+  }).catch((err) => {
+    loading.removeClass("loading")
+    console.error(err);
   })
 }
 
@@ -235,7 +241,7 @@ function buildChart(data) {
 function setStatisticDataTable(statisticData) {
   var headCol2 = $('#statisticCondition').val().includes('month') ? 'Tháng' :
     ($('#statisticCondition').val().includes('quarter') ? 'Quý' : 'Năm')
-  var headCol3 = $('#statisticType').val().includes('revenue') ? 'Tổng doanh thu' : 'Tần suất sử dụng phòng theo hạng'
+  var headCol3 = 'Tổng doanh thu'
   var row = ''
   var header = `<tr>
                   <th>${'Số thứ tự'}</th>
