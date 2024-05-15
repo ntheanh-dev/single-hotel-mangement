@@ -1,14 +1,14 @@
 import json
-
 from app import app
 from flask import request, jsonify
 from app.services.tier_service import get_tier_name
-from app.services.statistict_service import get_statistic as gt
+from app.services.statistict_service import get_statistic
 from app.services.report_service import get_report_data_with_date_detail as grd, get_revenue_data as gr
 from app.utils.decorator import required_role
 from app.models.account import UserRole
 
 
+# --------------Lay thong tin hạng phòng theo keyword--------------
 @app.route('/api/admin/tier-name/', methods=['post'])
 @required_role(UserRole.ADMIN)
 def get_tier_name_hint():
@@ -22,14 +22,16 @@ def get_tier_name_hint():
     return json.dumps(tier_names)
 
 
+# -----------------Lấy dữ liệu thống kê theo nhieu dieu kien--------------
 @app.route('/api/admin/statistic/', methods=['post'])
 @required_role(UserRole.ADMIN)
 def get_statistic_data():
     data = json.loads(request.data)
-    result = gt(data=data)
+    result = get_statistic(data=data)
     return jsonify(result)
 
 
+# ----------------Lấy dữ liệu báo cáo--------------------
 @app.route('/api/admin/report/', methods=['post'])
 @required_role(UserRole.ADMIN)
 def get_report_data():
@@ -43,6 +45,7 @@ def get_report_data():
                        year=year))
 
 
+# --------------------Lấy tong doanh thu-------------------
 @app.route('/api/admin/revenue/', methods=['post'])
 @required_role(UserRole.ADMIN)
 def get_revenue_data():

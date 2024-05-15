@@ -1,10 +1,8 @@
 import datetime
-from sqlalchemy import and_
 from sqlalchemy.sql.functions import concat, func, coalesce
-from app import db, app
+from app import db
 from app.models.booking import Booking, BookingStatus
 from app.models.booking_detail import BookingDetail
-from app.models.invoice import Invoice
 from app.models.room import Room, RoomStatus
 from distutils.util import strtobool
 from app.models.tier import Tier

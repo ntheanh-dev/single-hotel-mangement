@@ -66,7 +66,7 @@ $(document).ready(function () {
       }
 
       if ($(this).val() == 'year_to_year_statistic') {
-        minVal = 2023
+        minVal = 2024
         maxVal = 2100
       }
 
@@ -244,18 +244,34 @@ function setStatisticDataTable(statisticData) {
               </tr>`
 
   for (let i = 0; i < statisticData.length; i++)
-    if ($('#statisticType').val().includes('revenue'))
+    if ($('#statisticType').val().includes('revenue')) {
+      // Chuyển đổi giá trị thành số
+        var number = parseFloat(statisticData[i]['revenue_total']);
+        // Định dạng lại giá trị
+        var formattedValue = number.toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        });
+
       row += `<tr>
                   <td>${i + 1}</td>
                   <td>${statisticData[i]['time']}</td>
-                  <td>${statisticData[i]['revenue_total']}</td>
+                  <td>${formattedValue}</td>
               </tr>`
-    else
+    }
+    else {
+        var number = parseFloat(statisticData[i]['total']);
+        // Định dạng lại giá trị
+        var formattedValue = number.toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        });
       row += `<tr>
-                  <td>${i + 1}</td>
-                  <td>${statisticData[i]['time']}</td>
-                  <td>${statisticData[i]['total']}</td>
-              </tr>`
+          <td>${i + 1}</td>
+          <td>${statisticData[i]['time']}</td>
+          <td>${formattedValue}</td>
+      </tr>`
+    }
 
   $('#titleStatisticTable').html(header)
   $('#dataStatisticTable').html(row)

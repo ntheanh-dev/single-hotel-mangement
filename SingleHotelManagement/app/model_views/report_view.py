@@ -10,5 +10,31 @@ class ReportView(BaseView):
     @expose('/')
     @required_role(UserRole.ADMIN)
     def index(self):
-        selections = get_data_json_file('report_fields.json')
+        selections = {
+              "report_type": [
+                  {
+                    "type": "revenue",
+                    "name": "Thống kê doanh thu"
+                  },
+
+                  {
+                    "type": "frequently_tier_booking",
+                    "name": "Thống kê tần suất sử dụng phòng"
+                  }
+              ],
+              "report_condition": [
+                {
+                  "type": "month_report",
+                  "name": "Báo cáo theo tháng"
+                },
+                {
+                  "type": "quarter_report",
+                  "name": "Báo cáo theo quý"
+                },
+                {
+                  "type": "year_report",
+                  "name": "Báo cáo theo năm"
+                }
+              ]
+            }
         return self.render('/admin/report.html', selections=selections)

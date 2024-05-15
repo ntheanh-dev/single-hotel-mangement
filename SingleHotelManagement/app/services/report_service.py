@@ -22,8 +22,7 @@ def get_report_data_with_date_detail(report_type=None, month=None, quarter=None,
                 'room_name': value[0],
                 'total_usage': value[1]
             })
-            return arr_dic
-    return []
+        return arr_dic
 
 
 def get_revenue_data(day=None, month=None, year=None):

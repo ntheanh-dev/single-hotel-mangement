@@ -1,4 +1,4 @@
-from app import init_tables, app,admin,init_admin,init_account
+from app import app, init_admin
 if __name__ == '__main__':
     with app.app_context():
         # init_tables()
